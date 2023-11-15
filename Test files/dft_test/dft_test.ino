@@ -26,7 +26,8 @@ void setup(void){
     delay(1000);
   }
   
-  DF1201S.setPrompt(false); //shut down starting tone
+  DF1201S.setPrompt(true); //starting tone
+  DF1201S.setLED(true); //led on
   /*Wait for the end of the prompt tone */
   delay(2000);
   /*Set playback mode to "repeat all"*/
