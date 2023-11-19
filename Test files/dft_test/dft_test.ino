@@ -1,6 +1,8 @@
-/* This program is testing the DFRobot_DF1201S library with a ESP32. It uses a button as input to play three sounds. When the button is pressed then the first sound is played, 
+/*  This program is testing the DFRobot_DF1201S library with a ESP32. It uses a button as input to play three sounds. When the button is pressed then the first sound is played, 
 when it is pressed again then the second sound is played and when it is pressed for the third time then the third sound is played. If the button is pressed again then the sequence
-will repeat from the first sound.*/
+will repeat from the first sound.
+    Serial ports are also tested for the ESP32S2 NODEMCU module.
+*/
 
 #include <DFRobot_DF1201S.h>
 //#include <SoftwareSerial.h>
@@ -15,17 +17,33 @@ int16_t sel = 9;
 DFRobot_DF1201S DF1201S;
 void setup(void){
   Serial.begin(115200);
+
+  //Print serial pins:
+  Serial.println("Serial Txd is on pin: "+String(TX));
+  Serial.println("Serial Rxd is on pin: "+String(RX));
   
   pinMode(buttonPin, INPUT);
 
-  //DF1201SSerial.begin(115200);
+  //Print serial1 pins:
   Serial1.begin(115200, SERIAL_8N1, RXD1, TXD1);
-  //while(!DF1201S.begin(DF1201SSerial)){
+  Serial.println("Serial1 Txd1 is on pin: "+String(TXD1));
+  Serial.println("Serial1 Rxd1 is on pin: "+String(RXD1));
+
+  //Flush serial1
+  Serial1.flush();
+
+  //check serial1 availability
+  if (Serial1.available()) {
+    Serial.println("available");
+  } else {
+    Serial.println("not available");
+  }
+
+  //Init DF1201S
   while(!DF1201S.begin(Serial1)){
     Serial.println("Init failed, please check the wire connection!");
     delay(1000);
   }
-  
   DF1201S.setPrompt(true); //starting tone
   DF1201S.setLED(true); //led on
   /*Wait for the end of the prompt tone */
