@@ -30,7 +30,7 @@ void setup(void){
   Serial.println("Serial1 Rxd1 is on pin: "+String(RXD1));
 
   //Flush serial1
-  Serial1.flush();
+  //Serial1.flush();
 
   //check serial1 availability
   if (Serial1.available()) {
