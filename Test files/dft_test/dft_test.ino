@@ -25,7 +25,7 @@ void setup(void){
   pinMode(buttonPin, INPUT);
 
   //Print serial1 pins:
-  Serial1.begin(115200, SERIAL_8N1, RXD1, TXD1); //This is where the problem is
+  Serial1.begin(115200, SERIAL_8N1, RXD1, TXD1); //This is where the problem is, investigating with log_i, log_v(" %d ",..)
   Serial.println("Serial1 Txd1 is on pin: "+String(TXD1));
   Serial.println("Serial1 Rxd1 is on pin: "+String(RXD1));
 
@@ -42,7 +42,7 @@ void setup(void){
   //Init DF1201S
   while(!DF1201S.begin(Serial1)){
     Serial.println("Init failed, please check the wire connection!");
-    delay(1000);
+    delay(4000);
   }
   DF1201S.setPrompt(true); //starting tone
   DF1201S.setLED(true); //led on
