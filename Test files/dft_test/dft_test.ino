@@ -25,7 +25,7 @@ void setup(void){
   pinMode(buttonPin, INPUT);
 
   //Print serial1 pins:
-  Serial1.begin(115200, SERIAL_8N1, RXD1, TXD1);
+  Serial1.begin(115200, SERIAL_8N1, RXD1, TXD1); //This is where the problem is
   Serial.println("Serial1 Txd1 is on pin: "+String(TXD1));
   Serial.println("Serial1 Rxd1 is on pin: "+String(RXD1));
 
