@@ -32,16 +32,26 @@ void setup(void){
   //Flush serial1
   //Serial1.flush();
 
+  if (!Serial1) {
+    Serial.println("No serial1"); //This doesn't print so serial1 is fine
+  }
+
+  int serial_read = Serial1.read();
+  Serial.print("serial_read = ");
+  Serial.println(serial_read);
+
   //check serial1 availability
   if (Serial1.available()) {
     Serial.println("available");
   } else {
-    Serial.println("not available");
-  }
+    Serial.println("not available"); //But it's not available! 
+  }                                  //It seems that in arduino-esp32/blob/master/cores/esp32/esp32-hal-uart
+                                     //function uartAvailable: uart->has_peek returns false
 
   //Init DF1201S
   while(!DF1201S.begin(Serial1)){
     Serial.println("Init failed, please check the wire connection!");
+    Serial.println(Serial1.peek());
     delay(4000);
   }
   DF1201S.setPrompt(true); //starting tone
