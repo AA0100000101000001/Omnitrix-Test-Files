@@ -50,7 +50,7 @@ void setup() {
   }
 
   //The omnitrix will wake up when the button is pressed
-  esp_sleep_enable_ext0_wakeup(GPIO_NUM_5,1);
+  esp_sleep_enable_ext0_wakeup(GPIO_NUM_5,0);
 
   //initialize inputs and outputs.
   pinMode(LED, OUTPUT);
@@ -74,7 +74,7 @@ void loop() {
 	  buttonState = digitalRead(buttonPin);
 
     //If it is, then go to Alien Selection mode
-    if (buttonState == HIGH) {
+    if (buttonState == LOW) {
       // turn LED on:
       //digitalWrite(LED, HIGH);
       mode = 2;
@@ -138,7 +138,7 @@ void mode2() {
     buttonState = digitalRead(buttonPin);
 
     // check if start button is pressed. If it is then go to the previous mode
-    if (buttonState == HIGH) {
+    if (buttonState == LOW) {
       // turn LED off:
       //digitalWrite(LED, LOW);
       mode = 1;

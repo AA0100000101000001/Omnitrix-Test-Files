@@ -14,6 +14,8 @@ int mode = 1;
 
 void setup() {
   
+  // initialize the pushbutton pin as an input:
+  pinMode(buttonPin, INPUT);
   // initialize left and right buttons
   pinMode(A, INPUT);
   pinMode(B, INPUT);
@@ -22,8 +24,6 @@ void setup() {
 
   // initialize the LED pin as an output:
   pinMode(ledPin, OUTPUT);
-  // initialize the pushbutton pin as an input:
-  pinMode(buttonPin, INPUT);
 
   Serial.begin(115200);
 }
@@ -32,7 +32,7 @@ void loop() {
   // read the state of the pushbutton value:
   buttonState = digitalRead(buttonPin);
 
-  if (buttonState == HIGH) {
+  if (buttonState == LOW) {
     
     delay(200);
     Serial.println("Button pressed");
