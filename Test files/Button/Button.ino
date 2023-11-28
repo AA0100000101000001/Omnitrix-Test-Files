@@ -32,7 +32,7 @@ void loop() {
   // read the state of the pushbutton value:
   buttonState = digitalRead(buttonPin);
 
-  if (buttonState == LOW) {
+  if (buttonState == HIGH) {
     
     delay(200);
     Serial.println("Button pressed");
@@ -66,7 +66,7 @@ void loop() {
   rightState = digitalRead(A);
 
   //right botton is pressed
-  if (rightState == LOW) {
+  if (rightState == HIGH) {
     delay(300);
     Serial.println("Right");
   }
@@ -75,7 +75,7 @@ void loop() {
   leftState = digitalRead(B);
 
   //left botton is pressed
-  if (leftState == LOW) {
+  if (leftState == HIGH) {
     delay(300);
     Serial.println("Left");
   }
@@ -84,7 +84,7 @@ void loop() {
   selectButtonState = digitalRead(S);
 
   //left botton is pressed
-  if (selectButtonState == LOW) {
+  if (selectButtonState == HIGH) {
     delay(300);
     Serial.println("Select button pressed");
   }

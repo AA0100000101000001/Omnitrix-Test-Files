@@ -50,12 +50,12 @@ void setup() {
   }
 
   //The omnitrix will wake up when the button is pressed
-  esp_sleep_enable_ext0_wakeup(GPIO_NUM_5,0);
+  esp_sleep_enable_ext0_wakeup(GPIO_NUM_5,1);
 
   //initialize inputs and outputs.
   pinMode(LED, OUTPUT);
   pinMode(buttonPin, INPUT);
-  pinMode(SW, INPUT_PULLUP);
+  pinMode(SW, INPUT);
 
   //Check the wakeup reason for ESP32
   get_wakeup_reason();
@@ -74,7 +74,7 @@ void loop() {
 	  buttonState = digitalRead(buttonPin);
 
     //If it is, then go to Alien Selection mode
-    if (buttonState == LOW) {
+    if (buttonState == HIGH) {
       // turn LED on:
       //digitalWrite(LED, HIGH);
       mode = 2;
@@ -115,7 +115,7 @@ void mode2() {
     selectbuttonState = digitalRead(SW);
 
     //If select button is pressed then go to next mode
-    if (selectbuttonState == LOW) {
+    if (selectbuttonState == HIGH) {
       mode = 3;
       delay(200);
       Serial.println("Tranformed into alien");
@@ -138,7 +138,7 @@ void mode2() {
     buttonState = digitalRead(buttonPin);
 
     // check if start button is pressed. If it is then go to the previous mode
-    if (buttonState == LOW) {
+    if (buttonState == HIGH) {
       // turn LED off:
       //digitalWrite(LED, LOW);
       mode = 1;
@@ -165,7 +165,7 @@ void mode3() {
   selectbuttonState = digitalRead(SW);
 
   //if encoder button is pressed then go to Start mode
-  if (selectbuttonState == LOW) {
+  if (selectbuttonState == HIGH) {
 
     delay(200);
     mode = 1;
