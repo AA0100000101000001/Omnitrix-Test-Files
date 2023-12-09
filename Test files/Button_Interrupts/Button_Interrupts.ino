@@ -8,6 +8,8 @@ bool rightState = false; //State of right
 bool leftState = false; //State of left
 bool selectbuttonState = false; //State of select button
 
+int mode = 0;
+
 //variables to keep track of the timing of recent interrupts
 unsigned long button_time = 0;  
 unsigned long last_button_time = 0; 
@@ -67,19 +69,40 @@ void setup() {
 
 void loop() {
     if (buttonState) {
-        Serial.printf("Button pressed\n");
-        buttonState = false;
+      Serial.printf("Button pressed\n");
+      buttonState = false;
+      switch (mode) {
+        case 0:
+          mode = 1;
+          break;
+         case 1:
+          mode = 0;
+          break;
+      }
+      Serial.print("mode = ");
+      Serial.println(mode);
     }
     if (rightState) {
-        Serial.printf("Right Button pressed\n");
-        rightState = false;
+      Serial.printf("Right Button pressed\n");
+      rightState = false;
     }
     if (leftState) {
-        Serial.printf("Left Button pressed\n");
-        leftState = false;
+      Serial.printf("Left Button pressed\n");
+      leftState = false;
     }
     if (selectbuttonState) {
-        Serial.printf("Select Button pressed\n");
-        selectbuttonState = false;
+      Serial.printf("Select Button pressed\n");
+      selectbuttonState = false;
+      switch (mode) {
+        case 1:
+          mode = 2;
+          break;
+         case 2:
+          mode = 0;
+          break;
+      }
+      Serial.print("mode = ");
+      Serial.println(mode);
+
     }
 }
