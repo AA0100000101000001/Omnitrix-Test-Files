@@ -8,7 +8,7 @@ bool rightState = false; //State of right
 bool leftState = false; //State of left
 bool selectbuttonState = false; //State of select button
 
-int mode = 0;
+int mode = 1;
 
 //variables to keep track of the timing of recent interrupts
 unsigned long button_time = 0;  
@@ -72,11 +72,15 @@ void loop() {
       Serial.printf("Button pressed\n");
       buttonState = false;
       switch (mode) {
-        case 0:
-          mode = 1;
+        //Omnitrix is in start mode
+        case 1:
+          //Go to select alien mode
+          mode = 2;
           break;
-         case 1:
-          mode = 0;
+        //Omnitrix is in select alien mode
+         case 2:
+          //Go to start mode
+          mode = 1;
           break;
       }
       Serial.print("mode = ");
@@ -94,11 +98,15 @@ void loop() {
       Serial.printf("Select Button pressed\n");
       selectbuttonState = false;
       switch (mode) {
-        case 1:
-          mode = 2;
+        //Omnitrix is in select alien mode
+        case 2:
+          //Go to transformation mode
+          mode = 3;
           break;
-         case 2:
-          mode = 0;
+        //Omnitrix is in transformation mode
+         case 3:
+          //Go to start mode
+          mode = 1;
           break;
       }
       Serial.print("mode = ");
