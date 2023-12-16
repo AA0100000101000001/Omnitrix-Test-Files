@@ -3,12 +3,15 @@
 #define LeftPin 4 //Left button
 #define SelectPin 3 //Select button
 
+#define ALIEN_NUMBER 11 //0-12
+
 bool buttonState = false; //State of start button
 bool rightState = false; //State of right
 bool leftState = false; //State of left
 bool selectbuttonState = false; //State of select button
 
 int mode = 1;
+int alienNo = 0;
 
 //variables to keep track of the timing of recent interrupts
 unsigned long button_time = 0;  
@@ -71,6 +74,7 @@ void loop() {
     if (buttonState) {
       Serial.printf("Button pressed\n");
       buttonState = false;
+
       switch (mode) {
         //Omnitrix is in start mode
         case 1:
@@ -89,14 +93,43 @@ void loop() {
     if (rightState) {
       Serial.printf("Right Button pressed\n");
       rightState = false;
+
+      switch (mode) {
+        //Omnitrix is in select alien mode
+        case 2:
+          if ((alienNo  + 1)> ALIEN_NUMBER ) {
+            alienNo = 0;
+          }
+          else {
+            alienNo += 1;
+          }
+          Serial.print("alien: ");
+          Serial.println(alienNo);
+        break;
+      }
     }
     if (leftState) {
       Serial.printf("Left Button pressed\n");
       leftState = false;
+
+      switch (mode) {
+        //Omnitrix is in select alien mode
+        case 2:
+          if ((alienNo - 1) < 0 ) {
+            alienNo = ALIEN_NUMBER;
+          }
+          else {
+            alienNo -= 1;
+          }
+          Serial.print("alien: ");
+          Serial.println(alienNo);
+          break;
+      }
     }
     if (selectbuttonState) {
       Serial.printf("Select Button pressed\n");
       selectbuttonState = false;
+
       switch (mode) {
         //Omnitrix is in select alien mode
         case 2:
