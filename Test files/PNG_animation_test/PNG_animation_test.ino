@@ -1,4 +1,11 @@
 /* This program displays on the LCD screen the omnitrix start animation followed by all the alien figures displayed one after the other in a loop. */
+/* Tested with ESP32-S2 and ESP32-S3 TOUCH LCD 1.28
+  Add Setup302_ESP32S3_GC9A01_TOUCH.h and Setup303_OMNITRIX_CUSTOM.h in libraries\TFT_eSPI\User_Setups
+
+  Use one of these header files in User_Setup_Select.h 
+  #include <User_Setups/Setup302_ESP32S3_GC9A01_TOUCH.h>
+  #include <User_Setups/Setup303_OMNITRIX_CUSTOM.h>
+*/
 
 #include <PNGdec.h>
 
