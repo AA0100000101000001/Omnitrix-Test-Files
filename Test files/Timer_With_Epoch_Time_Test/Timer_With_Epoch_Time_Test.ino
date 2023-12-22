@@ -1,9 +1,6 @@
 /* This program tests the ability of the omnitrix to go into deep sleep mode after a short period of time of inactivity and wake up when the transformation time is over 
 in order to go to the recharging state.*/
 
-#include <ESP32Time.h>
-ESP32Time rtc;
-
 #define uS_TO_S_FACTOR 1000000ULL  /* Conversion factor for micro seconds to seconds */
 #define DEEP_SLEEP_TIMER 5 // 5 sec
 uint32_t start; //timer for deep sleep
@@ -48,7 +45,7 @@ void setup() {
   Serial.println(mode);
 
   if (bootCount == 1) {
-    rtc.setTime(0, 0, 0, 1, 1, 2023);  // 1st Jan 2023 00:00:00
+    RTC_setTime(0, 0, 0, 1, 1, 2023, 0);  // 1st Jan 2023 00:00:00:00
   }
 
   //The omnitrix will wake up when the button is pressed
@@ -63,7 +60,7 @@ void setup() {
   get_wakeup_reason();
 
   //reset timer 
-  start = rtc.getLocalEpoch(); // Get epoch
+  start = RTC_getLocalEpoch(); // Get epoch
 }
 
 // the loop function runs over and over again forever
@@ -84,7 +81,7 @@ void loop() {
       Serial.println("Button pressed, select alien");
 
       //reset timer
-      start = rtc.getLocalEpoch();
+      start = RTC_getLocalEpoch();
     }
 
     //Check timer for deep sleep
@@ -122,7 +119,7 @@ void mode2() {
       mode2ToMode3();
       
       //reset timer
-      start = rtc.getLocalEpoch();
+      start = RTC_getLocalEpoch();
 
     }
 
@@ -138,7 +135,7 @@ void mode2() {
       Serial.println("Button pressed back to start");
 
       //reset timer
-      start = rtc.getLocalEpoch();
+      start = RTC_getLocalEpoch();
     }
 
     //Check timer for deep sleep
@@ -154,11 +151,11 @@ void mode2ToMode3() {
   delay(200);
   Serial.println("Tranformed into alien");
 
-  Serial.println(rtc.getLocalEpoch()); //Get minutes passed since first boot
+  Serial.println(RTC_getLocalEpoch()); //Get minutes passed since first boot
   //reset transformation time to current epoch
-  transformation_start_time = rtc.getLocalEpoch();
+  transformation_start_time = RTC_getLocalEpoch();
   //Set offset to time passed since last time the timer was checked (in sec)
-  transformation_start_time_offset = rtc.getLocalEpoch() - transformation_start_time;
+  transformation_start_time_offset = RTC_getLocalEpoch() - transformation_start_time;
 
   //Configure the wake up source to wake up every time the transfomation is done
   esp_sleep_enable_timer_wakeup(transform_time_val - transformation_start_time_offset * uS_TO_S_FACTOR);
@@ -173,14 +170,14 @@ void mode3() {
 
     //Check transformation time
     //Transformation time is done while omnitrix does not sleep
-    if ((rtc.getLocalEpoch() - transformation_start_time) > ALIEN_TRANSFORMATION_TIME_TEST) {
+    if ((RTC_getLocalEpoch() - transformation_start_time) > ALIEN_TRANSFORMATION_TIME_TEST) {
 
       mode3ToMode4();
 
     //Transformation time is not finished
     } else {
       //Set offset to time passed since last time the timer was checked (in sec)
-      transformation_start_time_offset = rtc.getLocalEpoch() - transformation_start_time;
+      transformation_start_time_offset = RTC_getLocalEpoch() - transformation_start_time;
     }
 
     //Check timer for deep sleep
@@ -201,7 +198,7 @@ void mode3() {
       Serial.println("Disabled Timer1");
 
       //reset timer
-      start = rtc.getLocalEpoch();
+      start = RTC_getLocalEpoch();
     }
 
   }
@@ -214,14 +211,14 @@ void mode4() {
 
     //Check recharging time
     //Recharging time is done
-    if ((rtc.getLocalEpoch() - recharging_start_time) > OMNITRIX_RECHARGE_TIME_TEST) {
+    if ((RTC_getLocalEpoch() - recharging_start_time) > OMNITRIX_RECHARGE_TIME_TEST) {
 
       mode4ToMode1();
 
     //Recharging time is not finished
     } else {
       //Set offset to time passed since last time the timer was checked (in sec)
-      recharging_start_time_offset = rtc.getLocalEpoch() - recharging_start_time;
+      recharging_start_time_offset = RTC_getLocalEpoch() - recharging_start_time;
     }
   
 
@@ -235,9 +232,9 @@ void mode4() {
 void mode3ToMode4() {
 
   //reset recharging time
-  recharging_start_time = rtc.getLocalEpoch();
+  recharging_start_time = RTC_getLocalEpoch();
   //Set offset to time passed since last time the timer was checked (in sec)
-  recharging_start_time_offset = rtc.getLocalEpoch() - recharging_start_time;
+  recharging_start_time_offset = RTC_getLocalEpoch() - recharging_start_time;
 
   Serial.println(recharging_start_time_offset);
   Serial.println(recharge_time_val);
@@ -265,7 +262,7 @@ void mode4ToMode1() {
 void check_timer() {
 
   //if the time has passed then go to deep sleep
-  if ((rtc.getLocalEpoch() - start) > DEEP_SLEEP_TIMER) {
+  if ((RTC_getLocalEpoch() - start) > DEEP_SLEEP_TIMER) {
 
     Serial.println("Going to sleep");
     
@@ -290,7 +287,7 @@ void get_wakeup_reason() {
       if (mode == 3) {
 
         //Set offset to time passed since last time the timer was checked (in sec)
-        transformation_start_time_offset = rtc.getLocalEpoch() - transformation_start_time;
+        transformation_start_time_offset = RTC_getLocalEpoch() - transformation_start_time;
 
         //Configure the wake up source to wake up every time the transfomation is done
         esp_sleep_enable_timer_wakeup(transform_time_val - transformation_start_time_offset * uS_TO_S_FACTOR);
@@ -302,7 +299,7 @@ void get_wakeup_reason() {
       else if (mode == 4) {
 
         //Set offset to time passed since last time the timer was checked (in sec)
-        recharging_start_time_offset = rtc.getLocalEpoch() - recharging_start_time;
+        recharging_start_time_offset = RTC_getLocalEpoch() - recharging_start_time;
 
         //Configure the wake up source to wake up every time the recharge is done
         esp_sleep_enable_timer_wakeup(recharge_time_val - recharging_start_time_offset * uS_TO_S_FACTOR);
@@ -323,7 +320,7 @@ void get_wakeup_reason() {
 
         mode3ToMode4();
 
-        Serial.println(rtc.getLocalEpoch()); //Get minutes passed since first boot
+        Serial.println(RTC_getLocalEpoch()); //Get minutes passed since first boot
 
     
       //Go to start mode after recharge timer is finished
