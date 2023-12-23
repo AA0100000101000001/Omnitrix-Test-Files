@@ -1,5 +1,5 @@
 /* This program tests the ability of the omnitrix to go into deep sleep mode after a short period of time of inactivity and wake up when the transformation time is over 
-in order to go to the recharging state.*/
+in order to go to the recharging state. Interrupts are used to check input*/
 
 #define buttonPin 5 //Start button
 #define RightPin 1 //Right button
@@ -224,7 +224,7 @@ void loop() {
           start = RTC_getLocalEpoch();
           break;
       }
-      Serial.print("mode = ");
+      Serial.print("mode ");
       Serial.println(mode);
 
     }
@@ -260,48 +260,39 @@ void mode2ToMode3() {
 
 void mode3() {
 
-  for(;mode == 3;) {
+  //Check transformation time
+  //Transformation time is done while omnitrix does not sleep
+  if ((RTC_getLocalEpoch() - transformation_start_time) > ALIEN_TRANSFORMATION_TIME_TEST) {
 
-    //Check transformation time
-    //Transformation time is done while omnitrix does not sleep
-    if ((RTC_getLocalEpoch() - transformation_start_time) > ALIEN_TRANSFORMATION_TIME_TEST) {
+    mode3ToMode4();
 
-      mode3ToMode4();
-
-    //Transformation time is not finished
-    } else {
-      //Set offset to time passed since last time the timer was checked (in sec)
-      transformation_start_time_offset = RTC_getLocalEpoch() - transformation_start_time;
-    }
-
-    //Check timer for deep sleep
-    check_timer();
-
+  //Transformation time is not finished
+  } else {
+    //Set offset to time passed since last time the timer was checked (in sec)
+    transformation_start_time_offset = RTC_getLocalEpoch() - transformation_start_time;
   }
+
+  //Check timer for deep sleep
+  check_timer();
 
 }
 
 void mode4() {
-  
-  for(;mode == 4;) {
 
-    //Check recharging time
-    //Recharging time is done
-    if ((RTC_getLocalEpoch() - recharging_start_time) > OMNITRIX_RECHARGE_TIME_TEST) {
+  //Check recharging time
+  //Recharging time is done
+  if ((RTC_getLocalEpoch() - recharging_start_time) > OMNITRIX_RECHARGE_TIME_TEST) {
 
-      mode4ToMode1();
+    mode4ToMode1();
 
-    //Recharging time is not finished
-    } else {
-      //Set offset to time passed since last time the timer was checked (in sec)
-      recharging_start_time_offset = RTC_getLocalEpoch() - recharging_start_time;
-    }
-  
-
-    //Check timer for deep sleep
-    check_timer();
-
+  //Recharging time is not finished
+  } else {
+    //Set offset to time passed since last time the timer was checked (in sec)
+    recharging_start_time_offset = RTC_getLocalEpoch() - recharging_start_time;
   }
+  
+  //Check timer for deep sleep
+  check_timer();
 
 }
 
@@ -311,9 +302,6 @@ void mode3ToMode4() {
   recharging_start_time = RTC_getLocalEpoch();
   //Set offset to time passed since last time the timer was checked (in sec)
   recharging_start_time_offset = RTC_getLocalEpoch() - recharging_start_time;
-
-  Serial.println(recharging_start_time_offset);
-  Serial.println(recharge_time_val);
 
   mode = 4;
 
