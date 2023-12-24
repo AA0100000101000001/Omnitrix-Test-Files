@@ -1,6 +1,8 @@
 
 //Based on ESP32Time Library by Felix Biego
 
+//This is a Test for RTC timer. It counts the time passed in seconds from the start of the program. RTC Timer use is crucial in this project because it does not reset in deep sleep mode.
+
 #ifdef RTC_DATA_ATTR
 RTC_DATA_ATTR static bool overflow;
 #else
