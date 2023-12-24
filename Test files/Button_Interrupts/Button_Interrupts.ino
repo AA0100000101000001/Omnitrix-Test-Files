@@ -1,3 +1,7 @@
+/*
+This is an update to Button Test with interrupts.
+*/
+
 #define buttonPin 5 //Start button
 #define RightPin 1 //Right button
 #define LeftPin 4 //Left button
