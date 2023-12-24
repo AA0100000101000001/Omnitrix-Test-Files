@@ -1,27 +1,17 @@
 /*
+Modified from original:
 Deep Sleep with External Wake Up
+Original Author:
+Pranav Cherukupalli <cherukupallip@gmail.com>
 =====================================
+This code is under Public Domain License.
+
 This code displays how to use deep sleep with
 an external trigger as a wake up source and how
 to store data in RTC memory to use it over reboots
 
-This code is under Public Domain License.
-
-Hardware Connections
-======================
-Push Button to GPIO 33 pulled down with a 10K Ohm
-resistor
-
-NOTE:
-======
-Only RTC IO can be used as a source for external wake
-source. They are pins: 0,2,4,12-15,25-27,32-39.
-
-Author:
-Pranav Cherukupalli <cherukupallip@gmail.com>
+This program uses the ext0 wakeup method to wake up the ESP32 with the use of a button.
 */
-
-/* This program uses the ext0 wakeup method to wake up the ESP32 with the use of a button.*/
 
 //#define BUTTON_PIN_BITMASK 0x200000000 // 2^33 in hex
 
