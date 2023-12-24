@@ -1,5 +1,5 @@
 /*
-This is an update to Button Test with interrupts.
+This is an update to Button Test with interrupts. It implements the basic omnitrix modes and alien selection.
 */
 
 #define buttonPin 5 //Start button
