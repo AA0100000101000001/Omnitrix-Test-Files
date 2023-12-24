@@ -1,5 +1,6 @@
 
-//TFT_eSPI > PNG > Flash_transparent_PNG
+//Found in: Examples > TFT_eSPI > PNG > Flash_transparent_PNG
+
 // This example renders a png file that is stored in a FLASH array
 // using the PNGdec library (available via library manager).
 
