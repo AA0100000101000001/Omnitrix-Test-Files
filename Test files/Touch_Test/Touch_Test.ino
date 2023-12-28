@@ -27,6 +27,27 @@ void loop() {
     Serial.printf("Gesture: %s     ", touch.gesture());
     Serial.printf("x: %i     ", touch.data.x);
     Serial.printf("y: %i     \n", touch.data.y);
+
+    //Right touch
+    if (touch.data.x < 60 && touch.data.y < 190) {
+
+      Serial.println("Right");
+    }
+    //Left touch
+    else if (touch.data.x > 180 && touch.data.y < 190) {
+
+      Serial.println("Left");
+    }
+    //Bottom touch
+    else if (touch.data.y > 190) {
+
+      Serial.println("Bottom");
+    }
+    //Middle touch
+    else {
+
+      Serial.println("Middle");
+    }
   }
 
   delay(250);
