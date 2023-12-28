@@ -9,6 +9,10 @@ Test for ESP32-S3 ROUND LCD 1.28 TOUCH DISPLAY with CST816S driver.
 //TFT_eSPI tft = TFT_eSPI();
 CST816S touch(6, 7, 13, 5);	// sda, scl, rst, irq
 
+int mode = 1;
+RTC_DATA_ATTR int alienNo = 0;
+#define ALIEN_NUMBER 11 //0...11 = 12
+
 //====================================================================
 
 void setup(void) {
@@ -32,21 +36,33 @@ void loop() {
     if (touch.data.x < 60 && touch.data.y < 190) {
 
       Serial.println("Right");
+      //Check mode
+      rightButtonModes();
+
     }
     //Left touch
     else if (touch.data.x > 180 && touch.data.y < 190) {
 
       Serial.println("Left");
+      //Check mode
+      leftButtonModes();
+
     }
     //Bottom touch
     else if (touch.data.y > 190) {
 
       Serial.println("Bottom");
+      //Check mode
+      startButtonModes();
+
     }
     //Middle touch
     else {
 
       Serial.println("Middle");
+      //Check mode
+      selectbuttonModes();
+
     }
   }
 
