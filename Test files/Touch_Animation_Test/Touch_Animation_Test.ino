@@ -52,6 +52,7 @@ void loop() {
 
     //Right touch
     if (touch.data.x < 60 && touch.data.y < 190) {
+      delay(200);
 
       Serial.println("Right");
       //Check mode
@@ -60,6 +61,7 @@ void loop() {
     }
     //Left touch
     else if (touch.data.x > 180 && touch.data.y < 190) {
+      delay(200);
 
       Serial.println("Left");
       //Check mode
@@ -68,6 +70,7 @@ void loop() {
     }
     //Bottom touch
     else if (touch.data.y > 190) {
+      delay(200);
 
       Serial.println("Bottom");
       //Check mode
@@ -76,6 +79,7 @@ void loop() {
     }
     //Middle touch
     else {
+      delay(200);
 
       Serial.println("Middle");
       //Check mode
