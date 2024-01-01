@@ -50,22 +50,22 @@ void loop() {
     Serial.printf("x: %i     ", touch.data.x);
     Serial.printf("y: %i     \n", touch.data.y);
 
-    //Right touch
+    //Left touch
     if (touch.data.x < 60 && touch.data.y < 190) {
       delay(200);
 
       Serial.println("Right");
       //Check mode
-      rightButtonModes();
+      leftButtonModes();
 
     }
-    //Left touch
+    //Right touch
     else if (touch.data.x > 180 && touch.data.y < 190) {
       delay(200);
 
       Serial.println("Left");
       //Check mode
-      leftButtonModes();
+      rightButtonModes();
 
     }
     //Bottom touch
