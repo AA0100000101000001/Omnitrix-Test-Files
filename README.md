@@ -4,7 +4,7 @@
  TFT-eSPI user setups are added in the Supported Displays folder that can be used in the LCD desplay tests.  
    
  The following projects are used in the Omnitrix currently:  
- Button_Interrupts (GPIO interrupts test)  
- PNG_animation_test (Animation test)  
- Timer_With_Epoch_Time_Interrupts_Test (Deep sleep test with interrupts)  
- dft_test (Sound test)  
+ * Button_Interrupts (GPIO interrupts test)  
+ * PNG_animation_test (Animation test)  
+ * Timer_With_Epoch_Time_Interrupts_Test (Deep sleep test with interrupts)  
+ * dft_test (Sound test)  
