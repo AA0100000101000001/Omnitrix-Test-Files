@@ -1,0 +1,2 @@
+# How to use 
+This is a test for configuring pins using #ifdef. User_Setups folder contains various configurations for some boards to use. File config_DEFAULT has all boards uncommented and all inputs and outputs enabled. Edit config_DEFAULT to create your own configuration or uncomment your preferred configuration.  
