@@ -13,7 +13,7 @@
 
 
 //Uncomment for sound
-//#define SOUND_ENABLED
+#define SOUND_ENABLED
 
 
 //Uncomment for RGB LEDS

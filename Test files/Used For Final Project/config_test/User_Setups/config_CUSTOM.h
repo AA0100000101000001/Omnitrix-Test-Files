@@ -11,10 +11,10 @@
 #define BUTTONS_ENABLED
 
 //Define button pins
-#define CONFIG_START_BUTTON_PIN 	START_BUTTON_PIN_SELECTION //write value
-#define CONFIG_RIGHT_BUTTON_PIN		RIGHT_BUTTON_PIN_SELECTION //write value
-#define CONFIG_LEFT_BUTTON_PIN		LEFT_BUTTON_PIN_SELECTION //write value
-#define CONFIG_SELECT_BUTTON_PIN 	SELECT_BUTTON_PIN_SELECTION //write value
+#define CONFIG_START_BUTTON_PIN 	//write pin
+#define CONFIG_RIGHT_BUTTON_PIN		//write pin
+#define CONFIG_LEFT_BUTTON_PIN		//write pin
+#define CONFIG_SELECT_BUTTON_PIN 	//write pin
 
 
 //Uncomment for sound
@@ -25,9 +25,9 @@
 #define RGB_LEDS_ENABLED
 
 //Define RGB LED pins
-#define CONFIG_RGB_LED_R	RGB_LED_R_SELECTION //write value
-#define CONFIG_RGB_LED_G	RGB_LED_G_SELECTION //write value
-#define CONFIG_RGB_LED_B	RGB_LED_B_SELECTION //write value
+#define CONFIG_RGB_LED_R	//write pin
+#define CONFIG_RGB_LED_G	//write pin
+#define CONFIG_RGB_LED_B	//write pin
 
 
 

@@ -1,4 +1,4 @@
-#define USER_SETUP_ID 303
+#define USER_SETUP_ID X
 #define USER_SETUP_INFO "Omnitrix_Custom"
 
 #define GC9A01_DRIVER

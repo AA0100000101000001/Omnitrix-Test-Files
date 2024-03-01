@@ -29,11 +29,18 @@
 
 #endif
 
-//Define touch LCD
-#if defined ESP32_S3_TOUCH_LCD_1_28
-	//Using CST816S touch driver
+/* Failed LCD pin configuration
+//Define Esp32-s2 development board pins
+#if defined ESP32_S2_PINOUT
+  #include "User_Setups/Setup303_ESP32S2_GC9A01.h"
 #endif
 
+//Define Esp32-s3 touch LCD pins
+#if defined ESP32_S3_TOUCH_LCD_1_28
+	//Using integrated Touch LCD with GC9A01/CST816S drivers
+  #include "User_Setups/Setup302_ESP32S3_GC9A01_TOUCH.h"
+#endif
+*/
 
 //-------------------------------------------------------
 //----------DON'T EDIT THIS------------------------------
