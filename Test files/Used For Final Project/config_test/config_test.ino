@@ -44,9 +44,12 @@ void loop() {
   Serial.println(TFT_MISO);*/
   #endif
 
-  //Check if no touch GC9A01 display is being used
+  //Check which Development board is being used
   #ifdef ESP32_S2_PINOUT
   Serial.println("Using ESP32-S2 Dev with GC9101 Display");
+  #endif
+  #ifdef ESP32_S3_PINOUT
+  Serial.println("Using ESP32-S3 Dev with GC9101 Display");
   #endif
 
   //Check if button interrupts are being used
