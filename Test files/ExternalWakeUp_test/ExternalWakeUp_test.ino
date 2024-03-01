@@ -11,6 +11,9 @@ an external trigger as a wake up source and how
 to store data in RTC memory to use it over reboots
 
 This program uses the ext0 wakeup method to wake up the ESP32 with the use of a button.
+
+Tested with:
+ESP32-S2-DEV 
 */
 
 //#define BUTTON_PIN_BITMASK 0x200000000 // 2^33 in hex

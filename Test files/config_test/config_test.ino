@@ -16,12 +16,12 @@ void loop() {
   #ifdef ESP32_S3_TOUCH_LCD_1_28
   Serial.println("Using ESP32-S3 Touch LCD 1.28 board");
   #endif
-
+/*
   //Check if no touch GC9A01 display is being used
   #ifdef ESP32_S2_PINOUT
   Serial.println("Using ESP32-S2 with GC9101 Display");
   #endif
-
+*/
   //Check if button interrupts are being used
   #ifdef BUTTONS_ENABLED
   Serial.println("Using Button interrupts");

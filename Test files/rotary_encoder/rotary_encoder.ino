@@ -1,4 +1,8 @@
-/* This program tests the rotatry encoder in input pull up connection.*/
+/* This program tests the rotatry encoder in input pull up connection.
+
+Tested with:
+ESP32-S2-DEV 
+*/
 
 int anienNo = 0;
 int rightState = 0;

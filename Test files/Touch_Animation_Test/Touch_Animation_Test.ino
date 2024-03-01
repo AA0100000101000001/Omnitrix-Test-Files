@@ -1,6 +1,9 @@
 /*
 Test for ESP32-S3 ROUND LCD 1.28 TOUCH DISPLAY with CST816S driver. 
 This is an update to Touch_Test. Animation is added.
+
+Tested with: 
+ESP32-S3 TOUCH LCD 1.28
 */
 
 #include <SPI.h>

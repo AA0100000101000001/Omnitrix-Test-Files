@@ -1,5 +1,8 @@
 /* 
 This program uses four buttons in active high connection. 
+
+Tested with:
+ESP32-S2-DEV
 */
 
 const int buttonPin = 5;  // the number of the pushbutton pin

@@ -18,7 +18,11 @@
 //   5. Open the sketch in IDE
 //   6. Include the header file containing the array (SpongeBob.h in this example)
 
-/* This program uses the PNGdec library to display the first twelve omnitrix aliens one after the other in a loop.*/
+/* This program uses the PNGdec library to display the first twelve omnitrix aliens one after the other in a loop.
+
+Tested with: 
+ESP32-S2-DEV 
+*/
 
 // Include the PNG decoder library, available via the IDE library manager
 #include <PNGdec.h>

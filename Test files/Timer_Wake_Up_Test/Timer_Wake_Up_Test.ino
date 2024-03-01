@@ -1,5 +1,9 @@
 /* This program tests the ability of the omnitrix to go into deep sleep mode after a short period of time of inactivity and wake up when the transformation time is over 
-in order to go to the recharging state.*/
+in order to go to the recharging state.
+
+Tested with: 
+ESP32-S2-DEV
+*/
 
 #include <ESP32Time.h>
 ESP32Time rtc;

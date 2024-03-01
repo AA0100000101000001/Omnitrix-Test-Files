@@ -2,6 +2,9 @@
 when it is pressed again then the second sound is played and when it is pressed for the third time then the third sound is played. If the button is pressed again then the sequence
 will repeat from the first sound.
     Serial ports are also tested for the ESP32S2 NODEMCU module.
+
+	Tested with: 
+	ESP32-S2-DEV  
 */
 
 #include <DFRobot_DF1201S.h>
