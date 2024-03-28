@@ -10,9 +10,9 @@
 
 //Choose only one type of animation
 //Start animation with images
-#define START_ANIMATION_WITH_IMAGES
+#define START_ANIMATION_WITH_IMAGES //Has memory leaks
 //Hard coded start animation
-//#define START_ANIMATION_WITHOUT_IMAGES
+//#define START_ANIMATION_WITHOUT_IMAGES //Not finished
 
 //-------------------------------------------------------
 //----------DON'T EDIT THIS------------------------------
