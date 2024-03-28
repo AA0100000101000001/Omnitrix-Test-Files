@@ -15,10 +15,11 @@ This is a test for configuring pins using #ifdef. User_Setups folder contains va
 * START_ANIMATION_WITH_IMAGES or START_ANIMATION_WITHOUT_IMAGES
 ## Inputs 
 * START_BUTTON_PIN
+* SELECT_BUTTON_PIN
 * RIGHT_BUTTON_PIN
 * LEFT_BUTTON_PIN
-* SELECT_BUTTON_PIN
 ## Outputs 
+* For sound: RXD1, TXD1 or BUZZER
 * RGB_LED_R
 * RGB_LED_G
 * RGB_LED_B
