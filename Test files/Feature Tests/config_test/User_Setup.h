@@ -14,6 +14,7 @@
 //Hard coded start animation
 //#define START_ANIMATION_WITHOUT_IMAGES //Not finished
 
+
 //-------------------------------------------------------
 //----------DON'T EDIT THIS------------------------------
 //-------------------------------------------------------
@@ -28,33 +29,38 @@
 #endif
 
 //Define input pins for the rotary encoder
-#if defined MICRO_SWITCHES_ROTARY_ENCODER_ENABLED == defined MAGNETIC_ROTARY_ENCODER_ENABLED //XOR
-#error "You must use at least only one option for the rotary encoder"
-#else
+//micro switches for encoder
+#if defined MICRO_SWITCHES_ROTARY_ENCODER_ENABLED && !defined MAGNETIC_ROTARY_ENCODER_ENABLED
 	
 	#define RIGHT_BUTTON_PIN	CONFIG_RIGHT_BUTTON_PIN //Right button
 	#define LEFT_BUTTON_PIN		CONFIG_LEFT_BUTTON_PIN //Left button
+
+//magnetic encoder
+#elif !defined MICRO_SWITCHES_ROTARY_ENCODER_ENABLED && defined MAGNETIC_ROTARY_ENCODER_ENABLED
 	
+	#define RIGHT_BUTTON_PIN	CONFIG_RIGHT_BUTTON_PIN //Right button
+	#define LEFT_BUTTON_PIN		CONFIG_LEFT_BUTTON_PIN //Left button
+  
+#else
+  #error "You must use at least only one option for the rotary encoder"
 #endif
 
 //Check if sound is enabled
 #if defined SOUND_ENABLED
 	
 	//Check which sound is enabled
-	#if defined SOUND_DFPLAYER_PRO_ENABLED == defined SOUND_BUZZER_ENABLED //XOR
-	#error "You must use at least only one option for the sound"
-	#else
-		//Dfplayer pro sound
-		#if defined SOUND_DFPLAYER_PRO_ENABLED
-			#define RXD1 CONFIG_RXD1 //RX1
-			#define TXD1 CONFIG_TXD1 //TX1
-		//#endif
+  //Dfplayer pro sound
+	#if defined SOUND_DFPLAYER_PRO_ENABLED && !defined SOUND_BUZZER_ENABLED
+		
+		#define RXD1 CONFIG_RXD1 //RX1
+		#define TXD1 CONFIG_TXD1 //TX1
 		
 		//Buzzzer sound
-		#elif defined SOUND_BUZZER_ENABLED
-			#define BUZZER_PIN CONFIG_BUZZER //buzzer
-		#endif
-		
+  #elif !defined SOUND_DFPLAYER_PRO_ENABLED && defined SOUND_BUZZER_ENABLED
+		#define BUZZER_PIN CONFIG_BUZZER //buzzer
+
+	#else
+	  #error "You must use at least only one option for the sound"
 	#endif
 
 #endif
@@ -88,8 +94,10 @@
 #endif
 
 //Check type of animation
-#if defined START_ANIMATION_WITH_IMAGES == defined START_ANIMATION_WITHOUT_IMAGES //XOR
-#error "You must use at least only one option for the start animation"
+#if defined START_ANIMATION_WITH_IMAGES && !defined START_ANIMATION_WITHOUT_IMAGES
+#elif !defined START_ANIMATION_WITH_IMAGES && defined START_ANIMATION_WITHOUT_IMAGES
+#else
+  #error "You must use at least only one option for the start animation"
 #endif
 
 /* Failed LCD pin configuration

@@ -26,6 +26,7 @@ This is a test for configuring pins using #ifdef. User_Setups folder contains va
 # Boolean Expressions For Defines
 Using XOR so only one type of animation, sound, LEDs can be allowed to be enabled
 ### For Two Inputs
-A == B returns true if A and B are both false or true
+(A NOT B) + (NOT A B) returns true if only one of A, B is true  
+(A == B returns true if A and B are both false or true)
 ### For Three Inputs
 (NOT A NOT B C) + (NOT A B NOT C) + (A NOT B NOT C) returns true if only one of A, B, C is true
