@@ -60,11 +60,30 @@
 #endif
 
 //Define RGB LED pins
-#if defined RGB_LEDS_ENABLED
+#if defined LEDS_ENABLED
 
-	#define RGB_LED_R CONFIG_RGB_LED_R //Red
-	#define RGB_LED_G CONFIG_RGB_LED_G //Green
-	#define RGB_LED_B CONFIG_RGB_LED_B //Blue
+  //Check which what kind of LED is enabled
+  //RGB LEDs are enabled
+  #if (defined(RGB_LEDS_ENABLED) && !defined(NEOPIXEL_RING_LEDS_ENABLED) && !defined(IR_CONTROLLED_LEDS_ENABLED))
+
+    #define RGB_LED_R CONFIG_RGB_LED_R //Red
+    #define RGB_LED_G CONFIG_RGB_LED_G //Green
+    #define RGB_LED_B CONFIG_RGB_LED_B //Blue
+
+  //Neopixel ring LEDs are enabled
+  #elif (!defined(RGB_LEDS_ENABLED) && defined(NEOPIXEL_RING_LEDS_ENABLED) && !defined(IR_CONTROLLED_LEDS_ENABLED))
+
+    #define LED_DI CONFIG_DI //Data in
+
+  //IR controlled LEDs are enebled
+  #elif (!defined(RGB_LEDS_ENABLED) && !defined(NEOPIXEL_RING_LEDS_ENABLED) && defined(IR_CONTROLLED_LEDS_ENABLED))
+
+    #define LED_IR_TRANS CONFIG_IR_TRANSMITTER
+
+  //Error
+  #else
+  #error "You must use at least only one option for the LEDs"
+  #endif
 
 #endif
 

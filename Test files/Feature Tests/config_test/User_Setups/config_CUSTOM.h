@@ -43,13 +43,26 @@
 //Buzzer pins
 #define CONFIG_BUZZER //write pin
 
-//Uncomment for RGB LEDS
+//Uncomment for LEDs
+#define LEDS_ENABLED
+
+//Uncomment for RGB LEDs
 #define RGB_LEDS_ENABLED
 
 //Define RGB LED pins
 #define CONFIG_RGB_LED_R	//write pin
 #define CONFIG_RGB_LED_G	//write pin
 #define CONFIG_RGB_LED_B	//write pin
+
+//Uncomment for Neopixel ring LEDs
+#define NEOPIXEL_RING_LEDS_ENABLED
+
+#define CONFIG_DI //write pin
+
+//Uncomment for IR controlled LEDs
+#define IR_CONTROLLED_LEDS_ENABLED
+
+#define CONFIG_IR_TRANSMITTER //write pin
 
 
 

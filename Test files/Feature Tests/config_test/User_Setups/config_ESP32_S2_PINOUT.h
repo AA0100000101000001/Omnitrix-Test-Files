@@ -37,6 +37,9 @@
 #define CONFIG_BUZZER 18
 
 
+//Uncomment for LEDs
+#define LEDS_ENABLED
+
 //Uncomment for RGB LEDS
 #define RGB_LEDS_ENABLED
 
@@ -44,3 +47,13 @@
 #define CONFIG_RGB_LED_R 6
 #define CONFIG_RGB_LED_G 7
 #define CONFIG_RGB_LED_B 8
+
+//Uncomment for Neopixel ring LEDs
+//#define NEOPIXEL_RING_LEDS_ENABLED
+
+#define CONFIG_DI 6
+
+//Uncomment for IR controlled LEDs
+//#define IR_CONTROLLED_LEDS_ENABLED
+
+#define CONFIG_IR_TRANSMITTER 6
