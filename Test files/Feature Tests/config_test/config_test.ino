@@ -129,6 +129,9 @@ void loop() {
 
   #endif
 
+  //Check if LEDs are enabled
+  Serial.println("Using LEDs");
+
   //Check if RGB LEDs are being used
   #ifdef RGB_LEDS_ENABLED
   Serial.println("Using RGB LEDs");
@@ -141,6 +144,24 @@ void loop() {
 
   Serial.print("RGB_LED_B = ");
   Serial.println(RGB_LED_B);
+
+  #endif
+
+  //Check if Neopixel ring LEDs are being used
+  #ifdef NEOPIXEL_RING_LEDS_ENABLED
+  Serial.println("Using Neopixel Ring");
+
+  Serial.print("LED_DI = ");
+  Serial.println(LED_DI);
+
+  #endif
+
+  //Check if IR controlled LEDs are being used
+  #ifdef IR_CONTROLLED_LEDS_ENABLED
+  Serial.println("Using IR controlled LEDs");
+
+  Serial.print("LED_IR_TRANS = ");
+  Serial.println(LED_IR_TRANS);
 
   #endif
 
