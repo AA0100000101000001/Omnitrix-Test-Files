@@ -100,9 +100,11 @@ void loop() {
   #ifdef DEMO_ENABLED
   Serial.println("Demo of the software is enabled");
   #endif
-
+  //Check type of demo
   #ifdef DEMO_AYTOMATED_ENABLED
   Serial.println("Demo automated display of the features");
+  #elif DEMO_CONTROLLED_ENABLED
+  Serial.println("Demo user controlled");
   #endif
 
   //Check if button interrupts are being used
