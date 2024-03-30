@@ -9,20 +9,20 @@
 //Software Settings
 
 //Choose only one type of animation
-//Start animation with images
+//1. Start animation with images
 #define START_ANIMATION_WITH_IMAGES //Has memory leaks
-//Hard coded start animation
+//2. Hard coded start animation
 //#define START_ANIMATION_WITHOUT_IMAGES //Not finished
 
 //Choose if sound will be muted in booting
-#define SOUND_MUTED_IN_BOOTING
+//#define SOUND_MUTED_IN_BOOTING //Only if sound is enabled
 
 //Choose if demo is enebled
-#define DEMO_ENABLED
-//Choose type of demo
-//Demo automated display of the features that can go out of that state when a button is pressed
-#define DEMO_AYTOMATED_ENABLED
-//Demo user controlled that can go out of that state from the menu
+//#define DEMO_ENABLED
+//Choose only one type of demo
+//1. Demo automated display of the features that can go out of that state when a button is pressed
+//#define DEMO_AYTOMATED_ENABLED
+//2. Demo user controlled that can go out of that state from the menu
 //#define DEMO_CONTROLLED_ENABLED
 
 
@@ -57,6 +57,9 @@
 #endif
 
 //Check if sound is enabled
+#if !defined SOUND_ENABLED && (defined SOUND_DFPLAYER_PRO_ENABLED || defined SOUND_BUZZER_ENABLED)
+  #error "You must enable sound to use one of these sound options"
+#endif
 #if defined SOUND_ENABLED
 	
 	//Check which sound is enabled
@@ -77,6 +80,9 @@
 #endif
 
 //Define RGB LED pins
+#if !defined LEDS_ENABLED && (defined RGB_LEDS_ENABLED || defined NEOPIXEL_RING_LEDS_ENABLED || defined(IR_CONTROLLED_LEDS_ENABLED))
+  #error "You must enable LEDs to use one of these LED options"
+#endif
 #if defined LEDS_ENABLED
 
   //Check which what kind of LED is enabled
@@ -104,6 +110,9 @@
 #endif
 
 //Check if demo is enabled
+#if !defined DEMO_ENABLED && (defined DEMO_AYTOMATED_ENABLED || defined DEMO_CONTROLLED_ENABLED)
+  #error "You must enable Demo to use one of these demo options"
+#endif
 #if defined DEMO_ENABLED
 
   #if defined DEMO_AYTOMATED_ENABLED && !defined DEMO_CONTROLLED_ENABLED

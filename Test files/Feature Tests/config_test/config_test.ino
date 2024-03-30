@@ -96,6 +96,9 @@ void loop() {
   Serial.println("Using ESP32-S3 Dev with GC9101 Display");
   #endif
 
+  //Show what type of animation is being used
+  display_animation();
+
   //Check if demo is enebled
   #ifdef DEMO_ENABLED
   Serial.println("Demo of the software is enabled");
@@ -103,7 +106,7 @@ void loop() {
   //Check type of demo
   #ifdef DEMO_AYTOMATED_ENABLED
   Serial.println("Demo automated display of the features");
-  #elif DEMO_CONTROLLED_ENABLED
+  #elif defined DEMO_CONTROLLED_ENABLED
   Serial.println("Demo user controlled");
   #endif
 
@@ -169,7 +172,9 @@ void loop() {
   #endif
 
   //Check if LEDs are enabled
+  #ifdef LEDS_ENABLED
   Serial.println("Using LEDs");
+  #endif
 
   //Check if RGB LEDs are being used
   #ifdef RGB_LEDS_ENABLED
@@ -203,9 +208,6 @@ void loop() {
   Serial.println(LED_IR_TRANS);
 
   #endif
-
-  //Show what type of animation is being used
-  display_animation();
 
   Serial.println("");
 

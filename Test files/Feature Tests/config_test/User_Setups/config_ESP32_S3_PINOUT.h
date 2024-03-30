@@ -11,9 +11,9 @@
 #define CONFIG_SELECT_BUTTON_PIN 	7
 
 //Use one of these options for rotary encoder
-//Uncomment for use of micro switches for encoder
+//1. Uncomment for use of micro switches for encoder
 //#define MICRO_SWITCHES_ROTARY_ENCODER_ENABLED
-//Uncomment for use of magnetic encoder
+//2. Uncomment for use of magnetic encoder
 #define MAGNETIC_ROTARY_ENCODER_ENABLED
 
 //Define rotary encoder input pins
@@ -25,14 +25,14 @@
 #define SOUND_ENABLED
 
 //Use one of these options for sound
-//Uncomment for use of Dfplayer Pro for sound
+//1. Uncomment for use of Dfplayer Pro for sound
 //#define SOUND_DFPLAYER_PRO_ENABLED
 
 //Dfplayer Pro pins
 #define CONFIG_RXD1 18
 #define CONFIG_TXD1 17
 
-//Uncomment for use of buzzer for sound
+//2. Uncomment for use of buzzer for sound
 #define SOUND_BUZZER_ENABLED
 
 //Buzzer pins
@@ -44,17 +44,17 @@
 //Uncomment for RGB LEDS
 #define RGB_LEDS_ENABLED
 
-//Define RGB LED pins
+//1. Define RGB LED pins
 #define CONFIG_RGB_LED_R	15
 #define CONFIG_RGB_LED_G	16
 #define CONFIG_RGB_LED_B	1
 
-//Uncomment for Neopixel ring LEDs
+//2. Uncomment for Neopixel ring LEDs
 //#define NEOPIXEL_RING_LEDS_ENABLED
 
 #define CONFIG_DI 1
 
-//Uncomment for IR controlled LEDs
+//3. Uncomment for IR controlled LEDs
 //#define IR_CONTROLLED_LEDS_ENABLED
 
 #define CONFIG_IR_TRANSMITTER 1
