@@ -17,6 +17,9 @@
 //Choose if sound will be muted in booting
 #define SOUND_MUTED_IN_BOOTING
 
+//Choose if demo is enebled
+#define DEMO_ENABLED
+
 
 //-------------------------------------------------------
 //----------DON'T EDIT THIS------------------------------
@@ -90,9 +93,14 @@
     #define LED_IR_TRANS CONFIG_IR_TRANSMITTER
 
   //Error
-  #else
+#else
   #error "You must use at least only one option for the LEDs"
-  #endif
+#endif
+
+//Check if demo is enabled
+#if defined DEMO_ENABLED
+
+#endif
 
 #endif
 

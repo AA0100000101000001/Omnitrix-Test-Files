@@ -96,6 +96,11 @@ void loop() {
   Serial.println("Using ESP32-S3 Dev with GC9101 Display");
   #endif
 
+  //Check if demo is enebled
+  #ifdef DEMO_ENABLED
+  Serial.println("Demo of the software is enabled");
+  #endif
+
   //Check if button interrupts are being used
   #ifdef POP_UP_BUTTONS_ENABLED
     Serial.println("Using Buttons for the pop up mechanism");
