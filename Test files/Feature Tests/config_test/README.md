@@ -15,7 +15,7 @@ This is a test for configuring pins using #ifdef. User_Setups folder contains va
 ### Software settings
 * START_ANIMATION_WITH_IMAGES or START_ANIMATION_WITHOUT_IMAGES
 * SOUND_MUTED_IN_BOOTING
-* DEMO_ENABLED
+* DEMO_ENABLED (DEMO_AYTOMATED_ENABLED)
 ## Inputs 
 * START_BUTTON_PIN
 * SELECT_BUTTON_PIN

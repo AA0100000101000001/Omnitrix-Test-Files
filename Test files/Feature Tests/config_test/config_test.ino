@@ -101,6 +101,10 @@ void loop() {
   Serial.println("Demo of the software is enabled");
   #endif
 
+  #ifdef DEMO_AYTOMATED_ENABLED
+  Serial.println("Demo automated display of the features");
+  #endif
+
   //Check if button interrupts are being used
   #ifdef POP_UP_BUTTONS_ENABLED
     Serial.println("Using Buttons for the pop up mechanism");

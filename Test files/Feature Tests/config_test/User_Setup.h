@@ -19,6 +19,9 @@
 
 //Choose if demo is enebled
 #define DEMO_ENABLED
+//Chose type of demo
+//Demo automated display of the features that can go out of that state when a button is pressed
+#define DEMO_AYTOMATED_ENABLED
 
 
 //-------------------------------------------------------
@@ -93,16 +96,21 @@
     #define LED_IR_TRANS CONFIG_IR_TRANSMITTER
 
   //Error
-#else
-  #error "You must use at least only one option for the LEDs"
+  #else
+    #error "You must use at least only one option for the LEDs"
+  #endif
 #endif
 
 //Check if demo is enabled
 #if defined DEMO_ENABLED
 
-#endif
+  #if defined DEMO_AYTOMATED_ENABLED
+
+  #endif
 
 #endif
+
+
 
 //Check type of animation
 #if defined START_ANIMATION_WITH_IMAGES && !defined START_ANIMATION_WITHOUT_IMAGES
