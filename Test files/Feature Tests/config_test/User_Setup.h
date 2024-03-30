@@ -14,6 +14,9 @@
 //Hard coded start animation
 //#define START_ANIMATION_WITHOUT_IMAGES //Not finished
 
+//Choose if sound will be muted in booting
+#define SOUND_MUTED_IN_BOOTING
+
 
 //-------------------------------------------------------
 //----------DON'T EDIT THIS------------------------------

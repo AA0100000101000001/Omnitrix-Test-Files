@@ -2,9 +2,35 @@
 This is a test for configuring pins and settings using ifdef
 */
 
+#include "User_Setup.h"
+
 //Checking TFT_eSPI pinouts
 //#include <TFT_eSPI.h>
 //TFT_eSPI tft = TFT_eSPI();
+
+#if defined SOUND_ENABLED
+  #if defined SOUND_MUTED_IN_BOOTING
+    bool mute = true;
+  #else
+    bool mute = false;
+  #endif
+
+
+  //Function that plays sound
+  void playsound() {
+
+    Serial.println("Using Sound");
+
+    //Check if sound is muted in booting
+    if (mute) {
+      Serial.print("Sound muted, ");
+      Serial.println(mute);
+    } else {
+      Serial.print("Sound unmuted, ");
+      Serial.println(mute);
+    }
+  }
+#endif
 
 
 //Function that shows animation type
@@ -20,6 +46,8 @@ void display_animation() {
     Serial.println("Hard coded start animation");
   #endif
 }
+
+
 
 
 #include "User_Setup.h"
@@ -105,7 +133,7 @@ void loop() {
 
   //Check if sound is being used
   #ifdef SOUND_ENABLED
-  Serial.println("Using Sound");
+    playsound();
   #endif
 
   //Check if using Dfplayer pro sound
