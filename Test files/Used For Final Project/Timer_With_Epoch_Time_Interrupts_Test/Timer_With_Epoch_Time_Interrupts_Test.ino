@@ -1,10 +1,10 @@
 /* This program tests the ability of the omnitrix to go into deep sleep mode after a short period of time of inactivity and wake up when the transformation time is over 
 in order to go to the recharging state. It is an update to Timer_With_Epoch_Time_Test and Interrupts are used to check input*/
 
-#define buttonPin 4 //Start button
-#define RightPin 6 //Right button
-#define LeftPin 7 //Left button
-#define SelectPin 5 //Select button
+#define buttonPin 5 //Start button
+#define RightPin 1 //Right button
+#define LeftPin 4 //Left button
+#define SelectPin 3 //Select button
 
 #define ALIEN_NUMBER 11 //0-12
 
@@ -395,19 +395,6 @@ void get_wakeup_reason() {
       }
         break;
       }
-    //Wake up by other factors
-    case ESP_SLEEP_WAKEUP_EXT1 : {
-      Serial.println("Wakeup caused by external signal using RTC_CNTL"); 
-      break;
-    }
-    case ESP_SLEEP_WAKEUP_TOUCHPAD : {
-      Serial.println("Wakeup caused by touchpad"); 
-      break;
-    }
-    case ESP_SLEEP_WAKEUP_ULP : {
-      Serial.println("Wakeup caused by ULP program"); 
-      break;
-    }
     //Wake up not caused by deep sleep
     default : Serial.printf("Wakeup was not caused by deep sleep: %d\n",wakeup_reason); break;
   }
