@@ -21,7 +21,7 @@ void setup() {
   pinMode(B, INPUT_PULLUP);
   pinMode(S, INPUT_PULLUP);
 
-  Serial.begin(9600);
+  Serial.begin(115200);
 
 }
 
