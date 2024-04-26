@@ -1,49 +1,70 @@
-/* This program tests the rotatry encoder in input pull up connection.
+/* This program tests the rotatry encoder using a lookup table to compare the states.
+More info at: https://garrysblog.com/2021/03/20/reliably-debouncing-rotary-encoders-with-arduino-and-esp32/
 
 Tested with:
 ESP32-S2-DEV 
 */
 
-int anienNo = 0;
-int rightState = 0;
-int leftState = 0;
-int encoderPos = 0;
-int buttonState = 0;
+#define ROTARY_LEFT_PIN 4
+#define ROTARY_RIGHT_PIN 1
+#define ROTARY_BUTTON_PIN 3
 
+bool rightState = 0;
+bool leftState = 0;
+bool buttonState = 0;
 
-int A = 1;
-int B = 4;
-int S = 3;
+int8_t checkRotaryEncoder(){
+
+  static uint8_t old_AB = 3;  // Lookup table index
+  static int8_t encval = 0;   // Encoder value  
+  static const int8_t enc_states[]  = {0,-1,1,0,1,0,0,-1,-1,0,0,1,0,1,-1,0}; // Lookup table
+
+  old_AB <<=2;  // Remember previous state 
+
+  if (digitalRead(ROTARY_LEFT_PIN)) old_AB |= 0x02; // Add current state of pin A
+  if (digitalRead(ROTARY_RIGHT_PIN)) old_AB |= 0x01; // Add current state of pin B
+   
+  encval += enc_states[( old_AB & 0x0f )];
+ 
+  // Update counter if encoder has rotated a full indent, that is at least 4 steps
+  if( encval > 3 ) {        // Four steps forward
+    encval = 0;
+    return 1; //Right
+  }
+  else if( encval < -3 ) {  // Four steps backwards
+   encval = 0;
+    return -1; //Left
+  }
+
+  return 0;
+  
+}
 
 void setup() {
   
-  pinMode(A, INPUT_PULLUP);
-  pinMode(B, INPUT_PULLUP);
-  pinMode(S, INPUT_PULLUP);
+  pinMode(ROTARY_LEFT_PIN, INPUT);
+  pinMode(ROTARY_RIGHT_PIN, INPUT);
+  pinMode(ROTARY_BUTTON_PIN, INPUT_PULLUP);
 
-  Serial.begin(9600);
+  Serial.begin(115200);
 
 }
 
 void loop() {
 
+  int8_t rotation = checkRotaryEncoder();
 
-  rightState = digitalRead(A);
+  if (rotation == 1) {
 
-  if (rightState == LOW) {
     Serial.println("Right");
-    delay(200);
-  }
-  
-  leftState = digitalRead(B);
+  } 
+  else if (rotation == -1) {
 
-  if (leftState == LOW) {
     Serial.println("Left");
-    delay(200);
   }
   
-  buttonState = digitalRead(S);
-  if (buttonState == LOW) {
+  buttonState = digitalRead(ROTARY_BUTTON_PIN);
+  if (buttonState == HIGH) {
     delay(200);
     Serial.println("Select Button pressed");
   }
