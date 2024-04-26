@@ -12,12 +12,20 @@
   #include <User_Setups/Setup303_OMNITRIX_CUSTOM.h>
 */
 
+//ANIMATION SETTINGS: Choose only one method for showing animation
+//1. Start animation with images
+#define START_ANIMATION_WITH_IMAGES //Has memory leaks
+//2. Hard coded start animation
+//#define START_ANIMATION_HARD_CODED //Not finished
+
 #include <PNGdec.h>
 
 // Include image array
 #include "omnitrix_aliens.h"
 #include "omnitrix_alien_backround.h"
+#if defined START_ANIMATION_WITH_IMAGES
 #include "omnitrix_anim_png_circle.h"
+#endif
 
 PNG png; // PNG decoder instance
 
@@ -67,12 +75,39 @@ void loop()
 
   }
 
+  tft.fillScreen(OMNITRIX_RED);
+  ShowSymbols();
+  delay(1000);
   tft.fillScreen(OMNITRIX_GREEN);
+  ShowSymbols();
+ 
+}
 
-  
+//Function that displays start icon symbols
+void ShowSymbols() {
+
+  //Serial.println("show symbols");
+
+  //Start Symbols with images
+  #if defined START_ANIMATION_WITH_IMAGES
+
+  int16_t rc = png.openFLASH((uint8_t *)omnitrix_anim[0], sizeof(omnitrix_anim[0]), pngDraw);
+
+  if (rc == PNG_SUCCESS) {
+    //Serial.println("Successfully png file");
+
+    tft.startWrite();
+    rc = png.decode(NULL, 0);
+    tft.endWrite();
+  }
+  #endif
+ 
 }
 
 void showAnimation() {
+
+  //Start Symbols with image
+  #if defined START_ANIMATION_WITH_IMAGES
 
   int frame = 0;
   int fps = 40;
@@ -91,6 +126,7 @@ void showAnimation() {
     //}
 
   }
+  #endif
 
 }
 
