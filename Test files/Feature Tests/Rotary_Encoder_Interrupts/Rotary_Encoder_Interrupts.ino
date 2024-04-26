@@ -40,7 +40,7 @@ void rotEncoder() {
   }
   else if( encval < -3 ) {  // Four steps backwards
    if (interruptTime - lastInterruptTime > 80) {
-      leftState = true; //Right
+      leftState = true; //Left
     }
     encval = 0;
     lastInterruptTime = millis(); 

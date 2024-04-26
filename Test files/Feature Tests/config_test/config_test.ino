@@ -133,6 +133,17 @@ void loop() {
     Serial.println(LEFT_BUTTON_PIN);
   #endif
 
+  //Use of rotary encoder
+  #ifdef ROTARY_ENCODER_ENABLED
+    Serial.println("Using rotary encoder");
+
+    Serial.print("RIGHT_BUTTON_PIN = ");
+    Serial.println(RIGHT_BUTTON_PIN);
+
+    Serial.print("LEFT_BUTTON_PIN = ");
+    Serial.println(LEFT_BUTTON_PIN);
+  #endif
+
   //Use of magnetic encoder
   #ifdef MAGNETIC_ROTARY_ENCODER_ENABLED
     Serial.println("Using magnetic encoder");
