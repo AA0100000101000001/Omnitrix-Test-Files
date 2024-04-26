@@ -11,14 +11,14 @@ int encoderPos = 0;
 int buttonState = 0;
 
 
-int A = 1;
-int B = 4;
+int A = 4;
+int B = 1;
 int S = 3;
 
 void setup() {
   
-  pinMode(A, INPUT_PULLUP);
-  pinMode(B, INPUT_PULLUP);
+  pinMode(A, INPUT);
+  pinMode(B, INPUT);
   pinMode(S, INPUT_PULLUP);
 
   Serial.begin(115200);
@@ -43,7 +43,7 @@ void loop() {
   }
   
   buttonState = digitalRead(S);
-  if (buttonState == LOW) {
+  if (buttonState == HIGH) {
     delay(200);
     Serial.println("Select Button pressed");
   }
