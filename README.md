@@ -7,7 +7,9 @@
  * Button_Interrupts (GPIO interrupts test)  
  * PNG_animation_test (Animation test)  
  * Timer_With_Epoch_Time_Interrupts_Test (Deep sleep test with interrupts)  
+ * Rotary_Encoder_Interrupts (Rotary Encoder with interrupts test)
  * dft_test (Sound test)  
+ * config_test (Test for configuring settings and pins)
 
 # To Do List:  
 - [x] Use Micro switches instead of Encoder  
