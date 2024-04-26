@@ -1,4 +1,5 @@
-/* This program tests the rotatry encoder in input pull up connection.
+/* This program tests the rotatry encoder using a lookup table to compare the states.
+More info at: https://garrysblog.com/2021/03/20/reliably-debouncing-rotary-encoders-with-arduino-and-esp32/
 
 Tested with:
 ESP32-S2-DEV 
