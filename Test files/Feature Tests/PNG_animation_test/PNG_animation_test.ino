@@ -280,7 +280,7 @@ void showAlien() {
 
 void eraseAlien() {
   
-  //#ifdef START_ANIMATION_WITH_IMAGES
+  #ifdef START_ANIMATION_WITH_IMAGES
   uint16_t pngw = 0, pngh = 0; // To store width and height of image
 
   int16_t rc2 = png.openFLASH((uint8_t *)omnitrix_alien_backround, sizeof(omnitrix_alien_backround), pngDraw);
@@ -301,27 +301,26 @@ void eraseAlien() {
     // png.close(); // Required for files, not needed for FLASH arrays
   }
 
- // #elif defined START_ANIMATION_HARD_CODED
-/*
+  #elif defined START_ANIMATION_HARD_CODED
+
   int xLup, xLmid, xLdown, xRup, xRmid, xRdown;
-  int fps = 2;
 
   xLup = 115;
-  xLmid = 216;
+  xLmid = 214 - BLACK_LINE_WIDTH;
   xLdown = 115;
-  xRup = 246;
-  xRmid = 166;
-  xRdown = 246;
+  xRup = 125;
+  xRmid = 26 + BLACK_LINE_WIDTH;
+  xRdown = 125;
 
-   for ( ; xLmid <= 120 ; xLup++, xLmid++, xLdown++, xRup--, xRmid--, xRdown-- ) {
+  for ( ; xLmid >= 120 ; xLmid--, xRmid++ ) {
 
     tft.drawLine(xLup, 0, xLmid, 120, OMNITRIX_GREEN); //Draw up left part
     tft.drawLine(xLmid, 120, xLdown, 240, OMNITRIX_GREEN); //Draw down left part
     tft.drawLine(xRup, 0, xRmid, 120, OMNITRIX_GREEN); //Draw up right part
     tft.drawLine(xRmid, 120, xRdown, 240, OMNITRIX_GREEN); //Draw down right part
-   }*/
+  }
 
-  //#endif
+  #endif
 
 }
 
