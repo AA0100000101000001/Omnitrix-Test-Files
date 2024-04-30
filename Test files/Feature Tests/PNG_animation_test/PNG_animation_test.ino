@@ -129,55 +129,22 @@ void ShowSymbols() {
   //Hard coded start symbols
   #elif defined START_ANIMATION_HARD_CODED
 
-  int XLup1, XLup2, YLup1, YLup2, XLdown1, XLdown2, YLdown1, YLdown2;
-  int XRup1, XRup2, YRup1, YRup2, XRdown1, XRdown2, YRdown1, YRdown2;
-  int black;
+  int xLup, xLmid, xLdown, xRup, xRmid, xRdown, black;
 
-
-  upLine.drawLine(0, 0, 40, 60, OMNITRIX_GRAY);
-  downLine.drawLine(40, 0, 0, 60, OMNITRIX_GRAY);
-
-  //draw down and upper left symbol
-  XLup1 = -80;
-  YLup1 = 0;
-  XLdown1 = -40;
-  YLdown1 = 119;
-  XLup2 = -40;  //x=80*y/120
-  YLup2 = 60;   //y=x*120/80
-  XLdown2 = -80;
-  YLdown2 = 178;
-  //draw down and upper right symbol
-  XRup1 = 240;  //240-80
-  YRup1 = 120;
-  XRdown1 = 280;
-  YRdown1 = 1;
-  YRup2 = 180;
-  XRup2 = 280;
-  XRdown2 = 240;
-  YRdown2 = 60;
-  for (; XLup1 <= -5 | XLup2 <= 35 | XRup1 >= 315; XLup1++, XLdown1++, XLup2++, XLdown2++, XRup1--, XRdown1--, XRup2--, XRdown2--) {
-    upLine.pushSprite(XLup1, YLup1, TFT_TRANSPARENT);
-    downLine.pushSprite(XLdown1, YLdown1, TFT_TRANSPARENT);
-    upLine.pushSprite(XLup2, YLup2, TFT_TRANSPARENT);
-    downLine.pushSprite(XLdown2, YLdown2, TFT_TRANSPARENT);
-    upLine.pushSprite(XRup1, YRup1, TFT_TRANSPARENT);
-    downLine.pushSprite(XRdown1, YRdown1, TFT_TRANSPARENT);
-    upLine.pushSprite(XRup2, YRup2, TFT_TRANSPARENT);
-    downLine.pushSprite(XRdown2, YRdown2, TFT_TRANSPARENT);
+  //Draw gray symbols
+  for (xLup = -80, xLmid = 0, xLdown = -80, xRup = 320, xRmid = 240, xRdown = 320; xLup <= -5 ; xLup++, xLmid++, xLdown++, xRup--, xRmid--, xRdown-- ) {
+    tft.drawLine(xLup, 0, xLmid, 120, OMNITRIX_GRAY); //Draw up left part
+    tft.drawLine(xLmid, 120, xLdown, 240, OMNITRIX_GRAY); //Draw down left part
+    tft.drawLine(xRup, 0, xRmid, 120, OMNITRIX_GRAY); //Draw up right part
+    tft.drawLine(xRmid, 120, xRdown, 240, OMNITRIX_GRAY); //Draw down right part
   }
 
-  //draw black lines
-  upLine.drawLine(0, 0, 40, 60, TFT_BLACK);
-  downLine.drawLine(40, 0, 0, 60, TFT_BLACK);
-  for (black = 0; black <= BLACK_LINE_WIDTH; black++, XLup1++, XLdown1++, XLup2++, XLdown2++, XRup1--, XRdown1--, XRup2--, XRdown2--) {
-    upLine.pushSprite(XLup1, YLup1, TFT_TRANSPARENT);
-    downLine.pushSprite(XLdown1, YLdown1, TFT_TRANSPARENT);
-    upLine.pushSprite(XLup2, YLup2, TFT_TRANSPARENT);
-    downLine.pushSprite(XLdown2, YLdown2, TFT_TRANSPARENT);
-    upLine.pushSprite(XRup1, YRup1, TFT_TRANSPARENT);
-    downLine.pushSprite(XRdown1, YRdown1, TFT_TRANSPARENT);
-    upLine.pushSprite(XRup2, YRup2, TFT_TRANSPARENT);
-    downLine.pushSprite(XRdown2, YRdown2, TFT_TRANSPARENT);
+  //Draw black lines
+  for (black = 0; black <= BLACK_LINE_WIDTH; black++, xLup++, xLmid++, xLdown++, xRup--, xRmid--, xRdown--) {
+    tft.drawLine(xLup, 0, xLmid, 120, TFT_BLACK); //Draw up left part
+    tft.drawLine(xLmid, 120, xLdown, 240, TFT_BLACK); //Draw down left part
+    tft.drawLine(xRup, 0, xRmid, 120, TFT_BLACK); //Draw up right part
+    tft.drawLine(xRmid, 120, xRdown, 240, TFT_BLACK); //Draw down right part
   }
 
   #endif
@@ -211,189 +178,75 @@ void showAnimation() {
   //Hard coded animation
   #elif defined START_ANIMATION_HARD_CODED
 
-  int XLup1, XLup2, YLup1, YLup2, XLdown1, XLdown2, YLdown1, YLdown2;
- int XRup1, XRup2, YRup1, YRup2, XRdown1, XRdown2, YRdown1, YRdown2;
- int black;
- int speed = 1;
- //upLine.drawLine(0, 0, 40, 60, OMNITRIX_GRAY);
- //downLine.drawLine(40, 0, 0, 60, OMNITRIX_GRAY);
+  int xLup, xLmid, xLdown, xRup, xRmid, xRdown;
+  int fps = 2;
 
- //upLine.drawLine(0, 0, 40, 60, OMNITRIX_RED);
- //downLine.drawLine(40, 0, 0, 60, OMNITRIX_RED);
- //Start coordinates
- //offset = +86 for left symbols, -86 for right symbols
- XLup1 = 6;
- YLup1 = 1;
- XLdown1 = 46;
- YLdown1 = 119;
- XLup2 = 46; //= 80 - 40 + 6, 60 = sprite width + 46 = 106 Symbol end
- YLup2 = 60;
- XLdown2 = 6;
- YLdown2 = 178;
- XRup1 = 154;
- YRup1 = 120;
- XRdown1 = 194;
- YRdown1 = 1;
- YRup2 = 180;
- XRup2 = 194;
- XRdown2 = 154;
- YRdown2 = 60;
- //Total line reach = 180
- //Lines dont intersect yet
-  for (;XLup2 <= 86 ;XLup1=XLup1+speed, XLdown1=XLdown1+speed,
-    XLup2=XLup2+speed, XLdown2=XLdown2+speed, XRup1=XRup1-speed, XRdown1=XRdown1-
-    speed, XRup2=XRup2-speed, XRdown2=XRdown2-speed) {
-    upLine.drawLine(0, 0, 40, 60, TFT_BLACK);
-    downLine.drawLine(40, 0, 0, 60, TFT_BLACK);
+  xLup = -6;
+  xLmid = 74;
+  xLdown = -6;
+  xRup = 246;
+  xRmid = 166;
+  xRdown = 246;
 
-    upLine.pushSprite(XLup1, YLup1, TFT_TRANSPARENT);
-    downLine.pushSprite(XLdown1, YLdown1, TFT_TRANSPARENT);
-    upLine.pushSprite(XLup2, YLup2, TFT_TRANSPARENT);
-    downLine.pushSprite(XLdown2, YLdown2, TFT_TRANSPARENT);
-    upLine.pushSprite(XRup1, YRup1, TFT_TRANSPARENT);
-    downLine.pushSprite(XRdown1, YRdown1, TFT_TRANSPARENT);
-    upLine.pushSprite(XRup2, YRup2, TFT_TRANSPARENT);
-    downLine.pushSprite(XRdown2, YRdown2, TFT_TRANSPARENT);
-    upLine.drawLine(0, 0, 40, 60, OMNITRIX_GRAY);
-    downLine.drawLine(40, 0, 0, 60, OMNITRIX_GRAY);
-    upLine.pushSprite(XLup1 - BLACK_LINE_WIDTH, YLup1, TFT_TRANSPARENT);
-    downLine.pushSprite(XLdown1 - BLACK_LINE_WIDTH, YLdown1, TFT_TRANSPARENT);
-    upLine.pushSprite(XLup2 - BLACK_LINE_WIDTH, YLup2, TFT_TRANSPARENT);
-    downLine.pushSprite(XLdown2 - BLACK_LINE_WIDTH, YLdown2, TFT_TRANSPARENT);
-    upLine.pushSprite(XRup1 + BLACK_LINE_WIDTH, YRup1, TFT_TRANSPARENT);
-    downLine.pushSprite(XRdown1 + BLACK_LINE_WIDTH, YRdown1, TFT_TRANSPARENT);
-    upLine.pushSprite(XRup2 + BLACK_LINE_WIDTH, YRup2, TFT_TRANSPARENT);
-    downLine.pushSprite(XRdown2 + BLACK_LINE_WIDTH, YRdown2, TFT_TRANSPARENT);
-    }
-    //Black lines intersect with each other up to the middle sprites (40,60)
-    for (;XLup2 <= 126 ;XLup1=XLup1+speed, XLdown1=XLdown1+speed,
-    XLup2=XLup2+speed, XLdown2=XLdown2+speed, XRup1=XRup1-speed, XRdown1=XRdown1-
-    speed, XRup2=XRup2-speed, XRdown2=XRdown2-speed) {
-    upLine.drawLine(0, 0, 40, 60, TFT_BLACK);
-    downLine.drawLine(40, 0, 0, 60, TFT_BLACK);
-
-    upLine.pushSprite(XLup1, YLup1, TFT_TRANSPARENT);
-    downLine.pushSprite(XLdown1, YLdown1, TFT_TRANSPARENT);
-    upLine.pushSprite(XLup2, YLup2, TFT_TRANSPARENT);
-    downLine.pushSprite(XLdown2, YLdown2, TFT_TRANSPARENT);
-    upLine.pushSprite(XRup1, YRup1, TFT_TRANSPARENT);
-    downLine.pushSprite(XRdown1, YRdown1, TFT_TRANSPARENT);
-    upLine.pushSprite(XRup2, YRup2, TFT_TRANSPARENT);
-    downLine.pushSprite(XRdown2, YRdown2, TFT_TRANSPARENT);
-    upLine.drawLine(0, 0, 40, 60, OMNITRIX_GRAY);
-    downLine.drawLine(40, 0, 0, 60, OMNITRIX_GRAY);
-    upLine.pushSprite(XLup1 - BLACK_LINE_WIDTH, YLup1, TFT_TRANSPARENT);
-    //downLine.pushSprite(XLdown1 - BLACK_LINE_WIDTH, YLdown1,TFT_TRANSPARENT);
-    //upLine.pushSprite(XLup2 - BLACK_LINE_WIDTH, YLup2, TFT_TRANSPARENT);
-    downLine.pushSprite(XLdown2 - BLACK_LINE_WIDTH, YLdown2, TFT_TRANSPARENT);
-    //upLine.pushSprite(XRup1 + BLACK_LINE_WIDTH, YRup1, TFT_TRANSPARENT);
-    downLine.pushSprite(XRdown1 + BLACK_LINE_WIDTH, YRdown1, TFT_TRANSPARENT);
-    upLine.pushSprite(XRup2 + BLACK_LINE_WIDTH, YRup2, TFT_TRANSPARENT);
-    //downLine.pushSprite(XRdown2 + BLACK_LINE_WIDTH, YRdown2,TFT_TRANSPARENT);
-    upLine.drawLine(0, 0, 40, 60, OMNITRIX_GREEN);
-    downLine.drawLine(40, 0, 0, 60, OMNITRIX_GREEN);
-    //upLine.pushSprite(XLup1 - BLACK_LINE_WIDTH - 1, YLup1,TFT_TRANSPARENT);
-    downLine.pushSprite(XLdown1 - BLACK_LINE_WIDTH - 1, YLdown1,TFT_TRANSPARENT);
-    upLine.pushSprite(XLup2 - BLACK_LINE_WIDTH - 1, YLup2, TFT_TRANSPARENT);
-    //downLine.pushSprite(XLdown2 - BLACK_LINE_WIDTH - 1, YLdown2,TFT_TRANSPARENT);
-    upLine.pushSprite(XRup1 + BLACK_LINE_WIDTH + 1, YRup1, TFT_TRANSPARENT);
-    //downLine.pushSprite(XRdown1 + BLACK_LINE_WIDTH + 1, YRdown1,TFT_TRANSPARENT);
-    //upLine.pushSprite(XRup2 + BLACK_LINE_WIDTH + 1, YRup2,TFT_TRANSPARENT);
-    downLine.pushSprite(XRdown2 + BLACK_LINE_WIDTH + 1, YRdown2, TFT_TRANSPARENT);
-    upLine.drawLine(0, 0, 40, 60, OMNITRIX_GRAY);
-    downLine.drawLine(40, 0, 0, 60, OMNITRIX_GRAY);
-
-    //upLine.pushSprite(XLup1 - BLACK_LINE_WIDTH - 1, YLup1,TFT_TRANSPARENT);
-    upLine.pushSprite(XLdown1 - BLACK_LINE_WIDTH - 1 - 40 , YLdown1 ,
-    TFT_TRANSPARENT);
-    downLine.pushSprite(XLup2 - BLACK_LINE_WIDTH - 1 - 40, YLup2 - 1,
-    TFT_TRANSPARENT);
-    //downLine.pushSprite(XLdown2 - BLACK_LINE_WIDTH - 1, YLdown2,TFT_TRANSPARENT);
-    downLine.pushSprite(XRup1 + BLACK_LINE_WIDTH + 1 + 40, YRup1 ,
-    TFT_TRANSPARENT);
-    //downLine.pushSprite(XRdown1 + BLACK_LINE_WIDTH + 1, YRdown1,TFT_TRANSPARENT);
-    //upLine.pushSprite(XRup2 + BLACK_LINE_WIDTH + 1, YRup2,TFT_TRANSPARENT);
-    upLine.pushSprite(XRdown2 + BLACK_LINE_WIDTH + 1 + 40, YRdown2,
-    TFT_TRANSPARENT);
- }
-
- //Black lines intersect with each other only to the upper sprites (40,60)
-  for (;XLup2 <= 166 ;XLup1=XLup1+speed, XLdown1=XLdown1+speed,
-    XLup2=XLup2+speed, XLdown2=XLdown2+speed, XRup1=XRup1-speed, XRdown1=XRdown1-
-    speed, XRup2=XRup2-speed, XRdown2=XRdown2-speed) {
-    upLine.drawLine(0, 0, 40, 60, TFT_BLACK);
-    downLine.drawLine(40, 0, 0, 60, TFT_BLACK);
-
-    upLine.pushSprite(XLup1, YLup1, TFT_TRANSPARENT);
-    downLine.pushSprite(XLdown1, YLdown1, TFT_TRANSPARENT);
-    upLine.pushSprite(XLup2, YLup2, TFT_TRANSPARENT);
-    downLine.pushSprite(XLdown2, YLdown2, TFT_TRANSPARENT);
-    upLine.pushSprite(XRup1, YRup1, TFT_TRANSPARENT);
-    downLine.pushSprite(XRdown1, YRdown1, TFT_TRANSPARENT);
-    upLine.pushSprite(XRup2, YRup2, TFT_TRANSPARENT);
-    downLine.pushSprite(XRdown2, YRdown2, TFT_TRANSPARENT);
-    upLine.drawLine(0, 0, 40, 60, OMNITRIX_GRAY);
-    downLine.drawLine(40, 0, 0, 60, OMNITRIX_GRAY);
-    upLine.pushSprite(XLup1 - BLACK_LINE_WIDTH, YLup1, TFT_TRANSPARENT);
-    //downLine.pushSprite(XLdown1 - BLACK_LINE_WIDTH, YLdown1,TFT_TRANSPARENT);
-    //upLine.pushSprite(XLup2 - BLACK_LINE_WIDTH, YLup2, TFT_TRANSPARENT);
-    downLine.pushSprite(XLdown2 - BLACK_LINE_WIDTH, YLdown2, TFT_TRANSPARENT);
-    //upLine.pushSprite(XRup1 + BLACK_LINE_WIDTH, YRup1, TFT_TRANSPARENT);
-    downLine.pushSprite(XRdown1 + BLACK_LINE_WIDTH, YRdown1, TFT_TRANSPARENT);
-    upLine.pushSprite(XRup2 + BLACK_LINE_WIDTH, YRup2, TFT_TRANSPARENT);
-    //downLine.pushSprite(XRdown2 + BLACK_LINE_WIDTH, YRdown2,TFT_TRANSPARENT);
-    upLine.drawLine(0, 0, 40, 60, OMNITRIX_GREEN);
-    downLine.drawLine(40, 0, 0, 60, OMNITRIX_GREEN);
-    //upLine.pushSprite(XLup1 - BLACK_LINE_WIDTH - 1, YLup1,TFT_TRANSPARENT);
-    downLine.pushSprite(XLdown1 - BLACK_LINE_WIDTH - 1, YLdown1,
-    TFT_TRANSPARENT);
-    upLine.pushSprite(XLup2 - BLACK_LINE_WIDTH - 1, YLup2, TFT_TRANSPARENT);
-    //downLine.pushSprite(XLdown2 - BLACK_LINE_WIDTH - 1, YLdown2, TFT_TRANSPARENT);
-    upLine.pushSprite(XRup1 + BLACK_LINE_WIDTH + 1, YRup1, TFT_TRANSPARENT);
-    //downLine.pushSprite(XRdown1 + BLACK_LINE_WIDTH + 1, YRdown1,  TFT_TRANSPARENT);
-    //upLine.pushSprite(XRup2 + BLACK_LINE_WIDTH + 1, YRup2, TFT_TRANSPARENT);
-    downLine.pushSprite(XRdown2 + BLACK_LINE_WIDTH + 1, YRdown2,
-    TFT_TRANSPARENT);
+  //Draw symbols up until lines don't intersect yet
+  for ( ; (xLmid + BLACK_LINE_WIDTH) <= 120 ; xLup++, xLmid++, xLdown++, xRup--, xRmid--, xRdown-- ) {
+    //Wait
+    delay(fps);
+    //Draw gray lines
+    tft.drawLine(xLup, 0, xLmid, 120, OMNITRIX_GRAY); //Draw up left part
+    tft.drawLine(xLmid, 120, xLdown, 240, OMNITRIX_GRAY); //Draw down left part
+    tft.drawLine(xRup, 0, xRmid, 120, OMNITRIX_GRAY); //Draw up right part
+    tft.drawLine(xRmid, 120, xRdown, 240, OMNITRIX_GRAY); //Draw down right part
+    //Draw black lines
+    tft.drawLine(xLup + BLACK_LINE_WIDTH, 0, xLmid + BLACK_LINE_WIDTH, 120, TFT_BLACK); //Draw up left part
+    tft.drawLine(xLmid + BLACK_LINE_WIDTH, 120, xLdown + BLACK_LINE_WIDTH, 240, TFT_BLACK); //Draw down left part
+    tft.drawLine(xRup - BLACK_LINE_WIDTH, 0, xRmid - BLACK_LINE_WIDTH, 120, TFT_BLACK); //Draw up right part
+    tft.drawLine(xRmid - BLACK_LINE_WIDTH, 120, xRdown - BLACK_LINE_WIDTH, 240, TFT_BLACK); //Draw down right part
   }
- //End of lines covering with gray, draw green
-  for (;XLup2 <= 180 ;XLup1=XLup1+speed, XLdown1=XLdown1+speed,
-    XLup2=XLup2+speed, XLdown2=XLdown2+speed, XRup1=XRup1-speed, XRdown1=XRdown1-
-    speed, XRup2=XRup2-speed, XRdown2=XRdown2-speed) {
-    upLine.drawLine(0, 0, 40, 60, TFT_BLACK);
-    downLine.drawLine(40, 0, 0, 60, TFT_BLACK);
-
-    upLine.pushSprite(XLup1, YLup1, TFT_TRANSPARENT);
-    downLine.pushSprite(XLdown1, YLdown1, TFT_TRANSPARENT);
-    upLine.pushSprite(XLup2, YLup2, TFT_TRANSPARENT);
-    downLine.pushSprite(XLdown2, YLdown2, TFT_TRANSPARENT);
-    upLine.pushSprite(XRup1, YRup1, TFT_TRANSPARENT);
-    downLine.pushSprite(XRdown1, YRdown1, TFT_TRANSPARENT);
-    upLine.pushSprite(XRup2, YRup2, TFT_TRANSPARENT);
-    downLine.pushSprite(XRdown2, YRdown2, TFT_TRANSPARENT);
-    upLine.drawLine(0, 0, 40, 60, OMNITRIX_GRAY);
-    downLine.drawLine(40, 0, 0, 60, OMNITRIX_GRAY);
-    upLine.pushSprite(XLup1 - BLACK_LINE_WIDTH, YLup1, TFT_TRANSPARENT);
-    downLine.pushSprite(XLdown1 - BLACK_LINE_WIDTH, YLdown1, TFT_TRANSPARENT);
-    upLine.pushSprite(XLup2 - BLACK_LINE_WIDTH, YLup2, TFT_TRANSPARENT);
-    downLine.pushSprite(XLdown2 - BLACK_LINE_WIDTH, YLdown2, TFT_TRANSPARENT);
-    upLine.pushSprite(XRup1 + BLACK_LINE_WIDTH, YRup1, TFT_TRANSPARENT);
-    downLine.pushSprite(XRdown1 + BLACK_LINE_WIDTH, YRdown1, TFT_TRANSPARENT);
-    upLine.pushSprite(XRup2 + BLACK_LINE_WIDTH, YRup2, TFT_TRANSPARENT);
-    downLine.pushSprite(XRdown2 + BLACK_LINE_WIDTH, YRdown2, TFT_TRANSPARENT);
-    upLine.drawLine(0, 0, 40, 60, OMNITRIX_GREEN);
-    downLine.drawLine(40, 0, 0, 60, OMNITRIX_GREEN);
-    upLine.pushSprite(XLup1 - BLACK_LINE_WIDTH - 1, YLup1, TFT_TRANSPARENT);
-    downLine.pushSprite(XLdown1 - BLACK_LINE_WIDTH - 1, YLdown1,
-    TFT_TRANSPARENT);
-    upLine.pushSprite(XLup2 - BLACK_LINE_WIDTH - 1, YLup2, TFT_TRANSPARENT);
-    downLine.pushSprite(XLdown2 - BLACK_LINE_WIDTH - 1, YLdown2,
-    TFT_TRANSPARENT);
-    upLine.pushSprite(XRup1 + BLACK_LINE_WIDTH + 1, YRup1, TFT_TRANSPARENT);
-    downLine.pushSprite(XRdown1 + BLACK_LINE_WIDTH + 1, YRdown1,
-    TFT_TRANSPARENT);
-    upLine.pushSprite(XRup2 + BLACK_LINE_WIDTH + 1, YRup2, TFT_TRANSPARENT);
-    downLine.pushSprite(XRdown2 + BLACK_LINE_WIDTH + 1, YRdown2,
-    TFT_TRANSPARENT);
+  //Black lines intersect with each other
+  for ( ; (xLmid + BLACK_LINE_WIDTH) <= (120 + BLACK_LINE_WIDTH) ; xLup++, xLmid++, xLdown++, xRup--, xRmid--, xRdown-- ) {
+    //Wait
+    delay(fps);
+    //Draw gray lines
+    tft.drawLine(xLup, 0, xLmid, 120, OMNITRIX_GRAY); //Draw up left part
+    tft.drawLine(xLmid, 120, xLdown, 240, OMNITRIX_GRAY); //Draw down left part
+    tft.drawLine(xRup, 0, xRmid, 120, OMNITRIX_GRAY); //Draw up right part
+    tft.drawLine(xRmid, 120, xRdown, 240, OMNITRIX_GRAY); //Draw down right part
+    //Draw black lines
+    tft.drawLine(xLup + BLACK_LINE_WIDTH, 0, xLmid + BLACK_LINE_WIDTH, 120, TFT_BLACK); //Draw up left part
+    tft.drawLine(xLmid + BLACK_LINE_WIDTH, 120, xLdown + BLACK_LINE_WIDTH, 240, TFT_BLACK); //Draw down left part
+    tft.drawLine(xRup - BLACK_LINE_WIDTH, 0, xRmid - BLACK_LINE_WIDTH, 120, TFT_BLACK); //Draw up right part
+    tft.drawLine(xRmid - BLACK_LINE_WIDTH, 120, xRdown - BLACK_LINE_WIDTH, 240, TFT_BLACK); //Draw down right part
+  }
+  //Lines intersecting
+  for ( ; (xLmid + BLACK_LINE_WIDTH) <= 200 ; xLup++, xLmid++, xLdown++, xRup--, xRmid--, xRdown-- ) {
+    //Wait
+    delay(fps);
+    //Draw gray lines
+    tft.drawLine(xLup, 0, xLmid, 120, OMNITRIX_GRAY); //Draw up left part
+    tft.drawLine(xLmid, 120, xLdown, 240, OMNITRIX_GRAY); //Draw down left part
+    tft.drawLine(xRup, 0, xRmid, 120, OMNITRIX_GRAY); //Draw up right part
+    tft.drawLine(xRmid, 120, xRdown, 240, OMNITRIX_GRAY); //Draw down right part
+    //Draw black lines
+    tft.drawLine(xLup + BLACK_LINE_WIDTH, 0, xLmid + BLACK_LINE_WIDTH, 120, TFT_BLACK); //Draw up left part
+    tft.drawLine(xLmid + BLACK_LINE_WIDTH, 120, xLdown + BLACK_LINE_WIDTH, 240, TFT_BLACK); //Draw down left part
+    tft.drawLine(xRup - BLACK_LINE_WIDTH, 0, xRmid - BLACK_LINE_WIDTH, 120, TFT_BLACK); //Draw up right part
+    tft.drawLine(xRmid - BLACK_LINE_WIDTH, 120, xRdown - BLACK_LINE_WIDTH, 240, TFT_BLACK); //Draw down right part
+  }
+  //Lines stop intersectiong
+  for ( ; (xLmid + BLACK_LINE_WIDTH) <= 215 ; xLup++, xLmid++, xLdown++, xRup--, xRmid--, xRdown-- ) {
+    //Wait
+    delay(fps);
+    //Draw gray lines
+    tft.drawLine(xLup, 0, xLmid, 120, OMNITRIX_GREEN); //Draw up left part
+    tft.drawLine(xLmid, 120, xLdown, 240, OMNITRIX_GREEN); //Draw down left part
+    tft.drawLine(xRup, 0, xRmid, 120, OMNITRIX_GREEN); //Draw up right part
+    tft.drawLine(xRmid, 120, xRdown, 240, OMNITRIX_GREEN); //Draw down right part
+    //Draw black lines
+    tft.drawLine(xLup + BLACK_LINE_WIDTH, 0, xLmid + BLACK_LINE_WIDTH, 120, TFT_BLACK); //Draw up left part
+    tft.drawLine(xLmid + BLACK_LINE_WIDTH, 120, xLdown + BLACK_LINE_WIDTH, 240, TFT_BLACK); //Draw down left part
+    tft.drawLine(xRup - BLACK_LINE_WIDTH, 0, xRmid - BLACK_LINE_WIDTH, 120, TFT_BLACK); //Draw up right part
+    tft.drawLine(xRmid - BLACK_LINE_WIDTH, 120, xRdown - BLACK_LINE_WIDTH, 240, TFT_BLACK); //Draw down right part
   }
 
   #endif
@@ -427,6 +280,7 @@ void showAlien() {
 
 void eraseAlien() {
   
+  #ifdef START_ANIMATION_WITH_IMAGES
   uint16_t pngw = 0, pngh = 0; // To store width and height of image
 
   int16_t rc2 = png.openFLASH((uint8_t *)omnitrix_alien_backround, sizeof(omnitrix_alien_backround), pngDraw);
@@ -446,6 +300,27 @@ void eraseAlien() {
 
     // png.close(); // Required for files, not needed for FLASH arrays
   }
+
+  #elif defined START_ANIMATION_HARD_CODED
+
+  int xLup, xLmid, xLdown, xRup, xRmid, xRdown;
+
+  xLup = 115;
+  xLmid = 214 - BLACK_LINE_WIDTH;
+  xLdown = 115;
+  xRup = 125;
+  xRmid = 26 + BLACK_LINE_WIDTH;
+  xRdown = 125;
+
+  for ( ; xLmid >= 120 ; xLmid--, xRmid++ ) {
+
+    tft.drawLine(xLup, 0, xLmid, 120, OMNITRIX_GREEN); //Draw up left part
+    tft.drawLine(xLmid, 120, xLdown, 240, OMNITRIX_GREEN); //Draw down left part
+    tft.drawLine(xRup, 0, xRmid, 120, OMNITRIX_GREEN); //Draw up right part
+    tft.drawLine(xRmid, 120, xRdown, 240, OMNITRIX_GREEN); //Draw down right part
+  }
+
+  #endif
 
 }
 
