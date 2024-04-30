@@ -87,9 +87,9 @@ void setup()
 void loop()
 {
 
-  showAnimation();
-  delay(1000);
-
+  //showAnimation();
+  delay(10000);
+/*
   for (Npos = 0;Npos <= N; Npos++) {
     
     eraseAlien();
@@ -100,7 +100,7 @@ void loop()
 
   tft.fillScreen(OMNITRIX_RED);
   ShowSymbols();
-  delay(1000);
+  delay(1000);*/
   tft.fillScreen(OMNITRIX_GREEN);
   ShowSymbols();
  
@@ -129,55 +129,22 @@ void ShowSymbols() {
   //Hard coded start symbols
   #elif defined START_ANIMATION_HARD_CODED
 
-  int XLup1, XLup2, YLup1, YLup2, XLdown1, XLdown2, YLdown1, YLdown2;
-  int XRup1, XRup2, YRup1, YRup2, XRdown1, XRdown2, YRdown1, YRdown2;
-  int black;
+  int xLup, xLmid, xLdown, xRup, xRmid, xRdown, black;
 
-
-  upLine.drawLine(0, 0, 40, 60, OMNITRIX_GRAY);
-  downLine.drawLine(40, 0, 0, 60, OMNITRIX_GRAY);
-
-  //draw down and upper left symbol
-  XLup1 = -80;
-  YLup1 = 0;
-  XLdown1 = -40;
-  YLdown1 = 119;
-  XLup2 = -40;  //x=80*y/120
-  YLup2 = 60;   //y=x*120/80
-  XLdown2 = -80;
-  YLdown2 = 178;
-  //draw down and upper right symbol
-  XRup1 = 240;  //240-80
-  YRup1 = 120;
-  XRdown1 = 280;
-  YRdown1 = 1;
-  YRup2 = 180;
-  XRup2 = 280;
-  XRdown2 = 240;
-  YRdown2 = 60;
-  for (; XLup1 <= -5 | XLup2 <= 35 | XRup1 >= 315; XLup1++, XLdown1++, XLup2++, XLdown2++, XRup1--, XRdown1--, XRup2--, XRdown2--) {
-    upLine.pushSprite(XLup1, YLup1, TFT_TRANSPARENT);
-    downLine.pushSprite(XLdown1, YLdown1, TFT_TRANSPARENT);
-    upLine.pushSprite(XLup2, YLup2, TFT_TRANSPARENT);
-    downLine.pushSprite(XLdown2, YLdown2, TFT_TRANSPARENT);
-    upLine.pushSprite(XRup1, YRup1, TFT_TRANSPARENT);
-    downLine.pushSprite(XRdown1, YRdown1, TFT_TRANSPARENT);
-    upLine.pushSprite(XRup2, YRup2, TFT_TRANSPARENT);
-    downLine.pushSprite(XRdown2, YRdown2, TFT_TRANSPARENT);
+  //Draw gray symbols
+  for (xLup = -80, xLmid = 0, xLdown = -80, xRup = 320, xRmid = 240, xRdown = 320; xLup <= -5 ; xLup++, xLmid++, xLdown++, xRup--, xRmid--, xRdown-- ) {
+    tft.drawLine(xLup, 0, xLmid, 120, OMNITRIX_GRAY); //Draw up left part
+    tft.drawLine(xLmid, 120, xLdown, 240, OMNITRIX_GRAY); //Draw down left part
+    tft.drawLine(xRup, 0, xRmid, 120, OMNITRIX_GRAY); //Draw up right part
+    tft.drawLine(xRmid, 120, xRdown, 240, OMNITRIX_GRAY); //Draw down right part
   }
 
-  //draw black lines
-  upLine.drawLine(0, 0, 40, 60, TFT_BLACK);
-  downLine.drawLine(40, 0, 0, 60, TFT_BLACK);
-  for (black = 0; black <= BLACK_LINE_WIDTH; black++, XLup1++, XLdown1++, XLup2++, XLdown2++, XRup1--, XRdown1--, XRup2--, XRdown2--) {
-    upLine.pushSprite(XLup1, YLup1, TFT_TRANSPARENT);
-    downLine.pushSprite(XLdown1, YLdown1, TFT_TRANSPARENT);
-    upLine.pushSprite(XLup2, YLup2, TFT_TRANSPARENT);
-    downLine.pushSprite(XLdown2, YLdown2, TFT_TRANSPARENT);
-    upLine.pushSprite(XRup1, YRup1, TFT_TRANSPARENT);
-    downLine.pushSprite(XRdown1, YRdown1, TFT_TRANSPARENT);
-    upLine.pushSprite(XRup2, YRup2, TFT_TRANSPARENT);
-    downLine.pushSprite(XRdown2, YRdown2, TFT_TRANSPARENT);
+  //Draw black lines
+  for (black = 0; black <= BLACK_LINE_WIDTH; black++, xLup++, xLmid++, xLdown++, xRup--, xRmid--, xRdown--) {
+    tft.drawLine(xLup, 0, xLmid, 120, TFT_BLACK); //Draw up left part
+    tft.drawLine(xLmid, 120, xLdown, 240, TFT_BLACK); //Draw down left part
+    tft.drawLine(xRup, 0, xRmid, 120, TFT_BLACK); //Draw up right part
+    tft.drawLine(xRmid, 120, xRdown, 240, TFT_BLACK); //Draw down right part
   }
 
   #endif
