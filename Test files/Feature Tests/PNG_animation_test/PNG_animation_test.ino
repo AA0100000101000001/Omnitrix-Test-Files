@@ -16,14 +16,14 @@
 //1. Start animation with images
 //#define START_ANIMATION_WITH_IMAGES //Has memory leaks
 //2. Hard coded start animation
-#define START_ANIMATION_HARD_CODED //Not finished
+#define START_ANIMATION_HARD_CODED //Slow but low memory and smooth
 
 #include <PNGdec.h>
 
 // Include image array
 #include "omnitrix_aliens.h"
-#include "omnitrix_alien_backround.h"
 #if defined START_ANIMATION_WITH_IMAGES
+#include "omnitrix_alien_backround.h"
 #include "omnitrix_anim_png_circle.h"
 #endif
 
@@ -41,9 +41,6 @@ PNG png; // PNG decoder instance
 TFT_eSPI tft = TFT_eSPI();         // Invoke custom library
 
 #if defined START_ANIMATION_HARD_CODED
-//TFT sprites
-TFT_eSprite upLine = TFT_eSprite(&tft);
-TFT_eSprite downLine = TFT_eSprite(&tft);
 #define BLACK_LINE_WIDTH 11
 #endif
 
@@ -56,23 +53,10 @@ int Npos = 0;
 
 void setup()
 {
+  //setCpuFrequencyMhz(80); //Reduce CPU Freq
+
   Serial.begin(115200);
   Serial.println("\n\n Using the PNGdec library");
-
-  
-#if defined START_ANIMATION_HARD_CODED
-//Initialise up line sprite
-  upLine.setColorDepth(8);
-  upLine.createSprite(40, 60);
-
-  upLine.fillSprite(TFT_TRANSPARENT);
-
-  //Initialise down line sprite
-  downLine.setColorDepth(8);
-  downLine.createSprite(40, 60);
-
-  downLine.fillSprite(TFT_TRANSPARENT);
-#endif
 
   // Initialise the TFT
   tft.begin();
@@ -97,7 +81,10 @@ void loop()
     delay(1000);
 
   }
-
+  
+  tft.fillScreen(TFT_WHITE);
+  ShowSymbols();
+  delay(1000);
   tft.fillScreen(OMNITRIX_RED);
   ShowSymbols();
   delay(1000);
@@ -129,7 +116,7 @@ void ShowSymbols() {
   //Hard coded start symbols
   #elif defined START_ANIMATION_HARD_CODED
 
-  int xLup, xLmid, xLdown, xRup, xRmid, xRdown, black;
+  int16_t xLup, xLmid, xLdown, xRup, xRmid, xRdown, black;
 
   //Draw gray symbols
   for (xLup = -80, xLmid = 0, xLdown = -80, xRup = 320, xRmid = 240, xRdown = 320; xLup <= -5 ; xLup++, xLmid++, xLdown++, xRup--, xRmid--, xRdown-- ) {
@@ -156,12 +143,12 @@ void showAnimation() {
   //Start Symbols with image
   #if defined START_ANIMATION_WITH_IMAGES
 
-  int frame = 0;
-  int fps = 40;
+  uint8_t frame = 0;
+  uint8_t delay_time = 40;
 
   for (; frame <= omnitrix_anim_N; frame++)  {
     
-    delay(fps);
+    delay(delay_time);
     
     //Serial.println(frame);
     int16_t rc = png.openFLASH((uint8_t *)omnitrix_anim[frame], sizeof(omnitrix_anim[frame]), pngDraw);
@@ -178,8 +165,8 @@ void showAnimation() {
   //Hard coded animation
   #elif defined START_ANIMATION_HARD_CODED
 
-  int xLup, xLmid, xLdown, xRup, xRmid, xRdown;
-  int fps = 2;
+  int16_t xLup, xLmid, xLdown, xRup, xRmid, xRdown;
+  uint8_t delay_time = 1;
 
   xLup = -6;
   xLmid = 74;
@@ -191,7 +178,7 @@ void showAnimation() {
   //Draw symbols up until lines don't intersect yet
   for ( ; (xLmid + BLACK_LINE_WIDTH) <= 120 ; xLup++, xLmid++, xLdown++, xRup--, xRmid--, xRdown-- ) {
     //Wait
-    delay(fps);
+    delay(delay_time*3);
     //Draw gray lines
     tft.drawLine(xLup, 0, xLmid, 120, OMNITRIX_GRAY); //Draw up left part
     tft.drawLine(xLmid, 120, xLdown, 240, OMNITRIX_GRAY); //Draw down left part
@@ -206,7 +193,7 @@ void showAnimation() {
   //Black lines intersect with each other
   for ( ; (xLmid + BLACK_LINE_WIDTH) <= (120 + BLACK_LINE_WIDTH) ; xLup++, xLmid++, xLdown++, xRup--, xRmid--, xRdown-- ) {
     //Wait
-    delay(fps);
+    delay(delay_time*3);
     //Draw gray lines
     tft.drawLine(xLup, 0, xLmid, 120, OMNITRIX_GRAY); //Draw up left part
     tft.drawLine(xLmid, 120, xLdown, 240, OMNITRIX_GRAY); //Draw down left part
@@ -221,22 +208,49 @@ void showAnimation() {
   //Lines intersecting
   for ( ; (xLmid + BLACK_LINE_WIDTH) <= 200 ; xLup++, xLmid++, xLdown++, xRup--, xRmid--, xRdown-- ) {
     //Wait
-    delay(fps);
-    //Draw gray lines
-    tft.drawLine(xLup, 0, xLmid, 120, OMNITRIX_GRAY); //Draw up left part
-    tft.drawLine(xLmid, 120, xLdown, 240, OMNITRIX_GRAY); //Draw down left part
-    tft.drawLine(xRup, 0, xRmid, 120, OMNITRIX_GRAY); //Draw up right part
-    tft.drawLine(xRmid, 120, xRdown, 240, OMNITRIX_GRAY); //Draw down right part
+    delay(delay_time);
+    int16_t comx, comy;
+    
+    //Get common point of up lines
+    getCommonPoint(xLup, 0, xLmid, 120, xRup, 0, xRmid, 120, &comx, &comy);
+    //Draw green part of lines
+    tft.drawLine(xLup, 0, xLmid, 120, OMNITRIX_GREEN); //Draw up left part
+    tft.drawLine(xRup, 0, xRmid, 120, OMNITRIX_GREEN); //Draw up right part
+    //Draw previous green line to clean
+    tft.drawLine(xLup-1, 0, xLmid-1, 120, OMNITRIX_GREEN); //Draw up left part
+    tft.drawLine(xRup+1, 0, xRmid+1, 120, OMNITRIX_GREEN); //Draw up right part
+    //Draw gray part of lines
+    tft.drawLine(xLup, 0, comx, comy, OMNITRIX_GRAY); //Draw up left part
+    tft.drawLine(xRup, 0, comx, comy, OMNITRIX_GRAY); //Draw up right part
+    //Draw previous gray line to clean
+    tft.drawLine(xLup-1, 0, comx-1, comy, OMNITRIX_GRAY); //Draw up left part
+    tft.drawLine(xRup+1, 0, comx+1, comy, OMNITRIX_GRAY); //Draw up right part
+    
+    //Get common point of down lines
+    getCommonPoint(xLmid, 120, xLdown, 240, xRmid, 120, xRdown, 240, &comx, &comy);
+    //Draw green part of lines
+    tft.drawLine(xLmid, 120, xLdown, 240, OMNITRIX_GREEN); //Draw down left part
+    tft.drawLine(xRmid, 120, xRdown, 240, OMNITRIX_GREEN); //Draw down right part
+    //Draw previous green line to clean
+    tft.drawLine(xLmid-1, 120, xLdown-1, 240, OMNITRIX_GREEN); //Draw down left part
+    tft.drawLine(xRmid+1, 120, xRdown+1, 240, OMNITRIX_GREEN); //Draw down right part
+    //Draw gray part of lines
+    tft.drawLine(comx, comy, xLdown, 240, OMNITRIX_GRAY); //Draw down left part
+    tft.drawLine(comx, comy, xRdown, 240, OMNITRIX_GRAY); //Draw down right part
+    //Draw previous gray line to clean
+    tft.drawLine(comx-1, comy, xLdown-1, 240, OMNITRIX_GRAY); //Draw down left part
+    tft.drawLine(comx+1, comy, xRdown+1, 240, OMNITRIX_GRAY); //Draw down right part
+
     //Draw black lines
     tft.drawLine(xLup + BLACK_LINE_WIDTH, 0, xLmid + BLACK_LINE_WIDTH, 120, TFT_BLACK); //Draw up left part
-    tft.drawLine(xLmid + BLACK_LINE_WIDTH, 120, xLdown + BLACK_LINE_WIDTH, 240, TFT_BLACK); //Draw down left part
     tft.drawLine(xRup - BLACK_LINE_WIDTH, 0, xRmid - BLACK_LINE_WIDTH, 120, TFT_BLACK); //Draw up right part
+    tft.drawLine(xLmid + BLACK_LINE_WIDTH, 120, xLdown + BLACK_LINE_WIDTH, 240, TFT_BLACK); //Draw down left part
     tft.drawLine(xRmid - BLACK_LINE_WIDTH, 120, xRdown - BLACK_LINE_WIDTH, 240, TFT_BLACK); //Draw down right part
   }
   //Lines stop intersectiong
   for ( ; (xLmid + BLACK_LINE_WIDTH) <= 215 ; xLup++, xLmid++, xLdown++, xRup--, xRmid--, xRdown-- ) {
     //Wait
-    delay(fps);
+    delay(delay_time*3);
     //Draw gray lines
     tft.drawLine(xLup, 0, xLmid, 120, OMNITRIX_GREEN); //Draw up left part
     tft.drawLine(xLmid, 120, xLdown, 240, OMNITRIX_GREEN); //Draw down left part
@@ -303,7 +317,7 @@ void eraseAlien() {
 
   #elif defined START_ANIMATION_HARD_CODED
 
-  int xLup, xLmid, xLdown, xRup, xRmid, xRdown;
+  int16_t xLup, xLmid, xLdown, xRup, xRmid, xRdown;
 
   xLup = 115;
   xLmid = 214 - BLACK_LINE_WIDTH;
@@ -324,3 +338,43 @@ void eraseAlien() {
 
 }
 
+#if defined START_ANIMATION_HARD_CODED
+//Find common point of lines A[(Ax1, Ay1),(Ax2, Ay2)] and B[(Bx1, By1),(Bx2, By2)]
+float getCommonPoint(int16_t Ax1, int16_t Ay1, int16_t Ax2, int16_t Ay2, int16_t Bx1, int16_t By1, int16_t Bx2, int16_t By2, int16_t* x, int16_t* y) {
+
+  //For line equations y = Aa*x + Ab, y = Ba*x + Bb
+  float Aa, Ba, Ab, Bb; 
+  //Common point calculated in float
+  float fx, fy;
+
+  //Find A's equation
+  Aa = (float) (Ay2 - Ay1)/ (Ax2 - Ax1); //slope a
+  Ab = (float) Ay1 - Aa*Ax1; //b = y1 - ax1
+  //y = Aa*x + Ab
+  
+  //Find B's equation
+  Ba = (float) (By2 - By1)/ (Bx2 - Bx1);  //slope a
+  Bb = (float) By1 - Ba*Bx1; //b = y1 - ax1
+  //y = Ba*x + Bb
+
+  //Find delta
+  float delta = Aa * (-1) - Ba * (-1);
+  //Check delta
+  if (delta == 0) {
+    //Serial.println("Lines are parallel");
+    *x = 0;
+    *y = 0;
+    return delta;
+  }
+
+  //Find common point
+  fx = -((-1) * Ab - (-1) * Bb) / delta;
+  fy = -(Aa * Bb - Ba * Ab) / delta;
+  //Round to integer
+  *x = (int16_t) (fx < 0 ? (fx - 0.5) : (fx + 0.5));
+  *y =(int16_t) (fy < 0 ? (fy - 0.5) : (fy + 0.5));
+  
+  return delta;
+
+}
+#endif
