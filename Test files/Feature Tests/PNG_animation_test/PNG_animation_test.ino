@@ -22,8 +22,8 @@
 
 // Include image array
 #include "omnitrix_aliens.h"
-#include "omnitrix_alien_backround.h"
 #if defined START_ANIMATION_WITH_IMAGES
+#include "omnitrix_alien_backround.h"
 #include "omnitrix_anim_png_circle.h"
 #endif
 
@@ -41,9 +41,6 @@ PNG png; // PNG decoder instance
 TFT_eSPI tft = TFT_eSPI();         // Invoke custom library
 
 #if defined START_ANIMATION_HARD_CODED
-//TFT sprites
-TFT_eSprite upLine = TFT_eSprite(&tft);
-TFT_eSprite downLine = TFT_eSprite(&tft);
 #define BLACK_LINE_WIDTH 11
 #endif
 
@@ -58,21 +55,6 @@ void setup()
 {
   Serial.begin(115200);
   Serial.println("\n\n Using the PNGdec library");
-
-  
-#if defined START_ANIMATION_HARD_CODED
-//Initialise up line sprite
-  upLine.setColorDepth(8);
-  upLine.createSprite(40, 60);
-
-  upLine.fillSprite(TFT_TRANSPARENT);
-
-  //Initialise down line sprite
-  downLine.setColorDepth(8);
-  downLine.createSprite(40, 60);
-
-  downLine.fillSprite(TFT_TRANSPARENT);
-#endif
 
   // Initialise the TFT
   tft.begin();
@@ -97,7 +79,10 @@ void loop()
     delay(1000);
 
   }
-
+  
+  tft.fillScreen(TFT_WHITE);
+  ShowSymbols();
+  delay(1000);
   tft.fillScreen(OMNITRIX_RED);
   ShowSymbols();
   delay(1000);
