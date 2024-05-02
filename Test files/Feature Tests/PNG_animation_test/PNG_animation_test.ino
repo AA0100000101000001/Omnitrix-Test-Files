@@ -116,7 +116,7 @@ void ShowSymbols() {
   //Hard coded start symbols
   #elif defined START_ANIMATION_HARD_CODED
 
-  int xLup, xLmid, xLdown, xRup, xRmid, xRdown, black;
+  int16_t xLup, xLmid, xLdown, xRup, xRmid, xRdown, black;
 
   //Draw gray symbols
   for (xLup = -80, xLmid = 0, xLdown = -80, xRup = 320, xRmid = 240, xRdown = 320; xLup <= -5 ; xLup++, xLmid++, xLdown++, xRup--, xRmid--, xRdown-- ) {
@@ -143,7 +143,7 @@ void showAnimation() {
   //Start Symbols with image
   #if defined START_ANIMATION_WITH_IMAGES
 
-  int frame = 0;
+  uint8_t frame = 0;
   uint8_t delay_time = 40;
 
   for (; frame <= omnitrix_anim_N; frame++)  {
@@ -165,7 +165,7 @@ void showAnimation() {
   //Hard coded animation
   #elif defined START_ANIMATION_HARD_CODED
 
-  int xLup, xLmid, xLdown, xRup, xRmid, xRdown;
+  int16_t xLup, xLmid, xLdown, xRup, xRmid, xRdown;
   uint8_t delay_time = 1;
 
   xLup = -6;
@@ -209,7 +209,7 @@ void showAnimation() {
   for ( ; (xLmid + BLACK_LINE_WIDTH) <= 200 ; xLup++, xLmid++, xLdown++, xRup--, xRmid--, xRdown-- ) {
     //Wait
     delay(delay_time);
-    int comx, comy;
+    int16_t comx, comy;
     
     //Get common point of up lines
     getCommonPoint(xLup, 0, xLmid, 120, xRup, 0, xRmid, 120, &comx, &comy);
@@ -317,7 +317,7 @@ void eraseAlien() {
 
   #elif defined START_ANIMATION_HARD_CODED
 
-  int xLup, xLmid, xLdown, xRup, xRmid, xRdown;
+  int16_t xLup, xLmid, xLdown, xRup, xRmid, xRdown;
 
   xLup = 115;
   xLmid = 214 - BLACK_LINE_WIDTH;
@@ -340,23 +340,20 @@ void eraseAlien() {
 
 #if defined START_ANIMATION_HARD_CODED
 //Find common point of lines A[(Ax1, Ay1),(Ax2, Ay2)] and B[(Bx1, By1),(Bx2, By2)]
-float getCommonPoint(int Ax1, int Ay1, int Ax2, int Ay2, int Bx1, int By1, int Bx2, int By2, int* x, int* y) {
+float getCommonPoint(int16_t Ax1, int16_t Ay1, int16_t Ax2, int16_t Ay2, int16_t Bx1, int16_t By1, int16_t Bx2, int16_t By2, int16_t* x, int16_t* y) {
 
-  int dx, dy;
-  float Aa, Ba, Ab, Bb;
+  //For line equations y = Aa*x + Ab, y = Ba*x + Bb
+  float Aa, Ba, Ab, Bb; 
+  //Common point calculated in float
   float fx, fy;
 
   //Find A's equation
-  dx = Ax2 - Ax1;
-  dy = Ay2 - Ay1;
-  Aa = (float) dy / dx; //slope a
+  Aa = (float) (Ay2 - Ay1)/ (Ax2 - Ax1); //slope a
   Ab = (float) Ay1 - Aa*Ax1; //b = y1 - ax1
   //y = Aa*x + Ab
   
   //Find B's equation
-  dx = Bx2 - Bx1;
-  dy = By2 - By1;
-  Ba = (float) dy / dx; //slope a
+  Ba = (float) (By2 - By1)/ (Bx2 - Bx1);  //slope a
   Bb = (float) By1 - Ba*Bx1; //b = y1 - ax1
   //y = Ba*x + Bb
 
@@ -374,8 +371,8 @@ float getCommonPoint(int Ax1, int Ay1, int Ax2, int Ay2, int Bx1, int By1, int B
   fx = -((-1) * Ab - (-1) * Bb) / delta;
   fy = -(Aa * Bb - Ba * Ab) / delta;
   //Round to integer
-  *x = (int) (fx < 0 ? (fx - 0.5) : (fx + 0.5));
-  *y =(int) (fy < 0 ? (fy - 0.5) : (fy + 0.5));
+  *x = (int16_t) (fx < 0 ? (fx - 0.5) : (fx + 0.5));
+  *y =(int16_t) (fy < 0 ? (fy - 0.5) : (fy + 0.5));
   
   return delta;
 
