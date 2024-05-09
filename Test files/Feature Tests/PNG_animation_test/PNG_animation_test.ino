@@ -167,7 +167,7 @@ void showAnimation() {
   #elif defined START_ANIMATION_HARD_CODED
 
   int16_t xLup, xLmid, xLdown, xRup, xRmid, xRdown;
-  uint8_t delay_time = 1;
+  uint8_t delay_time = 4;
 
   xLup = -6;
   xLmid = 74;
@@ -179,7 +179,7 @@ void showAnimation() {
   //Draw symbols up until lines don't intersect yet
   for ( ; (xLmid + BLACK_LINE_WIDTH) <= 120 ; xLup++, xLmid++, xLdown++, xRup--, xRmid--, xRdown-- ) {
     //Wait
-    delay(delay_time*3);
+    delay(delay_time);
     //Draw gray lines
     tft.drawLine(xLup, 0, xLmid, 120, OMNITRIX_GRAY); //Draw up left part
     tft.drawLine(xLmid, 120, xLdown, 240, OMNITRIX_GRAY); //Draw down left part
@@ -194,7 +194,7 @@ void showAnimation() {
   //Black lines intersect with each other
   for ( ; (xLmid + BLACK_LINE_WIDTH) <= (120 + BLACK_LINE_WIDTH) ; xLup++, xLmid++, xLdown++, xRup--, xRmid--, xRdown-- ) {
     //Wait
-    delay(delay_time*3);
+    delay(delay_time);
     //Draw gray lines
     tft.drawLine(xLup, 0, xLmid, 120, OMNITRIX_GRAY); //Draw up left part
     tft.drawLine(xLmid, 120, xLdown, 240, OMNITRIX_GRAY); //Draw down left part
@@ -209,17 +209,25 @@ void showAnimation() {
   //Lines intersecting
   for ( ; (xLmid + BLACK_LINE_WIDTH) <= 200 ; xLup++, xLmid++, xLdown++, xRup--, xRmid--, xRdown-- ) {
     //Wait
-    delay(delay_time);
+    //delay(delay_time);
     int16_t comx, comy;
     
     //Get common point of up lines
     getCommonPoint(xLup, 0, xLmid, 120, xRup, 0, xRmid, 120, &comx, &comy);
+/*
+    tft.fillTriangle(xLup, 0, xLmid, 120, xLmid-2, 120, OMNITRIX_GREEN);
+    tft.fillTriangle(xRup, 0, xRmid, 120, xRmid+2, 120, OMNITRIX_GREEN);
+
+    tft.fillTriangle(xLup, 0, comx, comy, comx-2, comy, OMNITRIX_GRAY);
+    tft.fillTriangle(xRup, 0, comx, comy, comx+2, comy, OMNITRIX_GRAY);
+    */
     //Draw green part of lines
     tft.drawLine(xLup, 0, xLmid, 120, OMNITRIX_GREEN); //Draw up left part
     tft.drawLine(xRup, 0, xRmid, 120, OMNITRIX_GREEN); //Draw up right part
     //Draw previous green line to clean
     tft.drawLine(xLup-1, 0, xLmid-1, 120, OMNITRIX_GREEN); //Draw up left part
     tft.drawLine(xRup+1, 0, xRmid+1, 120, OMNITRIX_GREEN); //Draw up right part
+    
     //Draw gray part of lines
     tft.drawLine(xLup, 0, comx, comy, OMNITRIX_GRAY); //Draw up left part
     tft.drawLine(xRup, 0, comx, comy, OMNITRIX_GRAY); //Draw up right part
@@ -227,8 +235,16 @@ void showAnimation() {
     tft.drawLine(xLup-1, 0, comx-1, comy, OMNITRIX_GRAY); //Draw up left part
     tft.drawLine(xRup+1, 0, comx+1, comy, OMNITRIX_GRAY); //Draw up right part
     
+
     //Get common point of down lines
     getCommonPoint(xLmid, 120, xLdown, 240, xRmid, 120, xRdown, 240, &comx, &comy);
+/*
+    tft.fillTriangle(xLmid, 120, xLdown, 240, xLmid-1, 120, OMNITRIX_GREEN);
+    tft.fillTriangle(xRmid, 120, xRdown, 240, xRmid+1, 120, OMNITRIX_GREEN);
+
+    tft.fillTriangle(comx, comy, xLdown, 240, comx-1, comy, OMNITRIX_GRAY);
+    tft.fillTriangle(comx, comy, xRdown, 240, comx+1, comy, OMNITRIX_GRAY);
+*/    
     //Draw green part of lines
     tft.drawLine(xLmid, 120, xLdown, 240, OMNITRIX_GREEN); //Draw down left part
     tft.drawLine(xRmid, 120, xRdown, 240, OMNITRIX_GREEN); //Draw down right part
@@ -241,6 +257,7 @@ void showAnimation() {
     //Draw previous gray line to clean
     tft.drawLine(comx-1, comy, xLdown-1, 240, OMNITRIX_GRAY); //Draw down left part
     tft.drawLine(comx+1, comy, xRdown+1, 240, OMNITRIX_GRAY); //Draw down right part
+    
 
     //Draw black lines
     tft.drawLine(xLup + BLACK_LINE_WIDTH, 0, xLmid + BLACK_LINE_WIDTH, 120, TFT_BLACK); //Draw up left part
@@ -251,7 +268,7 @@ void showAnimation() {
   //Lines stop intersectiong
   for ( ; (xLmid + BLACK_LINE_WIDTH) <= 215 ; xLup++, xLmid++, xLdown++, xRup--, xRmid--, xRdown-- ) {
     //Wait
-    delay(delay_time*3);
+    delay(delay_time);
     //Draw gray lines
     tft.drawLine(xLup, 0, xLmid, 120, OMNITRIX_GREEN); //Draw up left part
     tft.drawLine(xLmid, 120, xLdown, 240, OMNITRIX_GREEN); //Draw down left part
@@ -360,6 +377,9 @@ float getCommonPoint(int16_t Ax1, int16_t Ay1, int16_t Ax2, int16_t Ay2, int16_t
 
   //Find delta
   float delta = Aa * (-1) - Ba * (-1);
+
+  //float delta = ((float) (Ay2 - Ay1)/ (Ax2 - Ax1)) * (-1) - ((float) (By2 - By1)/ (Bx2 - Bx1)) * (-1);
+
   //Check delta
   if (delta == 0) {
     //Serial.println("Lines are parallel");
@@ -371,10 +391,20 @@ float getCommonPoint(int16_t Ax1, int16_t Ay1, int16_t Ax2, int16_t Ay2, int16_t
   //Find common point
   fx = -((-1) * Ab - (-1) * Bb) / delta;
   fy = -(Aa * Bb - Ba * Ab) / delta;
+
+  //Find common point
+  //fx = -((-1) * ((float) Ay1 - ((float) (Ay2 - Ay1)/ (Ax2 - Ax1))*Ax1) - (-1) * ((float) By1 - ((float) (By2 - By1)/ (Bx2 - Bx1))*Bx1)) / delta;
+  //fy = -(((float) (Ay2 - Ay1)/ (Ax2 - Ax1)) * ((float) By1 - ((float) (By2 - By1)/ (Bx2 - Bx1))*Bx1) - ((float) (By2 - By1)/ (Bx2 - Bx1)) * ((float) Ay1 - ((float) (Ay2 - Ay1)/ (Ax2 - Ax1))*Ax1)) / delta;
+
   //Round to integer
-  *x = (int16_t) (fx < 0 ? (fx - 0.5) : (fx + 0.5));
-  *y =(int16_t) (fy < 0 ? (fy - 0.5) : (fy + 0.5));
-  
+  //*x = (int16_t) (fx < 0 ? (fx - 0.5) : (fx + 0.5));
+  //*y =(int16_t) (fy < 0 ? (fy - 0.5) : (fy + 0.5));
+
+  //Round to integer
+  *x = (int16_t) fx;
+  *y =(int16_t) fy;
+
+
   return delta;
 
 }
