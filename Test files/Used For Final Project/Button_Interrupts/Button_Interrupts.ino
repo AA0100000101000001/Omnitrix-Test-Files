@@ -1,12 +1,18 @@
 /*
 This is an update to Button Test with interrupts. It implements the basic omnitrix modes and alien selection.
 */
-
+/*
+//ESP32-S2
 #define buttonPin 5 //Start button
 #define RightPin 1 //Right button
 #define LeftPin 4 //Left button
 #define SelectPin 3 //Select button
-
+*/
+//ESP32-S3-Pico
+#define buttonPin 2 //Start button
+#define RightPin 6 //Right button
+#define LeftPin 5 //Left button
+#define SelectPin 4 //Select button
 #define ALIEN_NUMBER 11 //0-12
 
 bool buttonState = false; //State of start button

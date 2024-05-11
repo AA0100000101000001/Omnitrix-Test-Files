@@ -1,10 +1,19 @@
 /* This program tests the ability of the omnitrix to go into deep sleep mode after a short period of time of inactivity and wake up when the transformation time is over 
 in order to go to the recharging state. It is an update to Timer_With_Epoch_Time_Test and Interrupts are used to check input*/
-
+/*
+//Esp32-S2
 #define buttonPin 4 //Start button
+#define EXT0_WAKEUP_PIN GPIO_NUM_4 //ext0 wakeyp pin
 #define RightPin 6 //Right button
 #define LeftPin 7 //Left button
 #define SelectPin 5 //Select button
+*/
+//Esp32-S3-Pico
+#define buttonPin 2 //Start button
+#define EXT0_WAKEUP_PIN GPIO_NUM_2 //ext0 wakeyp pin
+#define RightPin 6 //Right button
+#define LeftPin 5 //Left button
+#define SelectPin 4 //Select button
 
 #define ALIEN_NUMBER 11 //0-12
 
@@ -105,8 +114,8 @@ void setup() {
     RTC_setTime(0, 0, 0, 1, 1, 2023, 0);  // 1st Jan 2023 00:00:00:00
   }
 
-  //The omnitrix will wake up when the button is pressed
-  esp_sleep_enable_ext0_wakeup(GPIO_NUM_5,1);
+  //The omnitrix will wake up when the start button is pressed
+  esp_sleep_enable_ext0_wakeup(EXT0_WAKEUP_PIN,1);
 
   //initialize inputs and interrupts
   pinMode(buttonPin, INPUT);

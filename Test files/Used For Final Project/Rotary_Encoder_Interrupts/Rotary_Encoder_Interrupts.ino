@@ -1,6 +1,11 @@
-
+/*
+//Esp32-S2
 #define ROTARY_LEFT_PIN 4
 #define ROTARY_RIGHT_PIN 1
+*/
+//Esp32-S3-Pico
+#define ROTARY_LEFT_PIN 5 //A
+#define ROTARY_RIGHT_PIN 6 //B
 
 bool rightState = 0; //State of right
 bool leftState = 0; //State of left

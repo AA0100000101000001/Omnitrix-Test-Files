@@ -1,7 +1,8 @@
 # How to use 
  Connect four buttons in active high connection.  
 # Tested with 
-* ESP32-S2-DEV 
+* Esp32-S2-DEV 
+* Esp32-S3-Pico-DEV 
 # Button States
 Mode 1 = Start Mode  
 Mode 2 = Select Alien Mode  
