@@ -2,9 +2,10 @@
   It is an Update to png_test
   
   Tested with: 
-  ESP32-S2-Dev
-  ESP32-S3 TOUCH LCD 1.28
-  ESP32-S3 LCD 1.28
+  Esp32-S2-Dev
+  Esp32-S3 TOUCH LCD 1.28
+  Esp32-S3 LCD 1.28
+  Esp32-S3-Pico
   
   Add Setup302_ESP32S3_GC9A01_TOUCH.h and Setup303_OMNITRIX_CUSTOM.h in libraries\TFT_eSPI\User_Setups
 
