@@ -110,6 +110,24 @@ void loop() {
   Serial.println("Demo user controlled");
   #endif
 
+  //Wakeup types
+  //EXT0
+  #ifdef EXT0_ENABLED
+  Serial.println("Wakeup with ext0");
+  Serial.print("Ext0 pin: ");
+  Serial.print(EXT0_WAKEUP_PIN);
+  Serial.print(", Ext0 level: ");
+  Serial.println(EXT0_WAKEUP_MODE);
+  //EXT1
+  #elif defined EXT1_ENABLED
+  Serial.println("Wakeup with ext1");
+  Serial.print("Ext1 bitmask: ");
+  Serial.print(EXT1_BITMASK);
+  Serial.print(", Ext1 mode: ");
+  Serial.println(EXT1_WAKEUP_MODE);
+
+  #endif
+
   //Check if button interrupts are being used
   #ifdef POP_UP_BUTTONS_ENABLED
     Serial.println("Using Buttons for the pop up mechanism");
