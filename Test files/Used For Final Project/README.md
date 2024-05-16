@@ -4,4 +4,4 @@
 | [Waveshare Esp32 S2 DEV](https://www.waveshare.com/wiki/NodeMCU-32-S2-Kit) | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
 | [Waveshare Esp32-S3 TOUCH LCD 1.28](https://www.waveshare.com/wiki/ESP32-S3-Touch-LCD-1.28) | ✅ | | | | ✅ | |
 | [Waveshare Esp32-S3 LCD 1.28](https://www.waveshare.com/wiki/ESP32-S3-LCD-1.28) | ✅ | | | | | |
-| [Waveshare Esp32-S3-Pico](https://www.waveshare.com/wiki/ESP32-S3-Pico) |  | ✅ | ✅ | ✅ | ✅ | | 
+| [Waveshare Esp32-S3-Pico](https://www.waveshare.com/wiki/ESP32-S3-Pico) | ✅ | ✅ | ✅ | ✅ | ✅ | | 

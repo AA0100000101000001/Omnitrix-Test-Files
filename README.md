@@ -16,24 +16,24 @@
 - [x] Power reduction code  
 - [x] Make Schematic using EasyEDA  
 - [x] Rewrite code to use GPIO interrupts  
-- [x] Add config file for pin selection   
-- [ ] Add Default Demo mode   
-- [ ] Check current consumption  
+- [x] Add config file for pin selection  
 - [ ] Add support for ESP32-S3 Development Board   
+- [ ] Use multiple inputs to wake up from deep sleep (ext1)  
+- [ ] Power reduction code for LCD display   
+- [ ] Check current consumption   
 - [ ] Make PCB for ESP32-S3-LCD-1.28 1.27mm headers to 2.54mm   
 - [ ] Find cheaper component for sound or use passive buzzer  
-- [ ] Make rotary encoder mechanism with micro switches  
+- [ ] Make rotary encoder mechanism  
 - [ ] RGB LEDs  
 - [ ] Only enable GPIO outputs (LEDs) at the last moment   
-- [ ] Use multiple inputs to wake up from deep sleep (ext1)  
 - [ ] Make PCB that has RGB LEDs, micro switches and speaker for ESP32-S3-LCD-1.28  
-- [ ] Power reduction code for LCD display   
 - [ ] Test LiPo battery with the board  
 - [ ] Reduce size and memory usage of program sketch  
 - [ ] Test operation when all Serial.println are removed  
 - [ ] Create the rest of the mechanisms using a CAD program  
 	
 # Future Plans:  
+- [ ] Add Default Demo mode   
 - [ ] Create Omnitrix graphics for GC9A01 driver that uses library commands for animation  
 - [ ] Make PCB for multiple RGB LEDs  
 - [ ] Test current for LED PCB  
