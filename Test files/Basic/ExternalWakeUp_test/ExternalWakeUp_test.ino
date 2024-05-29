@@ -14,7 +14,29 @@ This program uses the ext0 wakeup method to wake up the ESP32 with the use of a 
 
 Tested with:
 ESP32-S2-DEV 
+Esp32-S3-Pico
 */
+
+//WAKEUP SETTINGS: Use ext0 or ext1
+//1. Uncomment for use of ext0
+//#define EXT0_ENABLED
+//Choose wakeup pin:
+//#define EXT0_WAKEUP_PIN GPIO_NUM_2
+//#define EXT0_WAKEUP_PIN GPIO_NUM_5 //Esp32-S2 pinout
+//#define EXT0_WAKEUP_PIN GPIO_NUM_1  //Wake up with rotary movement
+//Choose wakeup level:
+//#define EXT0_WAKEUP_MODE 1
+//#define EXT0_WAKEUP_MODE 0 //Wake up with rotary movement
+//2. Uncomment for use of ext1
+#define EXT1_ENABLED
+//Choose bitmap:
+//#define EXT1_BITMASK 0x0020 //gpio 5: 5^2 to hex
+//#define EXT1_BITMASK 0x0004 //gpio 2: 2^2 to hex
+#define EXT1_BITMASK 0x0014 //gpio 2 + 4: 2^2 + 4^2 to hex
+//Choose mode:
+//ESP_EXT1_WAKEUP_ALL_LOW: wake up when all GPIOs go low;
+//ESP_EXT1_WAKEUP_ANY_HIGH: wake up if any of the GPIOs go high.
+#define EXT1_WAKEUP_MODE ESP_EXT1_WAKEUP_ANY_HIGH
 
 //#define BUTTON_PIN_BITMASK 0x200000000 // 2^33 in hex
 
@@ -65,7 +87,13 @@ void setup(){
   Note that using internal pullups/pulldowns also requires
   RTC peripherals to be turned on.
   */
-  esp_sleep_enable_ext0_wakeup(GPIO_NUM_5,1); //1 = High, 0 = Low
+  //ext0
+  #ifdef EXT0_ENABLED
+    esp_sleep_enable_ext0_wakeup(EXT0_WAKEUP_PIN, EXT0_WAKEUP_MODE); //1 = High, 0 = Low
+  //ext1
+  #elif defined EXT1_ENABLED
+    esp_sleep_enable_ext1_wakeup(EXT1_BITMASK, EXT1_WAKEUP_MODE);
+  #endif
 
   //If you were to use ext1, you would use it like
   //esp_sleep_enable_ext1_wakeup(BUTTON_PIN_BITMASK,ESP_EXT1_WAKEUP_ANY_HIGH);
