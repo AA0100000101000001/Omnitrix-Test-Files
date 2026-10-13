@@ -1,5 +1,5 @@
 /* This program displays on the LCD screen the omnitrix start animation followed by all the alien figures displayed one after the other in a loop. 
-  It is an Update to png_test
+  It is an Update to png_test. It works with no PSRAM enabled, with 4 MB flash size and partition with 1.2 MB for APP
   
   Tested with: 
   Esp32-S2-Dev
@@ -56,6 +56,7 @@ int Npos = 0;
 void setup()
 {
   //setCpuFrequencyMhz(80); //Reduce CPU Freq
+  setCpuFrequencyMhz(160); //Reduce CPU Freq
 
   Serial.begin(115200);
   Serial.println("\n\n Using the PNGdec library");
