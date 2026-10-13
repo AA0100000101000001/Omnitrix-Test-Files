@@ -1,13 +1,17 @@
 
-#define ROTARY_LEFT_PIN 4
-#define ROTARY_RIGHT_PIN 1
+//#define ROTARY_LEFT_PIN 4
+//#define ROTARY_RIGHT_PIN 1
+#define ROTARY_LEFT_PIN 5
+#define ROTARY_RIGHT_PIN 6
 
 bool rightState = 0; //State of right
 bool leftState = 0; //State of left
 
 void setup() {
-  pinMode(ROTARY_LEFT_PIN, INPUT_PULLUP); // Using internal pullup resistor
-  pinMode(ROTARY_RIGHT_PIN, INPUT_PULLUP);
+  //pinMode(ROTARY_LEFT_PIN, INPUT_PULLUP); // Using internal pullup resistor
+  //pinMode(ROTARY_RIGHT_PIN, INPUT_PULLUP);
+  pinMode(ROTARY_LEFT_PIN, INPUT);
+  pinMode(ROTARY_RIGHT_PIN, INPUT);
 
   attachInterrupt(ROTARY_LEFT_PIN, rotEncoder, CHANGE); // Need to detect both rising or falling signal
   attachInterrupt(ROTARY_RIGHT_PIN, rotEncoder, CHANGE);
@@ -48,7 +52,12 @@ void rotEncoder() {
 }
 
 void loop() {
-
+/*
+  Serial.print("SP1: ");
+  Serial.print(digitalRead(ROTARY_LEFT_PIN));
+  Serial.print(" SP2: ");
+  Serial.println(digitalRead(ROTARY_RIGHT_PIN));
+*/
   if (rightState) {
     Serial.printf("Right\n");
     rightState = false;
