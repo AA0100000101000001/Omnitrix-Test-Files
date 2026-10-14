@@ -26,11 +26,9 @@ void RTCsetTime(int sc, int mn, int hr, int dy, int mt, int yr, int ms) {
   t.tm_min = mn;
   t.tm_sec = sc;
   time_t timeSinceEpoch = mktime(&t);
-  setTime(timeSinceEpoch, ms);
-}
 
-void setTime(unsigned long epoch, int ms) {
   struct timeval tv;
+  unsigned long epoch = (unsigned long) timeSinceEpoch;
   if (epoch > 2082758399){
 	  overflow = true;
 	  tv.tv_sec = epoch - 2082758399;  // epoch time (seconds)
@@ -52,14 +50,24 @@ unsigned long RTCgetLocalEpoch() {
 	return epoch;
 }
 
+unsigned long getTimeNow() {
+  time_t now;
+  time(&now);
+  unsigned long timenow = (unsigned long) now;
+  if (overflow){
+		timenow += 63071999 + 2019686400;
+	}
+  return timenow;
+}
+
 void setup() {
   
   Serial.begin(115200);
   //Set Epoch Time
-  RTCsetTime(0, 0, 0, 1, 1, 2023, 0);  // 1st Jan 2023 00:00:00
+  RTCsetTime(0, 0, 0, 1, 1, 2036, 0);  // 1st Jan 2023 00:00:00
   //Get Epoch Time
   startTime = RTCgetLocalEpoch();
-
+  
 }
 
 void loop() {
@@ -70,5 +78,17 @@ void loop() {
   timePassed = RTCgetLocalEpoch();
   Serial.print("Seconds passed since start:");
   Serial.println(timePassed - startTime);
+
+  //Get time without overflow
+  time_t now;
+  time(&now);
+
+  //Show time now
+  Serial.println((unsigned long)now);
+
+  //Get time via time() with overflow taken care of, gets the same output as RTCgetLocalEpoch
+  Serial.println(getTimeNow());
+  // epoch time
+  Serial.println(timePassed);
 
 }
