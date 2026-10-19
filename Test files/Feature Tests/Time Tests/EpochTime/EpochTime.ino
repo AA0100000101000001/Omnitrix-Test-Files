@@ -50,10 +50,10 @@ unsigned long RTCgetLocalEpoch() {
 	return epoch;
 }
 
-unsigned long getTimeNow() {
+uint64_t getTimeNow() {
   time_t now;
   time(&now);
-  unsigned long timenow = (unsigned long) now;
+  uint64_t timenow = (uint64_t) now;
   if (overflow){
 		timenow += 63071999 + 2019686400;
 	}
@@ -84,7 +84,7 @@ void loop() {
   time(&now);
 
   //Show time now
-  Serial.println((unsigned long)now);
+  Serial.println((uint64_t)now);
 
   //Get time via time() with overflow taken care of, gets the same output as RTCgetLocalEpoch
   Serial.println(getTimeNow());
