@@ -15,7 +15,7 @@ static bool overflow;
 uint32_t startTime;
 uint32_t timePassed;
 
-void RTCsetTime(int sc, int mn, int hr, int dy, int mt, int yr, int ms) {
+void RTCsetTime(int sc, int mn, int hr, int dy, int mt, int yr) {//, int ms) {
   // seconds, minute, hour, day, month, year $ microseconds(optional)
   // ie setTime(20, 34, 8, 1, 4, 2021) = 8:34:20 1/4/2021
   struct tm t = {0, 0, 0, 0, 0, 0, 0, 0, 0};      // Initalize to all 0's
@@ -36,7 +36,7 @@ void RTCsetTime(int sc, int mn, int hr, int dy, int mt, int yr, int ms) {
 	  overflow = false;
 	  tv.tv_sec = epoch;  // epoch time (seconds)
   }
-  tv.tv_usec = ms;    // microseconds
+  //tv.tv_usec = ms;    // microseconds
   settimeofday(&tv, NULL);
 }
 
@@ -64,7 +64,7 @@ void setup() {
   
   Serial.begin(115200);
   //Set Epoch Time
-  RTCsetTime(0, 0, 0, 1, 1, 2036, 0);  // 1st Jan 2023 00:00:00
+  RTCsetTime(0, 0, 0, 1, 1, 2036);  // 1st Jan 2023 00:00:00
   //Get Epoch Time
   startTime = RTCgetLocalEpoch();
   
