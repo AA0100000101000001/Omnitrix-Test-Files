@@ -64,7 +64,9 @@ void setup() {
   
   Serial.begin(115200);
   //Set Epoch Time
-  RTCsetTime(0, 0, 0, 1, 1, 2036);  // 1st Jan 2023 00:00:00
+  //RTCsetTime(0, 0, 0, 1, 1, 2026);  // 1st Jan 2026 00:00:00    1767223490
+  RTCsetTime(0, 0, 0, 1, 1, 2036);  // 1st Jan 2023 00:00:00      18446744071604  18448826830003  1942293683
+  //RTCsetTime(0, 0, 0, 1, 1, 2104);  // 1st Jan 2104 00:00:00    2145828290      4228586689      4228586689
   //Get Epoch Time
   startTime = RTCgetLocalEpoch();
   
