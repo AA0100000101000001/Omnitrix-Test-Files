@@ -278,10 +278,6 @@ void showAnimation() {
     //Draw previous green line to clean
     tft.drawLine(comx-1, comy, xLmid-2, 120, OMNITRIX_GREEN); //Draw up left part
     tft.drawLine(comx+1, comy, xRmid+2, 120, OMNITRIX_GREEN); //Draw up right part
-    
-    //got the solution lol. need to make gray lines not get drawn where black ones are supposed to be.
-    //like draw them a little higher. will need a new function that calculates height of
-    //black lines while it knows the width. 
 
     //This makes sure the upper right and left lines intersecting on the gray to black part have the right point
     //get common point of the lines: upper left to mid gray part and upper right to mid black part
