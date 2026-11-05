@@ -33,6 +33,8 @@ PNG png; // PNG decoder instance
 
 #define MAX_IMAGE_WDITH 240 // Sets rendering line buffer lengths, adjust for your images
 
+//Site for RGB565: https://rgbcolorpicker.com/565
+
 //#define OMNITRIX_GREEN 0xA707 //default
 #define OMNITRIX_GREEN 0x07e0
 #define OMNITRIX_RED 0xC000 //default
@@ -101,7 +103,7 @@ void loop()
   showAnimation();
   delay(1000);
 
-  for (Npos = 0;Npos <= 0; Npos++) {
+  for (Npos = 0;Npos <= -1; Npos++) {
   //N; Npos++) {
     
     eraseAlien();
@@ -109,8 +111,8 @@ void loop()
     delay(1000);
 
   }
-  eraseAlien();
-  delay(1000);
+  //eraseAlien();
+  //delay(1000);
   /*
   tft.fillScreen(TFT_WHITE);
   ShowSymbols();
@@ -118,6 +120,10 @@ void loop()
   tft.fillScreen(OMNITRIX_RED);
   ShowSymbols();
   delay(1000);*/
+  tft.fillScreen(OMNITRIX_GREEN);
+  delay(1000);
+  showSelectSymbols();
+  delay(1000);
   tft.fillScreen(OMNITRIX_GREEN);
   ShowSymbols();
  
@@ -171,6 +177,50 @@ void ShowSymbols() {
 
   #endif
  
+}
+
+void showSelectSymbols() {
+
+  //Start Symbols with images
+  #if defined START_ANIMATION_WITH_IMAGES
+
+  int16_t rc = png.openFLASH((uint8_t *)omnitrix_anim[omnitrix_anim_N], sizeof(omnitrix_anim[omnitrix_anim_N]), pngDraw);
+
+  if (rc == PNG_SUCCESS) {
+    //Serial.println("Successfully png file");
+
+    tft.startWrite();
+    rc = png.decode(NULL, 0);
+    tft.endWrite();
+  }
+
+  //Hard coded start symbols
+  #elif defined START_ANIMATION_HARD_CODED
+
+  int16_t xLup, xLmid, xLdown, xRup, xRmid, xRdown, black;
+    
+  //Draw gray symbols
+  for (xLup = 0, xLmid = (-ANIM_TRIANGLE_WIDTH-ANIM_TRIANGLE_BASE_OFFSET), xLdown = 0, 
+  xRup = TFT_HEIGHT_USED, xRmid = (TFT_WIDTH_USED+ANIM_TRIANGLE_WIDTH+ANIM_TRIANGLE_BASE_OFFSET), xRdown = TFT_HEIGHT_USED; 
+  xLmid <= (TFT_WIDTH_MIDDLE-(ANIM_END_WIDTH_OFFSET/2)-BLACK_LINE_WIDTH-ANIM_TRIANGLE_WIDTH-ANIM_TRIANGLE_BASE_OFFSET) ; 
+  xLup++, xLmid++, xLdown++, xRup--, xRmid--, xRdown-- ) {
+    tft.drawLine(xLup, 0, xLmid, TFT_HEIGHT_MIDDLE, OMNITRIX_GRAY); //Draw up left part
+    tft.drawLine(xLmid, TFT_HEIGHT_MIDDLE, xLdown, TFT_HEIGHT_USED, OMNITRIX_GRAY); //Draw down left part
+    tft.drawLine(xRup, 0, xRmid, TFT_HEIGHT_MIDDLE, OMNITRIX_GRAY); //Draw up right part
+    tft.drawLine(xRmid, TFT_HEIGHT_MIDDLE, xRdown, TFT_HEIGHT_USED, OMNITRIX_GRAY); //Draw down right part
+
+    //delay(50);
+  }
+
+  //Draw black lines
+  for (black = 0; black <= BLACK_LINE_WIDTH; black++, xLup++, xLmid++, xLdown++, xRup--, xRmid--, xRdown--) {
+    tft.drawLine(xLup, 0, xLmid, TFT_HEIGHT_MIDDLE, OMNITRIX_BLACK); //Draw up left part
+    tft.drawLine(xLmid, TFT_HEIGHT_MIDDLE, xLdown, TFT_HEIGHT_USED, OMNITRIX_BLACK); //Draw down left part
+    tft.drawLine(xRup, 0, xRmid, TFT_HEIGHT_MIDDLE, OMNITRIX_BLACK); //Draw up right part
+    tft.drawLine(xRmid, TFT_HEIGHT_MIDDLE, xRdown, TFT_HEIGHT_USED, OMNITRIX_BLACK); //Draw down right part
+  }
+
+  #endif
 }
 
 void showAnimation() {
@@ -458,7 +508,7 @@ void eraseAlien() {
 
   for ( ; xLmid >= TFT_WIDTH_MIDDLE ; xLmid--, xRmid++ ) {
 
-    tft.drawLine(xLup, 0, xLmid, TFT_HEIGHT_MIDDLE, OMNITRIX_GREEN); //Draw up left part purple 0x780F
+    tft.drawLine(xLup, 0, xLmid, TFT_HEIGHT_MIDDLE, OMNITRIX_GREEN); //Draw up left part
     tft.drawLine(xLmid, TFT_HEIGHT_MIDDLE, xLdown, TFT_HEIGHT_USED, OMNITRIX_GREEN); //Draw down left part OMNITRIX_GREEN
     tft.drawLine(xRup, 0, xRmid, TFT_HEIGHT_MIDDLE, OMNITRIX_GREEN); //Draw up right part
     tft.drawLine(xRmid, TFT_HEIGHT_MIDDLE, xRdown, TFT_HEIGHT_USED, OMNITRIX_GREEN); //Draw down right part
@@ -466,7 +516,10 @@ void eraseAlien() {
 
   //Draw from left to right
   // for ( ; xLmid >= ANIM_TRIANGLE_PIXELS_TRAVEL ; xLmid--, xRmid++ ) {
-    
+  //   tft.drawLine(xLup, 0, xLmid, TFT_HEIGHT_MIDDLE, OMNITRIX_GREEN); //Draw up left part purple 0x780F
+  //   tft.drawLine(xLmid, TFT_HEIGHT_MIDDLE, xLdown, TFT_HEIGHT_USED, OMNITRIX_GREEN); //Draw down left part OMNITRIX_GREEN
+  //   tft.drawLine(xRup, 0, xRmid, TFT_HEIGHT_MIDDLE, OMNITRIX_GREEN); //Draw up right part
+  //   tft.drawLine(xRmid, TFT_HEIGHT_MIDDLE, xRdown, TFT_HEIGHT_USED, OMNITRIX_GREEN); //Draw down right part
   // }
 
   #endif
