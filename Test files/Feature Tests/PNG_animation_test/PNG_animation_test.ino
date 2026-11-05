@@ -232,8 +232,11 @@ void showAnimation() {
     getCommonPoint(xLup, 0, xLmid, 120, xRup-BLACK_LINE_WIDTH, 0, xRmid-BLACK_LINE_WIDTH, 120, &comx, &comy);
 
     //Draw gray up lines
-    tft.drawLine(xLup, 0, comx, comy, OMNITRIX_GRAY); //Draw up left part  AAAA needs cleaning
+    tft.drawLine(xLup, 0, comx, comy, OMNITRIX_GRAY); //Draw up left part
     tft.drawLine(xRup, 0, (240-comx), comy, OMNITRIX_GRAY); //Draw up right part
+    //Draw previous gray line to clean
+    tft.drawLine(xLup-1, 0, comx-1, comy, OMNITRIX_GRAY); //Draw up left part
+    tft.drawLine(xRup+1, 0, (240-comx)+1, comy, OMNITRIX_GRAY); //Draw up right part
     //Draw black up lines
     tft.drawLine(xLup + BLACK_LINE_WIDTH, 0, xLmid + BLACK_LINE_WIDTH, 120, TFT_BLACK); //Draw up left part
     tft.drawLine(xRup - BLACK_LINE_WIDTH, 0, xRmid - BLACK_LINE_WIDTH, 120, TFT_BLACK); //Draw up right part
@@ -244,6 +247,9 @@ void showAnimation() {
     //Draw gray down lines
     tft.drawLine(comx, comy, xLdown, 240, OMNITRIX_GRAY); //Draw down left part
     tft.drawLine((240-comx), comy, xRdown, 240, OMNITRIX_GRAY); //Draw down right part
+    //Draw previous gray line to clean
+    tft.drawLine(comx-1, comy, xLdown-1, 240, OMNITRIX_GRAY); //Draw down left part
+    tft.drawLine((240-comx)+1, comy, xRdown+1, 240, OMNITRIX_GRAY); //Draw down right part
     //Draw black down lines
     tft.drawLine(xLmid + BLACK_LINE_WIDTH, 120, xLdown + BLACK_LINE_WIDTH, 240, TFT_BLACK); //Draw down left part
     tft.drawLine(xRmid - BLACK_LINE_WIDTH, 120, xRdown - BLACK_LINE_WIDTH, 240, TFT_BLACK); //Draw down right part
@@ -269,9 +275,9 @@ void showAnimation() {
     //Draw green part of lines
     tft.drawLine(comx, comy, xLmid-1, 120, OMNITRIX_GREEN); //Draw up left part
     tft.drawLine(comx, comy, xRmid+1, 120, OMNITRIX_GREEN); //Draw up right part
-    //Draw previous green line to clean <- AAA MESSY
-    tft.drawLine(comx-1, comy, xLmid-1, 120, OMNITRIX_GREEN); //Draw up left part
-    tft.drawLine(comx+1, comy, xRmid+1, 120, OMNITRIX_GREEN); //Draw up right part
+    //Draw previous green line to clean
+    tft.drawLine(comx-1, comy, xLmid-2, 120, OMNITRIX_GREEN); //Draw up left part
+    tft.drawLine(comx+1, comy, xRmid+2, 120, OMNITRIX_GREEN); //Draw up right part
     
     //got the solution lol. need to make gray lines not get drawn where black ones are supposed to be.
     //like draw them a little higher. will need a new function that calculates height of
@@ -281,14 +287,12 @@ void showAnimation() {
     //get common point of the lines: upper left to mid gray part and upper right to mid black part
     getCommonPoint(xLup, 0, xLmid, 120, xRup-BLACK_LINE_WIDTH, 0, xRmid-BLACK_LINE_WIDTH, 120, &comx, &comy);
     
-    //AAA Need function that counts the points for height of black line width 
-    //with known inputs BLACK_LINE_WIDTH, comx, comy
     //Draw gray part of lines
     tft.drawLine(xLup-1, 0, comx, comy, OMNITRIX_GRAY); //Draw up left part
     tft.drawLine(xRup+1, 0, (240-comx), comy, OMNITRIX_GRAY); //Draw up right part  purple 0x780F
     //Draw previous gray line to clean
-    //tft.drawLine(xLup-1, 0, comx-1, comy, OMNITRIX_GRAY); //Draw up left part
-    //tft.drawLine(xRup+1, 0, comx+1, comy, OMNITRIX_GRAY); //Draw up right part
+    tft.drawLine(xLup-2, 0, comx-1, comy, OMNITRIX_GRAY); //Draw up left part
+    tft.drawLine(xRup+2, 0, (240-comx)+1, comy, OMNITRIX_GRAY); //Draw up right part
 
     
 
@@ -316,12 +320,11 @@ void showAnimation() {
     tft.drawLine(comx, comy, xLdown, 240, OMNITRIX_GRAY); //Draw down left part
     tft.drawLine((240-comx), comy, xRdown, 240, OMNITRIX_GRAY); //Draw down right part
     //Draw previous gray line to clean
-    //tft.drawLine(comx-1, comy, xLdown-1, 240, OMNITRIX_GRAY); //Draw down left part
-    //tft.drawLine(comx+1, comy, xRdown+1, 240, OMNITRIX_GRAY); //Draw down right part
+    tft.drawLine(comx-1, comy, xLdown-1, 240, OMNITRIX_GRAY); //Draw down left part
+    tft.drawLine((240-comx)+1, comy, xRdown+1, 240, OMNITRIX_GRAY); //Draw down right part
     
 
     //Draw black lines
-     //THESE ARE KEEPERS AAAA
     tft.drawLine(xLup + BLACK_LINE_WIDTH, 0, xLmid + BLACK_LINE_WIDTH, 120, TFT_BLACK); //Draw up left part
     tft.drawLine(xRup - BLACK_LINE_WIDTH, 0, xRmid - BLACK_LINE_WIDTH, 120, TFT_BLACK); //Draw up right part
     tft.drawLine(xLmid + BLACK_LINE_WIDTH, 120, xLdown + BLACK_LINE_WIDTH, 240, TFT_BLACK); //Draw down left part
