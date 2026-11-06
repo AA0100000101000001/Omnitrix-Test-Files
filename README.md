@@ -17,7 +17,7 @@
 - [x] Make Schematic using EasyEDA  
 - [x] Rewrite code to use GPIO interrupts  
 - [x] Add config file for pin selection  
-- [ ] Add support for ESP32-S3 Development Board   
+- [x] Add support for ESP32-S3 Development Board   
 - [ ] Use multiple inputs to wake up from deep sleep (ext1)  
 - [ ] Power reduction code for LCD display   
 - [ ] Check current consumption   
