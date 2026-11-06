@@ -50,15 +50,12 @@ TFT_eSPI tft = TFT_eSPI();         // Invoke custom library
 
 #if defined START_ANIMATION_HARD_CODED
 
+//Animation configuration
 #define TFT_WIDTH_USED 240
 #define TFT_HEIGHT_USED 240
 
-//Animation configuration
-#define TFT_WIDTH_MIDDLE (TFT_WIDTH_USED/2)
-#define TFT_HEIGHT_MIDDLE (TFT_HEIGHT_USED/2)
-
 #define ANIM_TRIANGLE_WIDTH 74 //default, must be lower than TFT_WIDTH_MIDDLE
-//#define ANIM_TRIANGLE_WIDTH 60
+//#define ANIM_TRIANGLE_WIDTH 80  //AAA showSelectSymbols needs to be the same with the default with these
 #define ANIM_TRIANGLE_BASE_OFFSET 6 //default
 //#define ANIM_TRIANGLE_BASE_OFFSET 0
 #define ANIM_TRIANGLE_PIXELS_TRAVEL 215 //default, must be lower than TFT_WIDTH_USED and higher than TFT_WIDTH_MIDDLE
@@ -66,6 +63,9 @@ TFT_eSPI tft = TFT_eSPI();         // Invoke custom library
 #define BLACK_LINE_WIDTH 11 //default
 //#define BLACK_LINE_WIDTH 16
 
+//Automatically calculated animation values
+#define TFT_WIDTH_MIDDLE (TFT_WIDTH_USED/2)
+#define TFT_HEIGHT_MIDDLE (TFT_HEIGHT_USED/2)
 #define ANIM_TRIANGLE_START_LEFT_OFFSET (ANIM_TRIANGLE_WIDTH + ANIM_TRIANGLE_BASE_OFFSET)
 #define ANIM_TRIANGLE_START_RIGHT_OFFSET (ANIM_TRIANGLE_WIDTH + ANIM_TRIANGLE_BASE_OFFSET + TFT_WIDTH_USED)
 #define ANIM_END_WIDTH_OFFSET (ANIM_TRIANGLE_PIXELS_TRAVEL-BLACK_LINE_WIDTH-ANIM_TRIANGLE_WIDTH-TFT_WIDTH_MIDDLE)
@@ -103,16 +103,17 @@ void loop()
   showAnimation();
   delay(1000);
 
-  for (Npos = 0;Npos <= -1; Npos++) {
-  //N; Npos++) {
+  for (Npos = 0;//Npos <= 0; Npos++) {
+  Npos <= N; Npos++) {
     
     eraseAlien();
     showAlien();
-    delay(1000);
+    delay(100);
 
   }
-  //eraseAlien();
-  //delay(1000);
+  delay(1000);
+  eraseAlien();
+  delay(1000);
   /*
   tft.fillScreen(TFT_WHITE);
   ShowSymbols();
@@ -499,20 +500,28 @@ void eraseAlien() {
 
   int16_t xLup, xLmid, xLdown, xRup, xRmid, xRdown;
 
-  xLup = TFT_WIDTH_MIDDLE - ((ANIM_END_WIDTH_OFFSET-2)/2) - 1;
+  xLup = TFT_WIDTH_MIDDLE + ((ANIM_END_WIDTH_OFFSET-2)/2) + 1;
   xLmid = (ANIM_TRIANGLE_PIXELS_TRAVEL-1) - BLACK_LINE_WIDTH;
-  xLdown = TFT_WIDTH_MIDDLE - ((ANIM_END_WIDTH_OFFSET-2)/2) - 1;
-  xRup = TFT_WIDTH_MIDDLE + ((ANIM_END_WIDTH_OFFSET-2)/2) + 1;
+  xLdown = TFT_WIDTH_MIDDLE + ((ANIM_END_WIDTH_OFFSET-2)/2) + 1;
+  xRup = TFT_WIDTH_MIDDLE - ((ANIM_END_WIDTH_OFFSET-2)/2) - 1;
   xRmid = (TFT_WIDTH_USED-ANIM_TRIANGLE_PIXELS_TRAVEL+1) + BLACK_LINE_WIDTH;
-  xRdown = TFT_WIDTH_MIDDLE + ((ANIM_END_WIDTH_OFFSET-2)/2) + 1;
+  xRdown = TFT_WIDTH_MIDDLE - ((ANIM_END_WIDTH_OFFSET-2)/2) - 1;
 
-  for ( ; xLmid >= TFT_WIDTH_MIDDLE ; xLmid--, xRmid++ ) {
+  // Draw the cleaning up to where the symbols end
+  for ( ; xLmid >= xLup ; xLmid--, xRmid++ ) {
 
     tft.drawLine(xLup, 0, xLmid, TFT_HEIGHT_MIDDLE, OMNITRIX_GREEN); //Draw up left part
     tft.drawLine(xLmid, TFT_HEIGHT_MIDDLE, xLdown, TFT_HEIGHT_USED, OMNITRIX_GREEN); //Draw down left part OMNITRIX_GREEN
     tft.drawLine(xRup, 0, xRmid, TFT_HEIGHT_MIDDLE, OMNITRIX_GREEN); //Draw up right part
     tft.drawLine(xRmid, TFT_HEIGHT_MIDDLE, xRdown, TFT_HEIGHT_USED, OMNITRIX_GREEN); //Draw down right part
   }
+  // Draw the cleaning to the rest of the space
+  for (; xLmid >= TFT_WIDTH_MIDDLE; xLmid--,xRmid++) {
+
+    tft.drawLine(xLmid, 0, xLmid, TFT_HEIGHT_USED, OMNITRIX_GREEN); //Draw left to right part
+    tft.drawLine(xRmid, 0, xRmid, TFT_HEIGHT_USED, OMNITRIX_GREEN); //Draw right to left part
+  }
+
 
   //Draw from left to right
   // for ( ; xLmid >= ANIM_TRIANGLE_PIXELS_TRAVEL ; xLmid--, xRmid++ ) {
