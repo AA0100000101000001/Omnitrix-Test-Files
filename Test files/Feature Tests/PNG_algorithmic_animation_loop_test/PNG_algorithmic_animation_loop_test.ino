@@ -52,14 +52,16 @@ TFT_eSPI tft = TFT_eSPI();         // Invoke custom library
 
 //Animation configuration
 #define TFT_WIDTH_USED 240 //120 // 240 //default
-#define TFT_HEIGHT_USED 240 //default
+#define TFT_HEIGHT_USED 240 //120 // 240 //default
 
 #define ANIM_TRIANGLE_WIDTH 74 //default, must be lower than TFT_WIDTH_MIDDLE
-//#define ANIM_TRIANGLE_WIDTH 40  //AAA showSelectSymbols needs to be the same with the default with these
-#define ANIM_TRIANGLE_BASE_OFFSET 6 //default
+//#define ANIM_TRIANGLE_WIDTH 80  //AAA showSelectSymbols needs to be the same with the default with these
+//#define ANIM_TRIANGLE_WIDTH 40
+#define ANIM_TRIANGLE_BASE_OFFSET -6 //default
 //#define ANIM_TRIANGLE_BASE_OFFSET 0
-#define ANIM_TRIANGLE_PIXELS_TRAVEL 215 //default, must be lower than TFT_WIDTH_USED and higher than TFT_WIDTH_MIDDLE
+#define ANIM_TRIANGLE_PIXELS_TRAVEL 215 //default, must be lower than TFT_WIDTH_USED and higher than TFT_WIDTH_MIDDLE+ANIM_TRIANGLE_WIDTH
 //#define ANIM_TRIANGLE_PIXELS_TRAVEL 80
+//#define ANIM_TRIANGLE_PIXELS_TRAVEL 300
 
 #define BLACK_LINE_WIDTH 11 //default
 //#define BLACK_LINE_WIDTH 16
@@ -68,11 +70,13 @@ TFT_eSPI tft = TFT_eSPI();         // Invoke custom library
 #define TFT_WIDTH_MIDDLE (TFT_WIDTH_USED/2) //120 in default
 #define TFT_HEIGHT_MIDDLE (TFT_HEIGHT_USED/2) //120 in default
 // 80 in default
-#define ANIM_TRIANGLE_START_LEFT_OFFSET (ANIM_TRIANGLE_WIDTH + ANIM_TRIANGLE_BASE_OFFSET)
+#define ANIM_TRIANGLE_START_LEFT_OFFSET (ANIM_TRIANGLE_WIDTH - ANIM_TRIANGLE_BASE_OFFSET)
 // 320 in default
-#define ANIM_TRIANGLE_START_RIGHT_OFFSET (ANIM_TRIANGLE_WIDTH + ANIM_TRIANGLE_BASE_OFFSET + TFT_WIDTH_USED)
+#define ANIM_TRIANGLE_START_RIGHT_OFFSET (ANIM_TRIANGLE_WIDTH - ANIM_TRIANGLE_BASE_OFFSET + TFT_WIDTH_USED)
 // 10 in default
-#define ANIM_END_WIDTH_OFFSET (ANIM_TRIANGLE_PIXELS_TRAVEL-BLACK_LINE_WIDTH-ANIM_TRIANGLE_WIDTH-TFT_WIDTH_MIDDLE)
+//#define ANIM_END_WIDTH_OFFSET (ANIM_TRIANGLE_PIXELS_TRAVEL-BLACK_LINE_WIDTH-ANIM_TRIANGLE_WIDTH-TFT_WIDTH_MIDDLE)
+// 8 in default
+#define ANIM_END_WIDTH_OFFSET 2*(ANIM_TRIANGLE_PIXELS_TRAVEL-BLACK_LINE_WIDTH-ANIM_TRIANGLE_START_LEFT_OFFSET-TFT_WIDTH_MIDDLE)
 //#define ANIM_SELECT_SYM_END (TFT_WIDTH_USED- ANIM_TRIANGLE_PIXELS_TRAVEL-BLACK_LINE_WIDTH-ANIM_TRIANGLE_WIDTH)
 //#define ANIM_END_WIDTH_OFFSET (TFT_WIDTH_USED-(ANIM_SELECT_SYM_END*2))
 
@@ -87,8 +91,8 @@ int Npos = 0;
 
 void setup()
 {
-  //setCpuFrequencyMhz(80); //Reduce CPU Freq
-  setCpuFrequencyMhz(160); //Reduce CPU Freq
+  setCpuFrequencyMhz(80); //Reduce CPU Freq
+  //setCpuFrequencyMhz(160); //Reduce CPU Freq
 
   Serial.begin(115200);
   Serial.println("\n\n Using the PNGdec library");
@@ -284,12 +288,12 @@ void showAnimation() {
   int16_t xLup, xLmid, xLdown, xRup, xRmid, xRdown;
   uint8_t delay_time = 4;
 
-  xLup = -ANIM_TRIANGLE_BASE_OFFSET;
+  xLup = ANIM_TRIANGLE_BASE_OFFSET;
   xLmid = ANIM_TRIANGLE_WIDTH;
-  xLdown = -ANIM_TRIANGLE_BASE_OFFSET;
-  xRup = TFT_WIDTH_USED + ANIM_TRIANGLE_BASE_OFFSET;
+  xLdown = ANIM_TRIANGLE_BASE_OFFSET;
+  xRup = TFT_WIDTH_USED - ANIM_TRIANGLE_BASE_OFFSET;
   xRmid = TFT_WIDTH_USED - ANIM_TRIANGLE_WIDTH;
-  xRdown = TFT_WIDTH_USED + ANIM_TRIANGLE_BASE_OFFSET;
+  xRdown = TFT_WIDTH_USED - ANIM_TRIANGLE_BASE_OFFSET;
 
   //Draw symbols up until lines don't intersect yet
   for ( ; (xLmid + BLACK_LINE_WIDTH) <= TFT_WIDTH_MIDDLE ; xLup++, xLmid++, xLdown++, xRup--, xRmid--, xRdown-- ) {
@@ -552,18 +556,14 @@ void eraseAlien() {
 
   int16_t xLup, xLmid, xLdown, xRup, xRmid, xRdown;
 
-  // xLup = TFT_WIDTH_MIDDLE - ((ANIM_END_WIDTH_OFFSET-2)/2) - 1;
-  // xLmid = (TFT_WIDTH_USED-ANIM_TRIANGLE_PIXELS_TRAVEL+1) + BLACK_LINE_WIDTH;
-  // xLdown = TFT_WIDTH_MIDDLE - ((ANIM_END_WIDTH_OFFSET-2)/2) - 1;
-  // xRup = TFT_WIDTH_MIDDLE + ((ANIM_END_WIDTH_OFFSET-2)/2) + 1;
-  // xRmid = (ANIM_TRIANGLE_PIXELS_TRAVEL-1) - BLACK_LINE_WIDTH; 
-  // xRdown = TFT_WIDTH_MIDDLE + ((ANIM_END_WIDTH_OFFSET-2)/2) + 1;
-  xLup = TFT_WIDTH_MIDDLE - ((ANIM_END_WIDTH_OFFSET-2)/2) - 1;
-  xLmid = (TFT_WIDTH_USED-ANIM_TRIANGLE_PIXELS_TRAVEL+1) + BLACK_LINE_WIDTH;
-  xLdown = TFT_WIDTH_MIDDLE - ((ANIM_END_WIDTH_OFFSET-2)/2) - 1;
-  xRup = TFT_WIDTH_MIDDLE + ((ANIM_END_WIDTH_OFFSET-2)/2) + 1;
-  xRmid = (ANIM_TRIANGLE_PIXELS_TRAVEL-1) - BLACK_LINE_WIDTH; 
-  xRdown = TFT_WIDTH_MIDDLE + ((ANIM_END_WIDTH_OFFSET-2)/2) + 1;
+  xLup = TFT_WIDTH_MIDDLE - ((ANIM_END_WIDTH_OFFSET-2)/2);
+  xLmid = (TFT_WIDTH_USED-ANIM_TRIANGLE_PIXELS_TRAVEL+1 + BLACK_LINE_WIDTH);
+  xLdown = TFT_WIDTH_MIDDLE - ((ANIM_END_WIDTH_OFFSET-2)/2);
+  xRup = TFT_WIDTH_MIDDLE + ((ANIM_END_WIDTH_OFFSET-2)/2);
+  xRmid = (ANIM_TRIANGLE_PIXELS_TRAVEL-1 - BLACK_LINE_WIDTH); 
+  xRdown = TFT_WIDTH_MIDDLE + ((ANIM_END_WIDTH_OFFSET-2)/2);
+
+  Serial.printf("Erase: xLup: %d, xLmid: %d, xLdown: %d, xRup: %d, xRmid: %d, xRdown: %d\n", xLup, xLmid, xLdown, xRup, xRmid, xRdown);
 
   // Draw the cleaning up to where the symbols end
   for ( ; xLmid <= xLup ; xLmid++, xRmid-- ) {
@@ -600,12 +600,12 @@ void eraseAlienWithDirection(bool left_to_rightDir) {
   int16_t startXup, startXmid, startXdown, endXup, endXmid, endXdown;
   int8_t step;
 
-  xLup = TFT_WIDTH_MIDDLE - ((ANIM_END_WIDTH_OFFSET-2)/2) - 1;
-  xLmid = (TFT_WIDTH_USED-ANIM_TRIANGLE_PIXELS_TRAVEL+1) + BLACK_LINE_WIDTH;
-  xLdown = TFT_WIDTH_MIDDLE - ((ANIM_END_WIDTH_OFFSET-2)/2) - 1;
-  xRup = TFT_WIDTH_MIDDLE + ((ANIM_END_WIDTH_OFFSET-2)/2) + 1;
-  xRmid = (ANIM_TRIANGLE_PIXELS_TRAVEL-1) - BLACK_LINE_WIDTH; 
-  xRdown = TFT_WIDTH_MIDDLE + ((ANIM_END_WIDTH_OFFSET-2)/2) + 1;
+  xLup = TFT_WIDTH_MIDDLE - ((ANIM_END_WIDTH_OFFSET-2)/2);
+  xLmid = (TFT_WIDTH_USED-ANIM_TRIANGLE_PIXELS_TRAVEL+1 + BLACK_LINE_WIDTH);
+  xLdown = TFT_WIDTH_MIDDLE - ((ANIM_END_WIDTH_OFFSET-2)/2);
+  xRup = TFT_WIDTH_MIDDLE + ((ANIM_END_WIDTH_OFFSET-2)/2);
+  xRmid = (ANIM_TRIANGLE_PIXELS_TRAVEL-1 - BLACK_LINE_WIDTH); 
+  xRdown = TFT_WIDTH_MIDDLE + ((ANIM_END_WIDTH_OFFSET-2)/2);
 
   //Left to Right
   if (left_to_rightDir) {
