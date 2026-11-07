@@ -51,24 +51,30 @@ TFT_eSPI tft = TFT_eSPI();         // Invoke custom library
 #if defined START_ANIMATION_HARD_CODED
 
 //Animation configuration
-#define TFT_WIDTH_USED 240
-#define TFT_HEIGHT_USED 240
+#define TFT_WIDTH_USED 240 //120 // 240 //default
+#define TFT_HEIGHT_USED 240 //default
 
 #define ANIM_TRIANGLE_WIDTH 74 //default, must be lower than TFT_WIDTH_MIDDLE
-//#define ANIM_TRIANGLE_WIDTH 80  //AAA showSelectSymbols needs to be the same with the default with these
+//#define ANIM_TRIANGLE_WIDTH 40  //AAA showSelectSymbols needs to be the same with the default with these
 #define ANIM_TRIANGLE_BASE_OFFSET 6 //default
 //#define ANIM_TRIANGLE_BASE_OFFSET 0
 #define ANIM_TRIANGLE_PIXELS_TRAVEL 215 //default, must be lower than TFT_WIDTH_USED and higher than TFT_WIDTH_MIDDLE
+//#define ANIM_TRIANGLE_PIXELS_TRAVEL 80
 
 #define BLACK_LINE_WIDTH 11 //default
 //#define BLACK_LINE_WIDTH 16
 
 //Automatically calculated animation values
-#define TFT_WIDTH_MIDDLE (TFT_WIDTH_USED/2)
-#define TFT_HEIGHT_MIDDLE (TFT_HEIGHT_USED/2)
+#define TFT_WIDTH_MIDDLE (TFT_WIDTH_USED/2) //120 in default
+#define TFT_HEIGHT_MIDDLE (TFT_HEIGHT_USED/2) //120 in default
+// 80 in default
 #define ANIM_TRIANGLE_START_LEFT_OFFSET (ANIM_TRIANGLE_WIDTH + ANIM_TRIANGLE_BASE_OFFSET)
+// 320 in default
 #define ANIM_TRIANGLE_START_RIGHT_OFFSET (ANIM_TRIANGLE_WIDTH + ANIM_TRIANGLE_BASE_OFFSET + TFT_WIDTH_USED)
+// 10 in default
 #define ANIM_END_WIDTH_OFFSET (ANIM_TRIANGLE_PIXELS_TRAVEL-BLACK_LINE_WIDTH-ANIM_TRIANGLE_WIDTH-TFT_WIDTH_MIDDLE)
+//#define ANIM_SELECT_SYM_END (TFT_WIDTH_USED- ANIM_TRIANGLE_PIXELS_TRAVEL-BLACK_LINE_WIDTH-ANIM_TRIANGLE_WIDTH)
+//#define ANIM_END_WIDTH_OFFSET (TFT_WIDTH_USED-(ANIM_SELECT_SYM_END*2))
 
 #endif
 
@@ -81,8 +87,8 @@ int Npos = 0;
 
 void setup()
 {
-  setCpuFrequencyMhz(80); //Reduce CPU Freq
-  //setCpuFrequencyMhz(160); //Reduce CPU Freq
+  //setCpuFrequencyMhz(80); //Reduce CPU Freq
+  setCpuFrequencyMhz(160); //Reduce CPU Freq
 
   Serial.begin(115200);
   Serial.println("\n\n Using the PNGdec library");
@@ -103,8 +109,8 @@ void loop()
   showAnimation();
   delay(1000);
 
-  for (Npos = 0;//Npos <= 0; Npos++) {
-  Npos <= N; Npos++) {
+  for (Npos = 0;Npos <= 0; Npos++) {
+  //Npos <= N; Npos++) {
     
     eraseAlien();
     showAlien();
@@ -112,15 +118,15 @@ void loop()
 
   }
   delay(1000);
-  eraseAlien();
-  delay(1000);
-  Npos=0;
-  showAlien();
-  eraseAlienWithDirection(true); //left to right
-  delay(1000);
-  showAlien();
-  eraseAlienWithDirection(false); //right to left
-  delay(1000);
+  // eraseAlien();
+  // delay(1000);
+  // Npos=0;
+  // showAlien();
+  // eraseAlienWithDirection(true); //left to right
+  // delay(1000);
+  // showAlien();
+  // eraseAlienWithDirection(false); //right to left
+  // delay(1000);
   /*
   tft.fillScreen(TFT_WHITE);
   ShowSymbols();
@@ -206,11 +212,20 @@ void showSelectSymbols() {
   #elif defined START_ANIMATION_HARD_CODED
 
   int16_t xLup, xLmid, xLdown, xRup, xRmid, xRdown, black;
+
+  Serial.print("xLmid <= ");
+  Serial.println((TFT_WIDTH_MIDDLE-(ANIM_END_WIDTH_OFFSET/2)-BLACK_LINE_WIDTH-ANIM_TRIANGLE_START_LEFT_OFFSET));
     
+  xLup = 0;
+  xLmid = (-ANIM_TRIANGLE_START_LEFT_OFFSET);
+  xLdown = 0; 
+  xRup = TFT_HEIGHT_USED; 
+  xRmid = ANIM_TRIANGLE_START_RIGHT_OFFSET;
+  xRdown = TFT_HEIGHT_USED;
+
   //Draw gray symbols
-  for (xLup = 0, xLmid = (-ANIM_TRIANGLE_WIDTH-ANIM_TRIANGLE_BASE_OFFSET), xLdown = 0, 
-  xRup = TFT_HEIGHT_USED, xRmid = (TFT_WIDTH_USED+ANIM_TRIANGLE_WIDTH+ANIM_TRIANGLE_BASE_OFFSET), xRdown = TFT_HEIGHT_USED; 
-  xLmid <= (TFT_WIDTH_MIDDLE-(ANIM_END_WIDTH_OFFSET/2)-BLACK_LINE_WIDTH-ANIM_TRIANGLE_WIDTH-ANIM_TRIANGLE_BASE_OFFSET) ; 
+  //for (; xLmid <= (TFT_WIDTH_MIDDLE-(ANIM_END_WIDTH_OFFSET/2)-BLACK_LINE_WIDTH-ANIM_TRIANGLE_START_LEFT_OFFSET); 
+  for (; xRmid >= ANIM_TRIANGLE_PIXELS_TRAVEL; 
   xLup++, xLmid++, xLdown++, xRup--, xRmid--, xRdown-- ) {
     tft.drawLine(xLup, 0, xLmid, TFT_HEIGHT_MIDDLE, OMNITRIX_GRAY); //Draw up left part
     tft.drawLine(xLmid, TFT_HEIGHT_MIDDLE, xLdown, TFT_HEIGHT_USED, OMNITRIX_GRAY); //Draw down left part
@@ -218,6 +233,12 @@ void showSelectSymbols() {
     tft.drawLine(xRmid, TFT_HEIGHT_MIDDLE, xRdown, TFT_HEIGHT_USED, OMNITRIX_GRAY); //Draw down right part
 
     //delay(50);
+    
+    //Show points for last frame
+    //if (xLmid == (TFT_WIDTH_MIDDLE-(ANIM_END_WIDTH_OFFSET/2)-BLACK_LINE_WIDTH-ANIM_TRIANGLE_START_LEFT_OFFSET)) {
+    if (xRmid == ANIM_TRIANGLE_PIXELS_TRAVEL) {
+      Serial.printf("Selectsym: xLup: %d, xLmid: %d, xLdown: %d, xRup: %d, xRmid: %d, xRdown: %d\n", xLup, xLmid, xLdown, xRup, xRmid, xRdown);
+    }
   }
 
   //Draw black lines
@@ -226,6 +247,8 @@ void showSelectSymbols() {
     tft.drawLine(xLmid, TFT_HEIGHT_MIDDLE, xLdown, TFT_HEIGHT_USED, OMNITRIX_BLACK); //Draw down left part
     tft.drawLine(xRup, 0, xRmid, TFT_HEIGHT_MIDDLE, OMNITRIX_BLACK); //Draw up right part
     tft.drawLine(xRmid, TFT_HEIGHT_MIDDLE, xRdown, TFT_HEIGHT_USED, OMNITRIX_BLACK); //Draw down right part
+
+    delay(50);
   }
 
   #endif
@@ -271,7 +294,10 @@ void showAnimation() {
   //Draw symbols up until lines don't intersect yet
   for ( ; (xLmid + BLACK_LINE_WIDTH) <= TFT_WIDTH_MIDDLE ; xLup++, xLmid++, xLdown++, xRup--, xRmid--, xRdown-- ) {
     //Wait
-    delay(delay_time);
+    //delay(delay_time);
+
+    tft.startWrite();
+
     //Draw gray lines
     tft.drawLine(xLup, 0, xLmid, TFT_HEIGHT_MIDDLE, OMNITRIX_GRAY); //Draw up left part
     tft.drawLine(xLmid, TFT_HEIGHT_MIDDLE, xLdown, TFT_HEIGHT_USED, OMNITRIX_GRAY); //Draw down left part
@@ -282,15 +308,19 @@ void showAnimation() {
     tft.drawLine(xLmid + BLACK_LINE_WIDTH, TFT_HEIGHT_MIDDLE, xLdown + BLACK_LINE_WIDTH, TFT_HEIGHT_USED, OMNITRIX_BLACK); //Draw down left part
     tft.drawLine(xRup - BLACK_LINE_WIDTH, 0, xRmid - BLACK_LINE_WIDTH, TFT_HEIGHT_MIDDLE, OMNITRIX_BLACK); //Draw up right part
     tft.drawLine(xRmid - BLACK_LINE_WIDTH, TFT_HEIGHT_MIDDLE, xRdown - BLACK_LINE_WIDTH, TFT_HEIGHT_USED, OMNITRIX_BLACK); //Draw down right part
+
+    tft.endWrite();
   }
   //Black lines intersect with each other until their middle
   for ( ; (xLmid + BLACK_LINE_WIDTH) <= (TFT_WIDTH_MIDDLE + BLACK_LINE_WIDTH/2) ; xLup++, xLmid++, xLdown++, xRup--, xRmid--, xRdown-- ) {
     //Wait
-    delay(delay_time);
+    //delay(delay_time);
     int16_t comx, comy;
     
     //get common point of the lines: left up to mid gray part and right up to mid black part
     //getCommonPoint(xLup, 0, xLmid, 120, xRup-BLACK_LINE_WIDTH, 0, xRmid-BLACK_LINE_WIDTH, 120, &comx, &comy);
+
+    tft.startWrite();
 
     //Draw gray up lines
     tft.drawLine(xLup, 0, xLmid, TFT_HEIGHT_MIDDLE, OMNITRIX_GRAY); //Draw up left part
@@ -309,23 +339,27 @@ void showAnimation() {
     tft.drawLine(xLmid + BLACK_LINE_WIDTH, TFT_HEIGHT_MIDDLE, xLdown + BLACK_LINE_WIDTH, TFT_HEIGHT_USED, OMNITRIX_BLACK); //Draw down left part
     tft.drawLine(xRmid - BLACK_LINE_WIDTH, TFT_HEIGHT_MIDDLE, xRdown - BLACK_LINE_WIDTH, TFT_HEIGHT_USED, OMNITRIX_BLACK); //Draw down right part
 
+    tft.endWrite();
+
     //delay(300);
   }
   //Black lines intersect with each other until their end
   for ( ; (xLmid + BLACK_LINE_WIDTH) <= (TFT_WIDTH_MIDDLE + BLACK_LINE_WIDTH) ; xLup++, xLmid++, xLdown++, xRup--, xRmid--, xRdown-- ) {
     //Wait
-    delay(delay_time);
+    //delay(delay_time);
     int16_t comx, comy;
     
     //get common point of the lines: upper left to mid gray part and upper right to mid black part
     getCommonPoint(xLup, 0, xLmid, TFT_HEIGHT_MIDDLE, xRup-BLACK_LINE_WIDTH, 0, xRmid-BLACK_LINE_WIDTH, TFT_HEIGHT_MIDDLE, &comx, &comy);
 
+    tft.startWrite();
+
     //Draw gray up lines
     tft.drawLine(xLup, 0, comx, comy, OMNITRIX_GRAY); //Draw up left part
-    tft.drawLine(xRup, 0, (TFT_HEIGHT_USED-comx), comy, OMNITRIX_GRAY); //Draw up right part
+    tft.drawLine(xRup, 0, (TFT_WIDTH_USED-comx), comy, OMNITRIX_GRAY); //Draw up right part
     //Draw previous gray line to clean
     tft.drawLine(xLup-1, 0, comx-1, comy, OMNITRIX_GRAY); //Draw up left part
-    tft.drawLine(xRup+1, 0, (TFT_HEIGHT_USED-comx)+1, comy, OMNITRIX_GRAY); //Draw up right part
+    tft.drawLine(xRup+1, 0, (TFT_WIDTH_USED-comx)+1, comy, OMNITRIX_GRAY); //Draw up right part
     //Draw black up lines
     tft.drawLine(xLup + BLACK_LINE_WIDTH, 0, xLmid + BLACK_LINE_WIDTH, TFT_HEIGHT_MIDDLE, OMNITRIX_BLACK); //Draw up left part
     tft.drawLine(xRup - BLACK_LINE_WIDTH, 0, xRmid - BLACK_LINE_WIDTH, TFT_HEIGHT_MIDDLE, OMNITRIX_BLACK); //Draw up right part
@@ -344,6 +378,8 @@ void showAnimation() {
     tft.drawLine(xLmid + BLACK_LINE_WIDTH, TFT_HEIGHT_MIDDLE, xLdown + BLACK_LINE_WIDTH, TFT_HEIGHT_USED, OMNITRIX_BLACK); //Draw down left part
     tft.drawLine(xRmid - BLACK_LINE_WIDTH, TFT_HEIGHT_MIDDLE, xRdown - BLACK_LINE_WIDTH, TFT_HEIGHT_USED, OMNITRIX_BLACK); //Draw down right part
 
+    tft.endWrite();
+
     //delay(300);
   }
   //Gray triangle lines intersecting
@@ -356,6 +392,8 @@ void showAnimation() {
     //Clean the previous black line artifacts by covering them with green lines
     //Get common upper point of intersecting middle x lines
     getCommonPoint(xLup, 0, xLmid, TFT_HEIGHT_MIDDLE, xRup, 0, xRmid, TFT_HEIGHT_MIDDLE, &comx, &comy);
+
+    tft.startWrite();
 
     //Draw green part of lines
     tft.drawLine(comx, comy, xLmid-1, TFT_HEIGHT_MIDDLE, OMNITRIX_GREEN); //Draw up left part
@@ -421,13 +459,18 @@ void showAnimation() {
     tft.drawPixel(comx, comy-2, 0x780F);
     */
 
+    tft.endWrite();
+
     //delay(100);
   }
   
   //Lines stop intersectiong (up to 215 from middle left point)
   for ( ; (xLmid + BLACK_LINE_WIDTH) <= ANIM_TRIANGLE_PIXELS_TRAVEL ; xLup++, xLmid++, xLdown++, xRup--, xRmid--, xRdown-- ) {
     //Wait
-    delay(delay_time);
+    //delay(delay_time);
+
+    tft.startWrite();
+
     //Draw green lines
     tft.drawLine(xLup-1, 0, xLmid-1, TFT_HEIGHT_MIDDLE, OMNITRIX_GREEN); //Draw up left part
     tft.drawLine(xLmid-1, TFT_HEIGHT_MIDDLE, xLdown, TFT_HEIGHT_USED, OMNITRIX_GREEN); //Draw down left part
@@ -443,6 +486,8 @@ void showAnimation() {
     tft.drawLine(xLmid + BLACK_LINE_WIDTH, TFT_HEIGHT_MIDDLE, xLdown + BLACK_LINE_WIDTH, TFT_HEIGHT_USED, OMNITRIX_BLACK); //Draw down left part
     tft.drawLine(xRup - BLACK_LINE_WIDTH, 0, xRmid - BLACK_LINE_WIDTH, TFT_HEIGHT_MIDDLE, OMNITRIX_BLACK); //Draw up right part
     tft.drawLine(xRmid - BLACK_LINE_WIDTH, TFT_HEIGHT_MIDDLE, xRdown - BLACK_LINE_WIDTH, TFT_HEIGHT_USED, OMNITRIX_BLACK); //Draw down right part
+
+    tft.endWrite();
 
     //Show points for last frame
     if ((xLmid + BLACK_LINE_WIDTH) == ANIM_TRIANGLE_PIXELS_TRAVEL) {
@@ -507,6 +552,12 @@ void eraseAlien() {
 
   int16_t xLup, xLmid, xLdown, xRup, xRmid, xRdown;
 
+  // xLup = TFT_WIDTH_MIDDLE - ((ANIM_END_WIDTH_OFFSET-2)/2) - 1;
+  // xLmid = (TFT_WIDTH_USED-ANIM_TRIANGLE_PIXELS_TRAVEL+1) + BLACK_LINE_WIDTH;
+  // xLdown = TFT_WIDTH_MIDDLE - ((ANIM_END_WIDTH_OFFSET-2)/2) - 1;
+  // xRup = TFT_WIDTH_MIDDLE + ((ANIM_END_WIDTH_OFFSET-2)/2) + 1;
+  // xRmid = (ANIM_TRIANGLE_PIXELS_TRAVEL-1) - BLACK_LINE_WIDTH; 
+  // xRdown = TFT_WIDTH_MIDDLE + ((ANIM_END_WIDTH_OFFSET-2)/2) + 1;
   xLup = TFT_WIDTH_MIDDLE - ((ANIM_END_WIDTH_OFFSET-2)/2) - 1;
   xLmid = (TFT_WIDTH_USED-ANIM_TRIANGLE_PIXELS_TRAVEL+1) + BLACK_LINE_WIDTH;
   xLdown = TFT_WIDTH_MIDDLE - ((ANIM_END_WIDTH_OFFSET-2)/2) - 1;
@@ -517,16 +568,20 @@ void eraseAlien() {
   // Draw the cleaning up to where the symbols end
   for ( ; xLmid <= xLup ; xLmid++, xRmid-- ) {
 
-    tft.drawLine(xLup, 0, xLmid, TFT_HEIGHT_MIDDLE, OMNITRIX_GREEN); //Draw up left part
-    tft.drawLine(xLmid, TFT_HEIGHT_MIDDLE, xLdown, TFT_HEIGHT_USED, OMNITRIX_GREEN); //Draw down left part OMNITRIX_GREEN
-    tft.drawLine(xRup, 0, xRmid, TFT_HEIGHT_MIDDLE, OMNITRIX_GREEN); //Draw up right part
-    tft.drawLine(xRmid, TFT_HEIGHT_MIDDLE, xRdown, TFT_HEIGHT_USED, OMNITRIX_GREEN); //Draw down right part
+    tft.drawLine(xLup, 0, xLmid, TFT_HEIGHT_MIDDLE, 0x780F); //Draw up left part purple 0x780F
+    tft.drawLine(xLmid, TFT_HEIGHT_MIDDLE, xLdown, TFT_HEIGHT_USED, 0x780F); //Draw down left part OMNITRIX_GREEN
+    tft.drawLine(xRup, 0, xRmid, TFT_HEIGHT_MIDDLE, 0x780F); //Draw up right part
+    tft.drawLine(xRmid, TFT_HEIGHT_MIDDLE, xRdown, TFT_HEIGHT_USED, 0x780F); //Draw down right part
+
+    delay(100);
   }
   // Draw the cleaning to the rest of the space
   for (; xLmid <= TFT_WIDTH_MIDDLE; xLmid++,xRmid--) {
 
-    tft.drawLine(xLmid, 0, xLmid, TFT_HEIGHT_USED, OMNITRIX_GREEN); //Draw left to right part
-    tft.drawLine(xRmid, 0, xRmid, TFT_HEIGHT_USED, OMNITRIX_GREEN); //Draw right to left part
+    tft.drawLine(xLmid, 0, xLmid, TFT_HEIGHT_USED, 0x780F); //Draw left to right part
+    tft.drawLine(xRmid, 0, xRmid, TFT_HEIGHT_USED, 0x780F); //Draw right to left part
+
+    delay(100);
   }
 
   #endif
@@ -579,7 +634,7 @@ void eraseAlienWithDirection(bool left_to_rightDir) {
     tft.drawLine(startXup, 0, startXmid, TFT_HEIGHT_MIDDLE, OMNITRIX_GREEN); //Draw up left part purple 0x780F
     tft.drawLine(startXmid, TFT_HEIGHT_MIDDLE, startXdown, TFT_HEIGHT_USED, OMNITRIX_GREEN); //Draw down left part 
 
-    delay(50);
+    //delay(50);
   }
   
   //Draw the cleaning up to where the right symbols start
@@ -587,7 +642,7 @@ void eraseAlienWithDirection(bool left_to_rightDir) {
 
     tft.drawLine(startXmid, 0, startXmid, TFT_HEIGHT_USED, OMNITRIX_GREEN); //Draw left to right part
 
-    delay(50);
+    //delay(50);
   }
 
   // Draw the cleaning up to where the right symbols end
@@ -595,7 +650,7 @@ void eraseAlienWithDirection(bool left_to_rightDir) {
     tft.drawLine(endXup, 0, startXmid, TFT_HEIGHT_MIDDLE, OMNITRIX_GREEN); //Draw up left part purple 0x780F
     tft.drawLine(startXmid, TFT_HEIGHT_MIDDLE, endXdown, TFT_HEIGHT_USED, OMNITRIX_GREEN); //Draw down left part OMNITRIX_GREEN
 
-    delay(50);
+    //delay(50);
   }
 
   #endif
