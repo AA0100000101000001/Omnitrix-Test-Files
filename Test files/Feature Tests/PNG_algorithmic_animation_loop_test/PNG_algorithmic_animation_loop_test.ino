@@ -51,14 +51,14 @@ TFT_eSPI tft = TFT_eSPI();         // Invoke custom library
 #if defined START_ANIMATION_HARD_CODED
 
 //Animation configuration
-#define TFT_WIDTH_USED 240 //120 // 240 //default
+#define TFT_WIDTH_USED 240 //360 //120 // 240 //default
 #define TFT_HEIGHT_USED 240 //120 // 240 //default
 
-#define ANIM_TRIANGLE_WIDTH 74 //default, must be lower than TFT_WIDTH_MIDDLE
-//#define ANIM_TRIANGLE_WIDTH 80 
+//#define ANIM_TRIANGLE_WIDTH 74 //default, must be lower than TFT_WIDTH_MIDDLE
+#define ANIM_TRIANGLE_WIDTH 80 
 //#define ANIM_TRIANGLE_WIDTH 40
-#define ANIM_TRIANGLE_BASE_OFFSET -6 //default
-//#define ANIM_TRIANGLE_BASE_OFFSET 0
+//#define ANIM_TRIANGLE_BASE_OFFSET -6 //default
+#define ANIM_TRIANGLE_BASE_OFFSET 0
 #define ANIM_TRIANGLE_PIXELS_TRAVEL 215 //default, must be lower than TFT_WIDTH_USED and higher than TFT_WIDTH_MIDDLE+ANIM_TRIANGLE_WIDTH
 //#define ANIM_TRIANGLE_PIXELS_TRAVEL 80
 //#define ANIM_TRIANGLE_PIXELS_TRAVEL 300
@@ -223,9 +223,9 @@ void showSelectSymbols() {
   xLup = 0;
   xLmid = (-ANIM_TRIANGLE_START_LEFT_OFFSET);
   xLdown = 0; 
-  xRup = TFT_HEIGHT_USED; 
+  xRup = TFT_WIDTH_USED; 
   xRmid = ANIM_TRIANGLE_START_RIGHT_OFFSET;
-  xRdown = TFT_HEIGHT_USED;
+  xRdown = TFT_WIDTH_USED;
 
   //Draw gray symbols
   //-1 because the last line points in showAnimation are located at the first black line after the green part
