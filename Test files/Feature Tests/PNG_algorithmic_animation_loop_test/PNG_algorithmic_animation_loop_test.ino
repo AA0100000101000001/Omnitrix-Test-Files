@@ -57,7 +57,7 @@ TFT_eSPI tft = TFT_eSPI();         // Invoke custom library
 //-------Edit these----------------
 #define ANIM_TRIANGLE_WIDTH 74 //default, must be lower than TFT_WIDTH_MIDDLE
 //#define ANIM_TRIANGLE_WIDTH 80 
-//#define ANIM_TRIANGLE_WIDTH 40
+//#define ANIM_TRIANGLE_WIDTH 39
 //#define ANIM_TRIANGLE_WIDTH 70 //closest to 45 degrees
 #define ANIM_TRIANGLE_BASE_OFFSET -6 //default
 //#define ANIM_TRIANGLE_BASE_OFFSET 0
@@ -469,9 +469,9 @@ void showAnimation() {
 
     //Draw green part of lines
     //tft.drawLine(comx, comy, xLmid-1, TFT_HEIGHT_MIDDLE, OMNITRIX_GREEN); //Draw up left part
-    tft.fillTriangle(comx, comy, xLmid-1, TFT_HEIGHT_MIDDLE, xLmid, TFT_HEIGHT_MIDDLE, OMNITRIX_GREEN); //Draw up left part with cleaning
+    tft.fillTriangle(comx-1, comy, comx, comy, xLmid-1, TFT_HEIGHT_MIDDLE, OMNITRIX_GREEN); //Draw up left part with cleaning
     //tft.drawLine(comx, comy, xRmid+1, TFT_HEIGHT_MIDDLE, OMNITRIX_GREEN); //Draw up right part
-    tft.fillTriangle(comx, comy, xRmid+1, TFT_HEIGHT_MIDDLE, xRmid, TFT_HEIGHT_MIDDLE, OMNITRIX_GREEN); //Draw up right part with cleaning
+    tft.fillTriangle(comx+1, comy, comx, comy, xRmid+1, TFT_HEIGHT_MIDDLE, OMNITRIX_GREEN); //Draw up right part with cleaning
     //Draw previous green line to clean
     //tft.drawLine(comx-1, comy, xLmid-2, TFT_HEIGHT_MIDDLE, OMNITRIX_GREEN); //Draw up left part
     //tft.drawLine(comx+1, comy, xRmid+2, TFT_HEIGHT_MIDDLE, OMNITRIX_GREEN); //Draw up right part
