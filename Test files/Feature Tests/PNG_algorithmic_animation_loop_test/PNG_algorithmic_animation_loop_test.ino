@@ -375,7 +375,7 @@ void showAnimation() {
     int16_t comx, comy;
     
     //get common point of the lines: left up to mid gray part and right up to mid black part
-    //getCommonPoint(xLup, 0, xLmid, 120, xRup-BLACK_LINE_WIDTH, 0, xRmid-BLACK_LINE_WIDTH, 120, &comx, &comy);
+    getCommonPoint(xLup, 0, xLmid, 120, xRup-BLACK_LINE_WIDTH, 0, xRmid-BLACK_LINE_WIDTH, 120, &comx, &comy);
 
     tft.startWrite();
 
@@ -387,7 +387,7 @@ void showAnimation() {
     tft.drawLine(xRup - BLACK_LINE_WIDTH, 0, xRmid - BLACK_LINE_WIDTH, TFT_HEIGHT_MIDDLE, OMNITRIX_BLACK); //Draw up right part
     
     //get common point of the lines: left mid to down gray part and right mid to down black part
-    //getCommonPoint(xLmid, 120, xLdown, 240, xRmid-BLACK_LINE_WIDTH, 120, xRdown-BLACK_LINE_WIDTH, 240, &comx, &comy);
+    getCommonPoint(xLmid, 120, xLdown, 240, xRmid-BLACK_LINE_WIDTH, 120, xRdown-BLACK_LINE_WIDTH, 240, &comx, &comy);
     
     //Draw gray down lines
     tft.drawLine(xLmid, TFT_HEIGHT_MIDDLE, xLdown, TFT_HEIGHT_USED, OMNITRIX_GRAY); //Draw down left part
@@ -454,10 +454,10 @@ void showAnimation() {
     
     //Clean the previous black line artifacts by covering them with green lines
     //Get common upper point of intersecting middle x lines
-    //getCommonPoint(xLup, 0, xLmid, TFT_HEIGHT_MIDDLE, xRup, 0, xRmid, TFT_HEIGHT_MIDDLE, &comx, &comy);
+    getCommonPoint(xLup, 0, xLmid, TFT_HEIGHT_MIDDLE, xRup, 0, xRmid, TFT_HEIGHT_MIDDLE, &comx, &comy);
 	  //Serial.printf("delta: %f\n", d);
-    comx = 120;
-    comy = (int) (comx - xLup) * TFT_HEIGHT_MIDDLE / (xLmid - xLup);
+    //comx = 120;
+    //comy = (int) (comx - xLup) * TFT_HEIGHT_MIDDLE / (xLmid - xLup);
 
     //Serial.printf("comx: %d, comy: %d\n", comx, comy);
 
