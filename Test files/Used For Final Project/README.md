@@ -5,7 +5,7 @@
 - PNG_animation_test
 - Button_Interrupts (might not work with my current switches)
 - Rotary_Encoder_Interrupts (might not work with my current switches and encoder)
-- Timer_With_Epoch_Time_Interrupts_Test (might not work with my current switches)
+- Timer_With_Epoch_Time_Interrupts_Test
 - config_test
 
 ## Optional boards
