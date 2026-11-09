@@ -48,6 +48,8 @@ PNG png; // PNG decoder instance
 #include <TFT_eSPI.h>              // Hardware-specific library
 TFT_eSPI tft = TFT_eSPI();         // Invoke custom library
 
+TFT_eSprite screenCanvas = TFT_eSprite(&tft);
+
 #if defined START_ANIMATION_HARD_CODED
 
 //Animation configuration
@@ -116,6 +118,13 @@ void setup()
 
   // Initialise the TFT
   tft.begin();
+  
+  // Init sprite
+  screenCanvas.setColorDepth(16); //8 bit takes 28.800 bytes, 16 bit takes 57,600 bytes (56.25 KB), 32 bit 115,200 (112.5 KB)
+  screenCanvas.createSprite(TFT_WIDTH_MIDDLE, TFT_HEIGHT_USED);
+  screenCanvas.setPivot(TFT_WIDTH_MIDDLE, TFT_HEIGHT_MIDDLE);
+  tft.setPivot(TFT_WIDTH_MIDDLE, TFT_HEIGHT_MIDDLE);
+
   tft.fillScreen(OMNITRIX_GREEN);
   ShowSymbols();
   delay(500);
@@ -160,10 +169,13 @@ void loop()
   delay(1000);
   showSelectSymbols();
   delay(1000);
+  rotateScreen();
+  delay(1000);
+
   tft.fillScreen(OMNITRIX_GREEN);
   ShowSymbols();
   delay(100);
- 
+
 }
 
 //Function that displays start icon symbols
@@ -734,6 +746,40 @@ void eraseAlienWithDirection(bool left_to_rightDir) {
   }
 
   #endif
+}
+
+void rotateScreen() {
+
+  //showAnimation();
+
+  screenCanvas.fillSprite(OMNITRIX_GREEN);
+
+  int16_t xLup, xLmid, xLdown, xRup, xRmid, xRdown, xLupEnd, black;
+  xLupEnd = (TFT_WIDTH_MIDDLE-(ANIM_END_WIDTH_OFFSET/2)-BLACK_LINE_WIDTH-1);
+  xLup = xLupEnd;
+  xLmid = -ANIM_TRIANGLE_START_LEFT_OFFSET + xLupEnd;
+  xLdown = xLupEnd; 
+
+  screenCanvas.fillTriangle(0, 0, xLup, 0, xLmid, TFT_HEIGHT_MIDDLE, OMNITRIX_GRAY); //Draw left up gray part
+  screenCanvas.fillTriangle(0, 0, xLmid, TFT_HEIGHT_MIDDLE, 0, TFT_HEIGHT_USED, OMNITRIX_GRAY); //Draw left mid gray part
+  screenCanvas.fillTriangle(xLmid, TFT_HEIGHT_MIDDLE, xLdown, TFT_HEIGHT_USED, 0, TFT_HEIGHT_USED, OMNITRIX_GRAY); //Draw left down gray part
+
+  //Draw black lines
+  for (black = 0; black <= BLACK_LINE_WIDTH; black++, xLup++, xLmid++, xLdown++, xRup--, xRmid--, xRdown--) {
+    screenCanvas.drawLine(xLup, 0, xLmid, TFT_HEIGHT_MIDDLE, OMNITRIX_BLACK); //Draw up left part
+    screenCanvas.drawLine(xLmid, TFT_HEIGHT_MIDDLE, xLdown, TFT_HEIGHT_USED, OMNITRIX_BLACK); //Draw down left part
+  }
+
+  
+  for (int i = 0; i <= 90; i+=10) {
+
+    screenCanvas.pushRotated(i);
+    screenCanvas.pushRotated(i+180);
+
+    //delay(100);
+
+  }
+
 }
 
 #if defined START_ANIMATION_HARD_CODED
