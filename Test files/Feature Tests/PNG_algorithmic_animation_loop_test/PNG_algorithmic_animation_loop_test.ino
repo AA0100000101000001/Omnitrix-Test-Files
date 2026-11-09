@@ -48,7 +48,7 @@ PNG png; // PNG decoder instance
 #include <TFT_eSPI.h>              // Hardware-specific library
 TFT_eSPI tft = TFT_eSPI();         // Invoke custom library
 
-TFT_eSprite screenCanvas = TFT_eSprite(&tft);
+TFT_eSprite screenCanvasHalf = TFT_eSprite(&tft);
 
 #if defined START_ANIMATION_HARD_CODED
 
@@ -120,9 +120,9 @@ void setup()
   tft.begin();
   
   // Init sprite
-  screenCanvas.setColorDepth(16); //8 bit takes 28.800 bytes, 16 bit takes 57,600 bytes (56.25 KB), 32 bit 115,200 (112.5 KB)
-  screenCanvas.createSprite(TFT_WIDTH_MIDDLE, TFT_HEIGHT_USED);
-  screenCanvas.setPivot(TFT_WIDTH_MIDDLE, TFT_HEIGHT_MIDDLE);
+  screenCanvasHalf.setColorDepth(16); //8 bit takes 28.800 bytes, 16 bit takes 57,600 bytes (56.25 KB), 32 bit 115,200 (112.5 KB)
+  screenCanvasHalf.createSprite(TFT_WIDTH_MIDDLE, TFT_HEIGHT_USED);
+  screenCanvasHalf.setPivot(TFT_WIDTH_MIDDLE, TFT_HEIGHT_MIDDLE);
   tft.setPivot(TFT_WIDTH_MIDDLE, TFT_HEIGHT_MIDDLE);
 
   tft.fillScreen(OMNITRIX_GREEN);
@@ -165,16 +165,18 @@ void loop()
   tft.fillScreen(OMNITRIX_RED);
   ShowSymbols();
   delay(1000);
+  rotateScreen(true, OMNITRIX_RED, 360);
+  delay(1000);
   tft.fillScreen(OMNITRIX_GREEN);
   delay(1000);
   showSelectSymbols();
   delay(1000);
 
-  rotateScreen(false);
+  rotateScreen(false, OMNITRIX_GREEN, 90);
   delay(1000);
   tft.fillScreen(OMNITRIX_GREEN);
   ShowSymbols();
-  rotateScreen(true);
+  rotateScreen(true, OMNITRIX_GREEN, 90);
   delay(1000);
 
   tft.fillScreen(OMNITRIX_GREEN);
@@ -755,11 +757,11 @@ void eraseAlienWithDirection(bool left_to_rightDir) {
 
 //Rotates screen by 90 degrees. 
 //If startSymbols is true then it rotates the start symbols, else it rotates the select symbols
-void rotateScreen(bool startSymbols) {
+void rotateScreen(bool startSymbols, uint32_t background_color, int degrees) {
 
   //showAnimation();
 
-  screenCanvas.fillSprite(OMNITRIX_GREEN);
+  screenCanvasHalf.fillSprite(background_color);
 
   int16_t xLup, xLmid, xLdown, xRup, xRmid, xRdown, xLupEnd, black;
 
@@ -769,7 +771,7 @@ void rotateScreen(bool startSymbols) {
     xLmid = ANIM_TRIANGLE_WIDTH; 
     xLdown = -ANIM_TRIANGLE_START_LEFT_OFFSET + ANIM_TRIANGLE_WIDTH;
 
-    screenCanvas.fillTriangle(xLup, 0, xLmid, TFT_HEIGHT_MIDDLE, xLdown, TFT_HEIGHT_USED, OMNITRIX_GRAY); //Draw left gray triangle
+    screenCanvasHalf.fillTriangle(xLup, 0, xLmid, TFT_HEIGHT_MIDDLE, xLdown, TFT_HEIGHT_USED, OMNITRIX_GRAY); //Draw left gray triangle
   }
   else {
 
@@ -778,23 +780,23 @@ void rotateScreen(bool startSymbols) {
     xLmid = -ANIM_TRIANGLE_START_LEFT_OFFSET + xLupEnd;
     xLdown = xLupEnd; 
 
-    screenCanvas.fillTriangle(0, 0, xLup, 0, xLmid, TFT_HEIGHT_MIDDLE, OMNITRIX_GRAY); //Draw left up gray part
-    screenCanvas.fillTriangle(0, 0, xLmid, TFT_HEIGHT_MIDDLE, 0, TFT_HEIGHT_USED, OMNITRIX_GRAY); //Draw left mid gray part
-    screenCanvas.fillTriangle(xLmid, TFT_HEIGHT_MIDDLE, xLdown, TFT_HEIGHT_USED, 0, TFT_HEIGHT_USED, OMNITRIX_GRAY); //Draw left down gray part
+    screenCanvasHalf.fillTriangle(0, 0, xLup, 0, xLmid, TFT_HEIGHT_MIDDLE, OMNITRIX_GRAY); //Draw left up gray part
+    screenCanvasHalf.fillTriangle(0, 0, xLmid, TFT_HEIGHT_MIDDLE, 0, TFT_HEIGHT_USED, OMNITRIX_GRAY); //Draw left mid gray part
+    screenCanvasHalf.fillTriangle(xLmid, TFT_HEIGHT_MIDDLE, xLdown, TFT_HEIGHT_USED, 0, TFT_HEIGHT_USED, OMNITRIX_GRAY); //Draw left down gray part
 
   }
 
   //Draw black lines
   for (black = 0; black <= BLACK_LINE_WIDTH; black++, xLup++, xLmid++, xLdown++, xRup--, xRmid--, xRdown--) {
-    screenCanvas.drawLine(xLup, 0, xLmid, TFT_HEIGHT_MIDDLE, OMNITRIX_BLACK); //Draw up left part
-    screenCanvas.drawLine(xLmid, TFT_HEIGHT_MIDDLE, xLdown, TFT_HEIGHT_USED, OMNITRIX_BLACK); //Draw down left part
+    screenCanvasHalf.drawLine(xLup, 0, xLmid, TFT_HEIGHT_MIDDLE, OMNITRIX_BLACK); //Draw up left part
+    screenCanvasHalf.drawLine(xLmid, TFT_HEIGHT_MIDDLE, xLdown, TFT_HEIGHT_USED, OMNITRIX_BLACK); //Draw down left part
   }
 
   
-  for (int i = 0; i <= 90; i+=10) {
+  for (int i = 0; i <= degrees; i+=10) {
 
-    screenCanvas.pushRotated(i);
-    screenCanvas.pushRotated(i+180);
+    screenCanvasHalf.pushRotated(i);
+    screenCanvasHalf.pushRotated(i+180);
 
     //delay(100);
 
