@@ -1,7 +1,6 @@
-
+#if defined START_ANIMATION_WITH_IMAGES
 #define OMNITRIX_ANIM_FRAME_LAST_INDEX 10 //11 frames for animation
-
-#if defined START_ANIMATION_HARD_CODED
+#elif defined START_ANIMATION_HARD_CODED
 #define OMNITRIX_ANIM_FRAME_LAST (ANIM_TRIANGLE_PIXELS_TRAVEL-ANIM_TRIANGLE_WIDTH)
 #endif
 
@@ -42,17 +41,7 @@ bool show_animation() {
       //Draw current frame
       draw_start_animation_frame(g_current_frame);
 
-      Serial.println("HEREEEEE");
-#if defined ENABLE_VERBOSE_ANIM_INFO
-      int frame_decod_duration_time = millis() - start_frame_decod_time;
-      int frame_duration_time = millis() - start_frame_time;
-      int frame_duration_since_start = millis() - g_anim_start;
-      avrg_frame_time += frame_duration_time;
-      avrg_frame_decod_time += frame_decod_duration_time;
-      Serial.printf("Time passed since frame decoded: %d, time passed since frame real time: %d, total time since start: %d\n", 
-        frame_decod_duration_time, frame_duration_time, frame_duration_since_start);
-#endif
-      //verbose_anim_info_end_frame(&start_frame_time, &frame_duration_time, &frame_duration_since_start, &frame_decod_duration_time, &start_frame_decod_time);
+      verbose_anim_info_end_frame(&start_frame_time, &frame_duration_time, &frame_duration_since_start, &frame_decod_duration_time, &start_frame_decod_time);
 
       g_current_frame++; //go to next frame
 
@@ -298,20 +287,16 @@ void verbose_anim_info_save_anim_time(unsigned long *start_frame_time) {
 }
 
 //Saves in the variable frame_duration the difference from time now and a previous saved time
-unsigned long verbose_anim_info_save_frame_time_diff(unsigned long* frame_duration, unsigned long* start_time) {
+void verbose_anim_info_save_frame_time_diff(unsigned long* frame_duration, unsigned long* start_time) {
   *frame_duration = get_anim_time() - *start_time;
 }
 
 //Saves frame_duration_time, frame_duration_since_start and does avrg_frame_time calculation
 void verbose_anim_info_end_frame_wrapper(unsigned long *start_frame_time, unsigned long *frame_duration_time, unsigned long *frame_duration_since_start) {
 #if defined ENABLE_VERBOSE_ANIM_INFO
-  Serial.println("HEREEEEE1");
   verbose_anim_info_save_frame_time_diff(frame_duration_time, start_frame_time);
-  Serial.println("HEREEEEE2");
   verbose_anim_info_save_frame_time_diff(frame_duration_since_start, &g_anim_start);
-  Serial.println("HEREEEEE3");
   avrg_frame_time += (double) *frame_duration_time;
-  Serial.println("HEREEEEE4");
 #endif
 }
 
@@ -320,19 +305,7 @@ void verbose_anim_info_end_frame_wrapper(unsigned long *start_frame_time, unsign
 #if defined START_ANIMATION_WITH_IMAGES
 void verbose_anim_info_end_frame(unsigned long *start_frame_time, unsigned long *frame_duration_time, unsigned long *frame_duration_since_start, 
 unsigned long *frame_decod_duration_time, unsigned long *start_frame_decod_time) {
-  //verbose_anim_info_end_frame_wrapper(start_frame_time, frame_duration_time, frame_duration_since_start);
-
-  Serial.println("HEREEEEE1");
-  //verbose_anim_info_save_frame_time_diff(frame_duration_time, start_frame_time);
-  unsigned long x = get_anim_time() - *start_frame_time;
-  Serial.printf("frame_duration: %d start_time: %d x: %d\n", *frame_duration_time, *start_frame_time, x);
-  *frame_duration_time = x;
-  Serial.println("HEREEEEE2");
-  verbose_anim_info_save_frame_time_diff(frame_duration_since_start, &g_anim_start);
-  Serial.println("HEREEEEE3");
-  avrg_frame_time += (double) *frame_duration_time;
-  Serial.println("HEREEEEE4");
-
+  verbose_anim_info_end_frame_wrapper(start_frame_time, frame_duration_time, frame_duration_since_start);
   verbose_anim_info_save_frame_time_diff(frame_decod_duration_time, start_frame_decod_time);
   avrg_frame_decod_time += *frame_decod_duration_time;
   Serial.printf("Time passed since frame decoded: %d, time passed since frame real time: %d, total time since start: %d\n", 

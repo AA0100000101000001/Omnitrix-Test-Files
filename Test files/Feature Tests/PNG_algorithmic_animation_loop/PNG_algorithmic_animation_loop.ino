@@ -42,9 +42,9 @@ int png_draw(PNGDRAW *pDraw);
 
 
 //1. Start animation with images
-#define START_ANIMATION_WITH_IMAGES
+//#define START_ANIMATION_WITH_IMAGES
 //2. Hard coded start animation
-//#define START_ANIMATION_HARD_CODED
+#define START_ANIMATION_HARD_CODED
 
 //Start animation with images
 //#if defined START_ANIMATION_WITH_IMAGES
