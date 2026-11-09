@@ -99,7 +99,7 @@ bool show_animation() {
       tft.drawLine(xRup - BLACK_LINE_WIDTH, 0, xRmid - BLACK_LINE_WIDTH, TFT_HEIGHT_MIDDLE, OMNITRIX_BLACK); //Draw up right part
       tft.drawLine(xRmid - BLACK_LINE_WIDTH, TFT_HEIGHT_MIDDLE, xRdown - BLACK_LINE_WIDTH, TFT_HEIGHT_USED, OMNITRIX_BLACK); //Draw down right part
 
-      verbose_anim_info_end_frame(&start_frame_time, &frame_duration_time, &frame_duration_since_start);
+      verbose_anim_info_end_frame_wrapper(&start_frame_time, &frame_duration_time, &frame_duration_since_start);
       tft.endWrite();
 
     }
@@ -131,7 +131,7 @@ bool show_animation() {
       tft.drawLine(xLmid + BLACK_LINE_WIDTH, TFT_HEIGHT_MIDDLE, xLdown + BLACK_LINE_WIDTH, TFT_HEIGHT_USED, OMNITRIX_BLACK); //Draw down left part
       tft.drawLine(xRmid - BLACK_LINE_WIDTH, TFT_HEIGHT_MIDDLE, xRdown - BLACK_LINE_WIDTH, TFT_HEIGHT_USED, OMNITRIX_BLACK); //Draw down right part
 
-      verbose_anim_info_end_frame(&start_frame_time, &frame_duration_time, &frame_duration_since_start);
+      verbose_anim_info_end_frame_wrapper(&start_frame_time, &frame_duration_time, &frame_duration_since_start);
       tft.endWrite();
     }
     //Black lines intersect with each other until their end
@@ -163,7 +163,7 @@ bool show_animation() {
       tft.drawLine(xLmid + BLACK_LINE_WIDTH, TFT_HEIGHT_MIDDLE, xLdown + BLACK_LINE_WIDTH, TFT_HEIGHT_USED, OMNITRIX_BLACK); //Draw down left part
       tft.drawLine(xRmid - BLACK_LINE_WIDTH, TFT_HEIGHT_MIDDLE, xRdown - BLACK_LINE_WIDTH, TFT_HEIGHT_USED, OMNITRIX_BLACK); //Draw down right part
 
-      verbose_anim_info_end_frame(&start_frame_time, &frame_duration_time, &frame_duration_since_start);
+      verbose_anim_info_end_frame_wrapper(&start_frame_time, &frame_duration_time, &frame_duration_since_start);
       tft.endWrite();
     }
     //Gray triangle lines intersecting
@@ -215,7 +215,7 @@ bool show_animation() {
       tft.drawLine(xLmid + BLACK_LINE_WIDTH, TFT_HEIGHT_MIDDLE, xLdown + BLACK_LINE_WIDTH, TFT_HEIGHT_USED, OMNITRIX_BLACK); //Draw down left part
       tft.drawLine(xRmid - BLACK_LINE_WIDTH, TFT_HEIGHT_MIDDLE, xRdown - BLACK_LINE_WIDTH, TFT_HEIGHT_USED, OMNITRIX_BLACK); //Draw down right part
 
-      verbose_anim_info_end_frame(&start_frame_time, &frame_duration_time, &frame_duration_since_start);
+      verbose_anim_info_end_frame_wrapper(&start_frame_time, &frame_duration_time, &frame_duration_since_start);
       tft.endWrite();
     }
     //Lines stop intersectiong 
@@ -235,20 +235,11 @@ bool show_animation() {
       tft.drawLine(xRup - BLACK_LINE_WIDTH, 0, xRmid - BLACK_LINE_WIDTH, TFT_HEIGHT_MIDDLE, OMNITRIX_BLACK); //Draw up right part
       tft.drawLine(xRmid - BLACK_LINE_WIDTH, TFT_HEIGHT_MIDDLE, xRdown - BLACK_LINE_WIDTH, TFT_HEIGHT_USED, OMNITRIX_BLACK); //Draw down right part
 
-      verbose_anim_info_end_frame(&start_frame_time, &frame_duration_time, &frame_duration_since_start);
+      verbose_anim_info_end_frame_wrapper(&start_frame_time, &frame_duration_time, &frame_duration_since_start);
       tft.endWrite();
-
-#if defined ENABLE_VERBOSE_ANIM_INFO
-      //Show points for last frame
-      if ((xLmid + BLACK_LINE_WIDTH) == ANIM_TRIANGLE_PIXELS_TRAVEL) {
-        Serial.printf("xLup: %d, xLmid: %d, xLdown: %d, xRup: %d, xRmid: %d, xRdown: %d\n", xLup, xLmid, xLdown, xRup, xRmid, xRdown);
-      }
-#endif
     }
 
-#if defined ENABLE_VERBOSE_ANIM_INFO
-    Serial.printf("Time passed since frame real time: %d micros, total time since start: %d micros\n", frame_duration_time, frame_duration_since_start);
-#endif
+    verbose_anim_info_end_frame(&start_frame_time, &frame_duration_time, &frame_duration_since_start);
 
     xLup++;
     xLmid++;
@@ -313,8 +304,8 @@ unsigned long *frame_decod_duration_time, unsigned long *start_frame_decod_time)
 }
 #elif defined START_ANIMATION_HARD_CODED
 void verbose_anim_info_end_frame(unsigned long *start_frame_time, unsigned long *frame_duration_time, unsigned long *frame_duration_since_start) {
-  
-  verbose_anim_info_end_frame_wrapper(start_frame_time, frame_duration_time, frame_duration_since_start);
+
+  Serial.printf("Time passed since frame real time: %d micros, total time since start: %d micros\n", frame_duration_time, frame_duration_since_start);
 }
 #endif
 
@@ -346,6 +337,10 @@ void draw_start_animation_frame(uint8_t i) {
 #if defined START_ANIMATION_WITH_IMAGES
   
   show_image(omnitrix_anim[i], sizeof(omnitrix_anim[i]));
+
+#elif defined START_ANIMATION_HARD_CODED
+  
+  
 #endif
 }
 

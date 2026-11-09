@@ -35,13 +35,13 @@ PNG png; // PNG decoder instance
 
 //Site for RGB565: https://rgbcolorpicker.com/565
 
-//#define OMNITRIX_GREEN 0xA707 //default
-#define OMNITRIX_GREEN 0x07e0
+#define OMNITRIX_GREEN 0xA707 //default
+//#define OMNITRIX_GREEN 0x07e0
 #define OMNITRIX_RED 0xC000 //default
 //#define OMNITRIX_GRAY 0xAD55 //default
 #define OMNITRIX_GRAY 0x8c50
-//#define OMNITRIX_BLACK TFT_BLACK //default
-#define OMNITRIX_BLACK 0x0002
+#define OMNITRIX_BLACK TFT_BLACK //default
+//#define OMNITRIX_BLACK 0x0002
 
 
 #include "SPI.h"
@@ -59,6 +59,7 @@ TFT_eSPI tft = TFT_eSPI();         // Invoke custom library
 //#define ANIM_TRIANGLE_WIDTH 80 
 //#define ANIM_TRIANGLE_WIDTH 39
 //#define ANIM_TRIANGLE_WIDTH 70 //closest to 45 degrees
+//#define ANIM_TRIANGLE_WIDTH 50
 #define ANIM_TRIANGLE_BASE_OFFSET -6 //default
 //#define ANIM_TRIANGLE_BASE_OFFSET 0
 //#define ANIM_TRIANGLE_BASE_OFFSET -38 //closest to 45 degrees
@@ -67,7 +68,7 @@ TFT_eSPI tft = TFT_eSPI();         // Invoke custom library
 //#define ANIM_TRIANGLE_PIXELS_TRAVEL 300
 //#define ANIM_TRIANGLE_PIXELS_TRAVEL 239 //closest to 45 degrees
 #define BLACK_LINE_WIDTH 11 //default
-//#define BLACK_LINE_WIDTH 16
+//#define BLACK_LINE_WIDTH 22
 //----------------------------------
 
 //Automatically calculated animation values
@@ -148,13 +149,13 @@ void loop()
   // showAlien();
   // eraseAlienWithDirection(false); //right to left
   // delay(1000);
-  /*
+  
   tft.fillScreen(TFT_WHITE);
   ShowSymbols();
   delay(1000);
   tft.fillScreen(OMNITRIX_RED);
   ShowSymbols();
-  delay(1000);*/
+  delay(1000);
   tft.fillScreen(OMNITRIX_GREEN);
   delay(1000);
   showSelectSymbols();
@@ -301,7 +302,7 @@ void showSelectSymbols() {
     tft.drawLine(xRup, 0, xRmid, TFT_HEIGHT_MIDDLE, OMNITRIX_BLACK); //Draw up right part
     tft.drawLine(xRmid, TFT_HEIGHT_MIDDLE, xRdown, TFT_HEIGHT_USED, OMNITRIX_BLACK); //Draw down right part
 
-    delay(50);
+    //delay(50);
   }
 
   #endif
