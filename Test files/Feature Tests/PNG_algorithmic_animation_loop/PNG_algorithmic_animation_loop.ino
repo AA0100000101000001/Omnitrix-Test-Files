@@ -38,26 +38,77 @@ int png_draw(PNGDRAW *pDraw);
 //Basic debugging info
 //#define ENABLE_MEMORY_INFO
 #define ENABLE_ANIM_INFO
-//#define ENABLE_VERBOSE_ANIM_INFO
+#define ENABLE_VERBOSE_ANIM_INFO
 
 
 //1. Start animation with images
 #define START_ANIMATION_WITH_IMAGES
 //2. Hard coded start animation
-//#define START_ANIMATION_WITHOUT_IMAGES //Not finished
+//#define START_ANIMATION_HARD_CODED
 
 //Start animation with images
-#if defined START_ANIMATION_WITH_IMAGES
+//#if defined START_ANIMATION_WITH_IMAGES
 #include "omnitrix_anim.h"
+//#endif
+
+#if defined START_ANIMATION_HARD_CODED
+
+//Animation configuration
+#define TFT_WIDTH_USED 240 //default
+#define TFT_HEIGHT_USED 240 //default
+
+//-------Edit these----------------
+#define ANIM_TRIANGLE_WIDTH 74 //default, must be lower than TFT_WIDTH_MIDDLE
+#define ANIM_TRIANGLE_BASE_OFFSET -6 //default
+#define ANIM_TRIANGLE_PIXELS_TRAVEL 215 //default, must be lower than TFT_WIDTH_USED and higher than TFT_WIDTH_MIDDLE+ANIM_TRIANGLE_WIDTH
+#define BLACK_LINE_WIDTH 11 //default
+//----------------------------------
+
+//Automatically calculated animation values
+#define TFT_WIDTH_MIDDLE (TFT_WIDTH_USED/2) //120 in default
+#define TFT_HEIGHT_MIDDLE (TFT_HEIGHT_USED/2) //120 in default
+// 80 in default
+#define ANIM_TRIANGLE_START_LEFT_OFFSET (ANIM_TRIANGLE_WIDTH - ANIM_TRIANGLE_BASE_OFFSET)
+// 320 in default
+#define ANIM_TRIANGLE_START_RIGHT_OFFSET (ANIM_TRIANGLE_WIDTH - ANIM_TRIANGLE_BASE_OFFSET + TFT_WIDTH_USED)
+// 8 in default
+#define ANIM_END_WIDTH_OFFSET 2*(ANIM_TRIANGLE_PIXELS_TRAVEL-BLACK_LINE_WIDTH-ANIM_TRIANGLE_START_LEFT_OFFSET-TFT_WIDTH_MIDDLE)
+//#define ANIM_SELECT_SYM_END (TFT_WIDTH_USED- ANIM_TRIANGLE_PIXELS_TRAVEL-BLACK_LINE_WIDTH-ANIM_TRIANGLE_WIDTH)
+
+//Check for animation configuration errors
+#if ANIM_TRIANGLE_WIDTH >= TFT_WIDTH_MIDDLE
+#error "ANIM_TRIANGLE_WIDTH must be lower than TFT_WIDTH_MIDDLE"
+#elif ANIM_TRIANGLE_PIXELS_TRAVEL < (TFT_WIDTH_MIDDLE+ANIM_TRIANGLE_WIDTH)
+#error "ANIM_TRIANGLE_PIXELS_TRAVEL must higher than TFT_WIDTH_MIDDLE+ANIM_TRIANGLE_WIDTH"
+#elif ANIM_TRIANGLE_PIXELS_TRAVEL >= TFT_WIDTH_USED
+#error "ANIM_TRIANGLE_PIXELS_TRAVEL must be lower than half of tft width"
+#elif ANIM_TRIANGLE_START_LEFT_OFFSET >= TFT_WIDTH_MIDDLE
+#error "ANIM_TRIANGLE_WIDTH - ANIM_TRIANGLE_BASE_OFFSET must be lower than TFT_WIDTH_MIDDLE"
+#elif BLACK_LINE_WIDTH >= TFT_WIDTH_MIDDLE
+#error "BLACK_LINE_WIDTH must be lower than half of tft width"
+#elif ANIM_END_WIDTH_OFFSET < 0
+#error "ANIM_END_WIDTH_OFFSET must be higher than 0. Check ANIM_TRIANGLE_WIDTH or ANIM_TRIANGLE_BASE_OFFSET"
+#endif
+
 #endif
 
 #define OMNITRIX_GREEN 0xA707
 #define OMNITRIX_RED 0xC000
 #define OMNITRIX_GRAY 0xAD55
+#define OMNITRIX_BLACK 0x0002
 
 static bool is_animating = false;
 uint32_t g_anim_start;    //Timer that helps with animation
 uint8_t g_current_frame; //Frame iterator (<= 255 total frames)
+
+//For debugging animation
+#if defined ENABLE_VERBOSE_ANIM_INFO
+int end_animation_time;
+double avrg_frame_time;
+#if defined START_ANIMATION_WITH_IMAGES
+double avrg_frame_decod_time;
+#endif
+#endif
 
 void setup() {
   
@@ -111,11 +162,13 @@ void start_animation() {
   setCpuFrequencyMhz(MAX_CPU_FREQ); //Change cpu frequency to the faster allowed one 
 #endif
   g_current_frame = 0; //Set start frame
-  //Set debugging animation variables
+  //Set debugging animation variables for debugging animation
 #if defined ENABLE_VERBOSE_ANIM_INFO
   end_animation_time;
   avrg_frame_time = 0;
+#if defined START_ANIMATION_WITH_IMAGES
   avrg_frame_decod_time = 0;
+#endif
 #endif
 
 }
