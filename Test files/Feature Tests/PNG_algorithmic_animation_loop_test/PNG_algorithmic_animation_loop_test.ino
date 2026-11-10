@@ -48,9 +48,9 @@ PNG png; // PNG decoder instance
 #include <TFT_eSPI.h>              // Hardware-specific library
 TFT_eSPI tft = TFT_eSPI();         // Invoke custom library
 
-TFT_eSprite screenCanvasHalf = TFT_eSprite(&tft);
-
 #if defined START_ANIMATION_HARD_CODED
+
+TFT_eSprite screenCanvasHalf = TFT_eSprite(&tft);
 
 //Animation configuration
 #define TFT_WIDTH_USED 240 //default
@@ -119,15 +119,16 @@ void setup()
   // Initialise the TFT
   tft.begin();
   
+  #if defined START_ANIMATION_HARD_CODED
   // Init sprite
   screenCanvasHalf.setColorDepth(16); //8 bit takes 28.800 bytes, 16 bit takes 57,600 bytes (56.25 KB), 32 bit 115,200 (112.5 KB)
   screenCanvasHalf.createSprite(TFT_WIDTH_MIDDLE, TFT_HEIGHT_USED);
-  screenCanvasHalf.setPivot(TFT_WIDTH_MIDDLE, TFT_HEIGHT_MIDDLE);
   tft.setPivot(TFT_WIDTH_MIDDLE, TFT_HEIGHT_MIDDLE);
+  #endif
 
   tft.fillScreen(OMNITRIX_GREEN);
   ShowSymbols();
-  delay(500);
+  delay(1000);
 
   Serial.println("\r\nInitialisation done.");
 
@@ -159,29 +160,40 @@ void loop()
   // eraseAlienWithDirection(false); //right to left
   // delay(1000);
   
-  tft.fillScreen(TFT_WHITE);
-  ShowSymbols();
-  delay(1000);
-  tft.fillScreen(OMNITRIX_RED);
-  ShowSymbols();
-  delay(1000);
-  rotateScreen(true, OMNITRIX_RED, 360);
-  delay(1000);
-  tft.fillScreen(OMNITRIX_GREEN);
-  delay(1000);
-  showSelectSymbols();
-  delay(1000);
+  // tft.fillScreen(TFT_WHITE);
+  // ShowSymbols();
+  // delay(1000);
+  // tft.fillScreen(OMNITRIX_RED);
+  // ShowSymbols();
+  // delay(1000);
+  // rotateScreen(true, OMNITRIX_RED, 360);
+  // delay(1000);
+  // tft.fillScreen(OMNITRIX_GREEN);
+  // delay(1000);
+  // showSelectSymbols();
+  // delay(1000);
 
   rotateScreen(false, OMNITRIX_GREEN, 90);
   delay(1000);
+  DisplayTime(OMNITRIX_GREEN, 0, 0, 0, 0);
+  delay(1000);
+  DisplayTime(OMNITRIX_GREEN, 1, 2, 0, 0);
+  delay(1000);
+  DisplayTime(OMNITRIX_GREEN, 1, 2, 3, 0);
+  delay(1000);
+  DisplayTime(OMNITRIX_GREEN, 0, 9, 3, 0);
+  delay(1000);
+  
   tft.fillScreen(OMNITRIX_GREEN);
   ShowSymbols();
   rotateScreen(true, OMNITRIX_GREEN, 90);
+  DisplayTime(OMNITRIX_GREEN, 0, 0, 0, 0);
   delay(1000);
 
   tft.fillScreen(OMNITRIX_GREEN);
+  //showSymbolsAniamated(OMNITRIX_GREEN);
   ShowSymbols();
-  delay(100);
+  delay(1000);
 
 }
 
@@ -249,6 +261,57 @@ void ShowSymbols() {
 
   #endif
  
+}
+
+//Function that shows the start symbols emerge from the screen
+void showSymbolsAniamated(uint32_t background_color) {
+#if defined START_ANIMATION_WITH_IMAGES
+  ShowSymbols();
+#elif defined START_ANIMATION_HARD_CODED
+
+  screenCanvasHalf.fillSprite(background_color);
+
+  int16_t xLup, xLmid, xLdown, xRup, xRmid, xRdown, xLupEnd, black;
+
+  xLup = -ANIM_TRIANGLE_START_LEFT_OFFSET + ANIM_TRIANGLE_WIDTH; 
+  xLmid = ANIM_TRIANGLE_WIDTH; 
+  xLdown = -ANIM_TRIANGLE_START_LEFT_OFFSET + ANIM_TRIANGLE_WIDTH;
+
+  screenCanvasHalf.fillTriangle(xLup, 0, xLmid, TFT_HEIGHT_MIDDLE, xLdown, TFT_HEIGHT_USED, OMNITRIX_GRAY); //Draw left gray triangle
+  //Draw black lines
+  for (black = 0; black <= BLACK_LINE_WIDTH; black++, xLup++, xLmid++, xLdown++, xRup--, xRmid--, xRdown--) {
+    screenCanvasHalf.drawLine(xLup, 0, xLmid, TFT_HEIGHT_MIDDLE, OMNITRIX_BLACK); //Draw up left part
+    screenCanvasHalf.drawLine(xLmid, TFT_HEIGHT_MIDDLE, xLdown, TFT_HEIGHT_USED, OMNITRIX_BLACK); //Draw down left part
+  }
+
+  screenCanvasHalf.setPivot(TFT_WIDTH_MIDDLE, TFT_HEIGHT_MIDDLE);
+
+  tft.setViewport(0, 0, 120, 240);
+  for (int x = -110; x <= 0; x+=10) {
+
+    screenCanvasHalf.pushSprite(x, 0);
+    //screenCanvasHalf.pushSprite(x, 0, 60, 0, 60, 0); //screenCanvasHalf.width() + x, screenCanvasHalf.height());
+    //screenCanvasHalf.pushRotated(0);
+    //screenCanvasHalf.pushRotated(180);
+
+    delay(100);
+  
+  }
+  tft.resetViewport();
+
+#endif
+}
+
+
+//Function that shows the start symbols animated going away from the the center
+void showSymbolsReverse() {
+#if defined START_ANIMATION_WITH_IMAGES
+  tft.fillScreen(OMNITRIX_GREEN);
+#elif defined START_ANIMATION_HARD_CODED
+
+  
+
+#endif
 }
 
 void showSelectSymbols() {
@@ -758,8 +821,11 @@ void eraseAlienWithDirection(bool left_to_rightDir) {
 //Rotates screen by 90 degrees. 
 //If startSymbols is true then it rotates the start symbols, else it rotates the select symbols
 void rotateScreen(bool startSymbols, uint32_t background_color, int degrees) {
+#if defined START_ANIMATION_HARD_CODED
 
   //showAnimation();
+
+  screenCanvasHalf.setPivot(TFT_WIDTH_MIDDLE, TFT_HEIGHT_MIDDLE);
 
   screenCanvasHalf.fillSprite(background_color);
 
@@ -801,6 +867,17 @@ void rotateScreen(bool startSymbols, uint32_t background_color, int degrees) {
     //delay(100);
 
   }
+
+#endif
+}
+
+//Displays the numbers to tell time
+void DisplayTime(uint32_t background_color, int h1, int h2, int m1, int m2) {
+
+  tft.setTextColor(OMNITRIX_BLACK, background_color);
+  tft.setTextSize(6);
+  tft.setCursor(30, 96);
+  tft.printf("%d%d-%d%d\n", h1, h2, m1, m2);
 
 }
 
