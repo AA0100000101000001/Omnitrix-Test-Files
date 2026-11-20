@@ -35,8 +35,8 @@ PNG png; // PNG decoder instance
 
 //Site for RGB565: https://rgbcolorpicker.com/565
 
-#define OMNITRIX_GREEN 0xA707 //default
-//#define OMNITRIX_GREEN 0x07e0
+//#define OMNITRIX_GREEN 0xA707 //default
+#define OMNITRIX_GREEN 0x07e0
 #define OMNITRIX_RED 0xC000 //default
 //#define OMNITRIX_GRAY 0xAD55 //default
 #define OMNITRIX_GRAY 0x8c50
@@ -62,14 +62,15 @@ TFT_eSprite screenCanvasHalf = TFT_eSprite(&tft);
 //#define ANIM_TRIANGLE_WIDTH 39
 //#define ANIM_TRIANGLE_WIDTH 70 //closest to 45 degrees
 //#define ANIM_TRIANGLE_WIDTH 50
-#define ANIM_TRIANGLE_BASE_OFFSET -6 //default
-//#define ANIM_TRIANGLE_BASE_OFFSET 0
+//#define ANIM_TRIANGLE_BASE_OFFSET -6 //default
+#define ANIM_TRIANGLE_BASE_OFFSET 0
 //#define ANIM_TRIANGLE_BASE_OFFSET -38 //closest to 45 degrees
 #define ANIM_TRIANGLE_PIXELS_TRAVEL 215 //default, must be lower than TFT_WIDTH_USED and higher than TFT_WIDTH_MIDDLE+ANIM_TRIANGLE_WIDTH
 //#define ANIM_TRIANGLE_PIXELS_TRAVEL 110
 //#define ANIM_TRIANGLE_PIXELS_TRAVEL 300
 //#define ANIM_TRIANGLE_PIXELS_TRAVEL 239 //closest to 45 degrees
-#define BLACK_LINE_WIDTH 11 //default
+//#define BLACK_LINE_WIDTH 11 //default
+#define BLACK_LINE_WIDTH 16
 //#define BLACK_LINE_WIDTH 22
 //----------------------------------
 
@@ -160,18 +161,18 @@ void loop()
   // eraseAlienWithDirection(false); //right to left
   // delay(1000);
   
-  // tft.fillScreen(TFT_WHITE);
-  // ShowSymbols();
-  // delay(1000);
-  // tft.fillScreen(OMNITRIX_RED);
-  // ShowSymbols();
-  // delay(1000);
-  // rotateScreen(true, OMNITRIX_RED, 360);
-  // delay(1000);
-  // tft.fillScreen(OMNITRIX_GREEN);
-  // delay(1000);
-  // showSelectSymbols();
-  // delay(1000);
+  tft.fillScreen(TFT_WHITE);
+  ShowSymbols();
+  delay(1000);
+  tft.fillScreen(OMNITRIX_RED);
+  ShowSymbols();
+  delay(1000);
+  rotateScreen(true, OMNITRIX_RED, 360);
+  delay(1000);
+  tft.fillScreen(OMNITRIX_GREEN);
+  delay(1000);
+  showSelectSymbols();
+  delay(1000);
 
   rotateScreen(false, OMNITRIX_GREEN, 90);
   delay(1000);
@@ -458,7 +459,7 @@ void showAnimation() {
     int16_t comx, comy;
     
     //get common point of the lines: left up to mid gray part and right up to mid black part
-    getCommonPoint(xLup, 0, xLmid, 120, xRup-BLACK_LINE_WIDTH, 0, xRmid-BLACK_LINE_WIDTH, 120, &comx, &comy);
+    getCommonPoint(xLup, 0, xLmid, TFT_HEIGHT_MIDDLE, xRup-BLACK_LINE_WIDTH, 0, xRmid-BLACK_LINE_WIDTH, TFT_HEIGHT_MIDDLE, &comx, &comy);
 
     tft.startWrite();
 
@@ -470,7 +471,8 @@ void showAnimation() {
     tft.drawLine(xRup - BLACK_LINE_WIDTH, 0, xRmid - BLACK_LINE_WIDTH, TFT_HEIGHT_MIDDLE, OMNITRIX_BLACK); //Draw up right part
     
     //get common point of the lines: left mid to down gray part and right mid to down black part
-    getCommonPoint(xLmid, 120, xLdown, 240, xRmid-BLACK_LINE_WIDTH, 120, xRdown-BLACK_LINE_WIDTH, 240, &comx, &comy);
+    getCommonPoint(xLmid, TFT_HEIGHT_MIDDLE, xLdown, TFT_HEIGHT_USED, 
+    xRmid-BLACK_LINE_WIDTH, TFT_HEIGHT_MIDDLE, xRdown-BLACK_LINE_WIDTH, TFT_HEIGHT_USED, &comx, &comy);
     
     //Draw gray down lines
     tft.drawLine(xLmid, TFT_HEIGHT_MIDDLE, xLdown, TFT_HEIGHT_USED, OMNITRIX_GRAY); //Draw down left part

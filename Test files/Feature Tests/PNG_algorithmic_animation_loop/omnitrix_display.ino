@@ -109,7 +109,7 @@ bool show_animation() {
       int16_t comx, comy;
     
       //get common point of the lines: left up to mid gray part and right up to mid black part
-      getCommonPoint(xLup, 0, xLmid, 120, xRup-BLACK_LINE_WIDTH, 0, xRmid-BLACK_LINE_WIDTH, 120, &comx, &comy);
+      getCommonPoint(xLup, 0, xLmid, TFT_HEIGHT_MIDDLE, xRup-BLACK_LINE_WIDTH, 0, xRmid-BLACK_LINE_WIDTH, TFT_HEIGHT_MIDDLE, &comx, &comy);
 
       tft.startWrite();
       verbose_anim_info_save_anim_time(&start_frame_time);
@@ -122,7 +122,8 @@ bool show_animation() {
       tft.drawLine(xRup - BLACK_LINE_WIDTH, 0, xRmid - BLACK_LINE_WIDTH, TFT_HEIGHT_MIDDLE, OMNITRIX_BLACK); //Draw up right part
       
       //get common point of the lines: left mid to down gray part and right mid to down black part
-      getCommonPoint(xLmid, 120, xLdown, 240, xRmid-BLACK_LINE_WIDTH, 120, xRdown-BLACK_LINE_WIDTH, 240, &comx, &comy);
+      getCommonPoint(xLmid, TFT_HEIGHT_MIDDLE, xLdown, TFT_HEIGHT_USED, 
+      xRmid-BLACK_LINE_WIDTH, TFT_HEIGHT_MIDDLE, xRdown-BLACK_LINE_WIDTH, TFT_HEIGHT_USED, &comx, &comy);
       
       //Draw gray down lines
       tft.drawLine(xLmid, TFT_HEIGHT_MIDDLE, xLdown, TFT_HEIGHT_USED, OMNITRIX_GRAY); //Draw down left part
