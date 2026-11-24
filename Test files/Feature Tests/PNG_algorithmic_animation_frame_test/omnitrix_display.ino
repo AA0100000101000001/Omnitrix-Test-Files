@@ -294,12 +294,12 @@ unsigned long *frame_decod_duration_time, unsigned long *start_frame_decod_time)
   verbose_anim_info_save_frame_time_diff(frame_decod_duration_time, start_frame_decod_time);
   avrg_frame_decod_time += *frame_decod_duration_time;
   Serial.printf("Time passed since frame decoded: %d, time passed since frame real time: %d, total time since start: %d\n", 
-        frame_decod_duration_time, frame_duration_time, frame_duration_since_start);
+        *frame_decod_duration_time, *frame_duration_time, *frame_duration_since_start);
 }
 #elif defined START_ANIMATION_HARD_CODED
 void verbose_anim_info_end_frame(unsigned long *start_frame_time, unsigned long *frame_duration_time, unsigned long *frame_duration_since_start) {
 
-  Serial.printf("Time passed since frame real time: %d micros, total time since start: %d micros\n", frame_duration_time, frame_duration_since_start);
+  Serial.printf("Time passed since frame real time: %d micros, total time since start: %d micros\n", *frame_duration_time, *frame_duration_since_start);
 }
 #endif
 

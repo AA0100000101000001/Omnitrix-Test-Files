@@ -42,9 +42,9 @@ int png_draw(PNGDRAW *pDraw);
 
 
 //1. Start animation with images
-#define START_ANIMATION_WITH_IMAGES
+//#define START_ANIMATION_WITH_IMAGES
 //2. Hard coded start animation
-//#define START_ANIMATION_HARD_CODED
+#define START_ANIMATION_HARD_CODED
 
 //Start animation with images
 //#if defined START_ANIMATION_WITH_IMAGES
@@ -176,7 +176,7 @@ void loop() {
 void start_animation() {
 
   //reset_timer(); // For the delay of the animation
-  g_anim_start = millis(); //get time of animation begin
+  g_anim_start = get_anim_time(); //get time of animation begin
   is_animating = true;
 
 #if defined ALLOW_CPU_FREQ_CHANGES
