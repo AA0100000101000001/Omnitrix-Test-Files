@@ -106,11 +106,6 @@ bool show_animation() {
     //Black lines intersect with each other until their middle
     else if ((xLmid + BLACK_LINE_WIDTH) <= (TFT_WIDTH_MIDDLE + BLACK_LINE_WIDTH/2)) {
 
-      int16_t comx, comy;
-    
-      //get common point of the lines: left up to mid gray part and right up to mid black part
-      getCommonPoint(xLup, 0, xLmid, TFT_HEIGHT_MIDDLE, xRup-BLACK_LINE_WIDTH, 0, xRmid-BLACK_LINE_WIDTH, TFT_HEIGHT_MIDDLE, &comx, &comy);
-
       tft.startWrite();
       verbose_anim_info_save_anim_time(&start_frame_time);
 
@@ -120,10 +115,6 @@ bool show_animation() {
       //Draw black up lines
       tft.drawLine(xLup + BLACK_LINE_WIDTH, 0, xLmid + BLACK_LINE_WIDTH, TFT_HEIGHT_MIDDLE, OMNITRIX_BLACK); //Draw up left part
       tft.drawLine(xRup - BLACK_LINE_WIDTH, 0, xRmid - BLACK_LINE_WIDTH, TFT_HEIGHT_MIDDLE, OMNITRIX_BLACK); //Draw up right part
-      
-      //get common point of the lines: left mid to down gray part and right mid to down black part
-      getCommonPoint(xLmid, TFT_HEIGHT_MIDDLE, xLdown, TFT_HEIGHT_USED, 
-      xRmid-BLACK_LINE_WIDTH, TFT_HEIGHT_MIDDLE, xRdown-BLACK_LINE_WIDTH, TFT_HEIGHT_USED, &comx, &comy);
       
       //Draw gray down lines
       tft.drawLine(xLmid, TFT_HEIGHT_MIDDLE, xLdown, TFT_HEIGHT_USED, OMNITRIX_GRAY); //Draw down left part
@@ -138,28 +129,27 @@ bool show_animation() {
     //Black lines intersect with each other until their end
     else if ((xLmid + BLACK_LINE_WIDTH) <= (TFT_WIDTH_MIDDLE + BLACK_LINE_WIDTH)) {
 
-      int16_t comx, comy;
+      int16_t comx, comy, comxR, comyD; 
 
       //get common point of the lines: upper left to mid gray part and upper right to mid black part
       getCommonPoint(xLup, 0, xLmid, TFT_HEIGHT_MIDDLE, xRup-BLACK_LINE_WIDTH, 0, xRmid-BLACK_LINE_WIDTH, TFT_HEIGHT_MIDDLE, &comx, &comy);
+
+      comxR = (TFT_WIDTH_USED-comx); //Common x for right parts
+      comyD = (TFT_HEIGHT_USED-comy); //Common y for down parts
 
       tft.startWrite();
       verbose_anim_info_save_anim_time(&start_frame_time);
 
       //Draw gray up lines
-      tft.fillTriangle(xLup, 0, xLup-1, 0, comx, comy, OMNITRIX_GRAY); //Draw up left part with cleaning
-      tft.fillTriangle(xRup, 0, xRup+1, 0, (TFT_WIDTH_USED-comx), comy, OMNITRIX_GRAY); //Draw up right part with cleaning
+      tft.fillTriangle(xLup, 0, comx-1, comy, comx, comy, OMNITRIX_GRAY); //Draw up left part with cleaning
+      tft.fillTriangle(xRup, 0, comxR+1, comy, comxR, comy, OMNITRIX_GRAY); //Draw up right part with cleaning
       //Draw black up lines
       tft.drawLine(xLup + BLACK_LINE_WIDTH, 0, xLmid + BLACK_LINE_WIDTH, TFT_HEIGHT_MIDDLE, OMNITRIX_BLACK); //Draw up left part
       tft.drawLine(xRup - BLACK_LINE_WIDTH, 0, xRmid - BLACK_LINE_WIDTH, TFT_HEIGHT_MIDDLE, OMNITRIX_BLACK); //Draw up right part
       
-      //get common point of the lines: left mid to lower gray part and right mid to lower black part
-      getCommonPoint(xLmid, TFT_HEIGHT_MIDDLE, xLdown, TFT_HEIGHT_USED, 
-      xRmid-BLACK_LINE_WIDTH, TFT_HEIGHT_MIDDLE, xRdown-BLACK_LINE_WIDTH, TFT_HEIGHT_USED, &comx, &comy);
-      
       //Draw gray down lines
-      tft.fillTriangle(comx, comy, xLdown-1, TFT_HEIGHT_USED, xLdown, TFT_HEIGHT_USED, OMNITRIX_GRAY); //Draw down left part with cleaning
-      tft.fillTriangle((TFT_WIDTH_USED-comx), comy, xRdown+1, TFT_HEIGHT_USED, xRdown, TFT_HEIGHT_USED, OMNITRIX_GRAY); //Draw down right part with cleaning
+      tft.fillTriangle(comx, comyD, comx-1, comyD, xLdown, TFT_HEIGHT_USED, OMNITRIX_GRAY); //Draw down left part with cleaning
+      tft.fillTriangle(comxR, comyD, comxR+1, comyD, xRdown, TFT_HEIGHT_USED, OMNITRIX_GRAY); //Draw down right part with cleaning
       //Draw black down lines
       tft.drawLine(xLmid + BLACK_LINE_WIDTH, TFT_HEIGHT_MIDDLE, xLdown + BLACK_LINE_WIDTH, TFT_HEIGHT_USED, OMNITRIX_BLACK); //Draw down left part
       tft.drawLine(xRmid - BLACK_LINE_WIDTH, TFT_HEIGHT_MIDDLE, xRdown - BLACK_LINE_WIDTH, TFT_HEIGHT_USED, OMNITRIX_BLACK); //Draw down right part
@@ -170,11 +160,14 @@ bool show_animation() {
     //Gray triangle lines intersecting
     else if ((xLmid + BLACK_LINE_WIDTH) <= (TFT_WIDTH_MIDDLE + ANIM_TRIANGLE_START_LEFT_OFFSET + BLACK_LINE_WIDTH)) {
 
-      int16_t comx, comy;
+      int16_t comx, comy, comxR, comyD; 
       
       //Clean the previous black line artifacts by covering them with green lines
       //Get common upper point of intersecting middle x lines
       getCommonPoint(xLup, 0, xLmid, TFT_HEIGHT_MIDDLE, xRup, 0, xRmid, TFT_HEIGHT_MIDDLE, &comx, &comy);
+
+      comxR = (TFT_WIDTH_USED-comx); //Common x for right parts
+      comyD = (TFT_HEIGHT_USED-comy); //Common y for down parts
 
       //Serial.printf("comx: %d, comy: %d\n", comx, comy);
 
@@ -190,8 +183,8 @@ bool show_animation() {
       getCommonPoint(xLup, 0, xLmid, TFT_HEIGHT_MIDDLE, xRup-BLACK_LINE_WIDTH, 0, xRmid-BLACK_LINE_WIDTH, TFT_HEIGHT_MIDDLE, &comx, &comy);
       
       //Draw gray part of lines
-      tft.fillTriangle(xLup-1, 0, xLup-2, 0, comx, comy, OMNITRIX_GRAY); //Draw up left partition with cleaning
-      tft.fillTriangle(xRup+1, 0, xRup+2, 0, (TFT_WIDTH_USED-comx), comy, OMNITRIX_GRAY); //Draw up right part with cleaning purple 0x780F
+      tft.fillTriangle(xLup-1, 0, comx-2, comy, comx, comy, OMNITRIX_GRAY); //Draw up left partition with cleaning
+      tft.fillTriangle(xRup+1, 0, (TFT_WIDTH_USED-comx)+2, comy, (TFT_WIDTH_USED-comx), comy, OMNITRIX_GRAY); //Draw up right part with cleaning purple 0x780F
 
       //Get common lower point of intersecting middle x lines
       getCommonPoint(xLmid, TFT_HEIGHT_MIDDLE, xLdown, TFT_HEIGHT_USED, 
@@ -207,8 +200,8 @@ bool show_animation() {
       xRmid-BLACK_LINE_WIDTH, TFT_HEIGHT_MIDDLE, xRdown-BLACK_LINE_WIDTH, TFT_HEIGHT_USED, &comx, &comy);
 
       //Draw gray part of lines
-      tft.fillTriangle(comx, comy, xLdown-2, TFT_HEIGHT_USED, xLdown-1, TFT_HEIGHT_USED, OMNITRIX_GRAY); //Draw down left part with cleaning
-      tft.fillTriangle((TFT_WIDTH_USED-comx), comy, xRdown+2, TFT_HEIGHT_USED, xRdown+1, TFT_HEIGHT_USED, OMNITRIX_GRAY); //Draw down right part with cleaning
+      tft.fillTriangle(comx, comy, comx-2, comy, xLdown-1, TFT_HEIGHT_USED, OMNITRIX_GRAY); //Draw down left part with cleaning
+      tft.fillTriangle((TFT_WIDTH_USED-comx), comy, (TFT_WIDTH_USED-comx)+2, comy, xRdown+1, TFT_HEIGHT_USED, OMNITRIX_GRAY); //Draw down right part with cleaning
 
       //Draw black lines
       tft.drawLine(xLup + BLACK_LINE_WIDTH, 0, xLmid + BLACK_LINE_WIDTH, TFT_HEIGHT_MIDDLE, OMNITRIX_BLACK); //Draw up left part

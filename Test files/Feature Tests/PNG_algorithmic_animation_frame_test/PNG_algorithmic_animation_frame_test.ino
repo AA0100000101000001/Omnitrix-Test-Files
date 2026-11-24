@@ -42,9 +42,9 @@ int png_draw(PNGDRAW *pDraw);
 
 
 //1. Start animation with images
-//#define START_ANIMATION_WITH_IMAGES
+#define START_ANIMATION_WITH_IMAGES
 //2. Hard coded start animation
-#define START_ANIMATION_HARD_CODED
+//#define START_ANIMATION_HARD_CODED
 
 //Start animation with images
 //#if defined START_ANIMATION_WITH_IMAGES
@@ -58,10 +58,28 @@ int png_draw(PNGDRAW *pDraw);
 #define TFT_HEIGHT_USED 240 //default
 
 //-------Edit these----------------
+//default
+
+#define OMNITRIX_GREEN 0xA707
+#define OMNITRIX_RED 0xC000
+#define OMNITRIX_GRAY 0xAD55
+#define OMNITRIX_BLACK 0x0002
 #define ANIM_TRIANGLE_WIDTH 74 //default, must be lower than TFT_WIDTH_MIDDLE
 #define ANIM_TRIANGLE_BASE_OFFSET -6 //default
 #define ANIM_TRIANGLE_PIXELS_TRAVEL 215 //default, must be lower than TFT_WIDTH_USED and higher than TFT_WIDTH_MIDDLE+ANIM_TRIANGLE_WIDTH
 #define BLACK_LINE_WIDTH 11 //default
+
+//custom
+/*
+#define OMNITRIX_GREEN 0x07e0
+#define OMNITRIX_RED 0xC000
+#define OMNITRIX_GRAY 0x8c50
+#define OMNITRIX_BLACK 0x0002
+#define ANIM_TRIANGLE_WIDTH 74
+#define ANIM_TRIANGLE_BASE_OFFSET 0
+#define ANIM_TRIANGLE_PIXELS_TRAVEL 215
+#define BLACK_LINE_WIDTH 16
+*/
 //----------------------------------
 
 //Automatically calculated animation values
@@ -90,12 +108,16 @@ int png_draw(PNGDRAW *pDraw);
 #error "ANIM_END_WIDTH_OFFSET must be higher than 0. Check ANIM_TRIANGLE_WIDTH or ANIM_TRIANGLE_BASE_OFFSET"
 #endif
 
-#endif
-
+#else
+//Amination with images
 #define OMNITRIX_GREEN 0xA707
 #define OMNITRIX_RED 0xC000
 #define OMNITRIX_GRAY 0xAD55
 #define OMNITRIX_BLACK 0x0002
+
+#endif
+
+
 
 static bool is_animating = false;
 uint32_t g_anim_start;    //Timer that helps with animation
